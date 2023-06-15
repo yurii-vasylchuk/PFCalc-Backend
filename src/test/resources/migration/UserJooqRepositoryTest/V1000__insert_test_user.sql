@@ -1,6 +1,6 @@
 INSERT INTO users
 VALUES (
-        NEXTVAL(user_id_seq),
+        1,
         'yva@test.com',
         'UA',
         120,
