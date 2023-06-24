@@ -29,4 +29,6 @@ jobs:
           chmod 400 key.pem
           mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
           ssh-keyscan 3.78.190.177 >> ~/.ssh/known_hosts
-          scp -i key.pem target/pfcc-*.jar ec2-user@3.78.190.177:/home/ec2-user/
+          scp -i key.pem target/pfcc-*.jar ec2-user@3.78.190.177:/home/ec2-user/pfcc.jar
+          ssh -i key.pem ec2-user@3.78.190.177 fuser -k 8080/tcp
+          ssh -i key.pem ec2-user@3.78.190.177 java -jar pfcc.jar
