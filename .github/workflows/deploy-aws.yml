@@ -23,5 +23,7 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn clean package
-      - name: List files
-        run: ls -l ./target
+      - name: Deploy to AWS
+        run: |
+          echo "${{ secrets.AWS_SSH_KEY }}" | tr -d '\r' > key.pem
+          scp -i key.pem target/pfcc-*.jar ec2-user@3.78.190.177:/home/ec2-user/
