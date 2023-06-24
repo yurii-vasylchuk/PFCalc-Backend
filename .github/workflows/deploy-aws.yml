@@ -28,4 +28,4 @@ jobs:
           ssh-keyscan 3.78.190.177 >> ~/.ssh/known_hosts
           scp -i key.pem target/pfcc-*.jar ec2-user@3.78.190.177:/home/ec2-user/pfcc.jar
           ssh -i key.pem ec2-user@3.78.190.177 fuser -k 8080/tcp
-          ssh -i key.pem ec2-user@3.78.190.177 java -jar pfcc.jar
+          ssh -i key.pem ec2-user@3.78.190.177 java -jar pfcc.jar & disown
