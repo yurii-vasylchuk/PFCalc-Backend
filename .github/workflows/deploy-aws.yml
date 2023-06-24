@@ -1,6 +1,9 @@
 name: Deploy to AWS
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - configure_continuous_delivery
   release:
     types:
       - released
