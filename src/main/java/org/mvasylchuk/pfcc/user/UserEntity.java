@@ -1,7 +1,9 @@
 package org.mvasylchuk.pfcc.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 
@@ -9,6 +11,8 @@ import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 @Setter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
     private static final String ID_GENERATOR_NAME = "user_id_gen";
     private static final String ID_SEQ_NAME = "user_id_seq";
@@ -19,6 +23,8 @@ public class UserEntity {
     private Long id;
     @Column(name = "email")
     private String email;
+    @Column(name = "password",nullable = false)
+    private String password;
     @Column(name = "preferred_language")
     @Enumerated(value = EnumType.STRING)
     private Language preferredLanguage;

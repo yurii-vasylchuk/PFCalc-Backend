@@ -3,9 +3,10 @@ package org.mvasylchuk.pfcc.user;
 import io.jsonwebtoken.Jwts;
 import org.mvasylchuk.pfcc.platform.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-
+@Component
 public class TokenService {
     private final SecretKey key;
 
