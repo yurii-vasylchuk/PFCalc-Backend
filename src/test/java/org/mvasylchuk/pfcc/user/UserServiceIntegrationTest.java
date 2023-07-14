@@ -22,7 +22,5 @@ class UserServiceIntegrationTest {
         List<UserEntity> users = userRepository.findAll();
         Assertions.assertEquals(users.size(),1);
         Assertions.assertEquals(users.get(0).getEmail(),"email");
-
-
     }
 }

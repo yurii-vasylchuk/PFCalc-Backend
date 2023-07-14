@@ -11,11 +11,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function9;
+import org.jooq.Function11;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row9;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -69,22 +69,22 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>pfcc.users.protein_aim</code>.
      */
-    public final TableField<UsersRecord, BigDecimal> PROTEIN_AIM = createField(DSL.name("protein_aim"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<UsersRecord, BigDecimal> PROTEIN_AIM = createField(DSL.name("protein_aim"), SQLDataType.DECIMAL(9, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
 
     /**
      * The column <code>pfcc.users.fat_aim</code>.
      */
-    public final TableField<UsersRecord, BigDecimal> FAT_AIM = createField(DSL.name("fat_aim"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<UsersRecord, BigDecimal> FAT_AIM = createField(DSL.name("fat_aim"), SQLDataType.DECIMAL(9, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
 
     /**
      * The column <code>pfcc.users.carbohydrates_aim</code>.
      */
-    public final TableField<UsersRecord, BigDecimal> CARBOHYDRATES_AIM = createField(DSL.name("carbohydrates_aim"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<UsersRecord, BigDecimal> CARBOHYDRATES_AIM = createField(DSL.name("carbohydrates_aim"), SQLDataType.DECIMAL(9, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
 
     /**
      * The column <code>pfcc.users.calories_aim</code>.
      */
-    public final TableField<UsersRecord, BigDecimal> CALORIES_AIM = createField(DSL.name("calories_aim"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<UsersRecord, BigDecimal> CALORIES_AIM = createField(DSL.name("calories_aim"), SQLDataType.DECIMAL(9, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
 
     /**
      * The column <code>pfcc.users.profile_configured</code>.
@@ -95,6 +95,16 @@ public class Users extends TableImpl<UsersRecord> {
      * The column <code>pfcc.users.email_confirmed</code>.
      */
     public final TableField<UsersRecord, Byte> EMAIL_CONFIRMED = createField(DSL.name("email_confirmed"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>pfcc.users.password</code>.
+     */
+    public final TableField<UsersRecord, String> PASSWORD = createField(DSL.name("password"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
+     * The column <code>pfcc.users.roles</code>.
+     */
+    public final TableField<UsersRecord, String> ROLES = createField(DSL.name("roles"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, null);
@@ -184,18 +194,18 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row9 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, Byte> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row11<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, Byte, String, String> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function9<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super Byte, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -203,7 +213,7 @@ public class Users extends TableImpl<UsersRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super Byte, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -16,18 +18,23 @@ import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 public class UserEntity {
     private static final String ID_GENERATOR_NAME = "user_id_gen";
     private static final String ID_SEQ_NAME = "user_id_seq";
+
     @Id
     @GeneratedValue(generator = ID_GENERATOR_NAME)
     @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME)
     @Column(name = "id", nullable = false)
     private Long id;
+
     @Column(name = "email")
     private String email;
-    @Column(name = "password",nullable = false)
+
+    @Column(name = "password", nullable = false)
     private String password;
+
     @Column(name = "preferred_language")
     @Enumerated(value = EnumType.STRING)
     private Language preferredLanguage;
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "protein", column = @Column(name = "protein_aim")),
@@ -36,8 +43,14 @@ public class UserEntity {
             @AttributeOverride(name = "calories", column = @Column(name = "calories_aim"))
     })
     private Pfcc aims;
+
     @Column(name = "profile_configured")
     private Boolean profileConfigured;
+
     @Column(name = "email_confirmed")
     private Boolean emailConfirmed;
+
+    @Column(name = "roles")
+    @Convert(converter = UserRoleConverter.class)
+    private List<UserRole> roles;
 }
