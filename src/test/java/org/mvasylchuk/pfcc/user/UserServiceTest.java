@@ -7,11 +7,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mvasylchuk.pfcc.common.dto.PfccDto;
+import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 import org.mvasylchuk.pfcc.platform.email.EmailService;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.user.dto.AccessTokenDto;
+import org.mvasylchuk.pfcc.user.dto.CompleteProfileRequestDto;
 import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.math.BigDecimal;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -40,4 +45,5 @@ class UserServiceTest {
         Assertions.assertEquals("token", result.getToken());
 
     }
+
 }

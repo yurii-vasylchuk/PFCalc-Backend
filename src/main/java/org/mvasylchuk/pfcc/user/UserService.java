@@ -1,11 +1,15 @@
 package org.mvasylchuk.pfcc.user;
 
 import lombok.RequiredArgsConstructor;
+import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 import org.mvasylchuk.pfcc.platform.email.EmailService;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.user.dto.AccessTokenDto;
+import org.mvasylchuk.pfcc.user.dto.CompleteProfileRequestDto;
 import org.mvasylchuk.pfcc.user.dto.LoginRequestDto;
 import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +31,31 @@ public class UserService {
         return new AccessTokenDto(token);
     }
 
+    public void completeProfile(CompleteProfileRequestDto request) {
+        UserEntity user = currentUser();
+        Pfcc aims = new Pfcc(request.getAims().getProtein(),
+                request.getAims().getFat(),
+                request.getAims().getCarbohydrates(),
+                request.getAims().getCalories());
+        user.setAims(aims);
+        user.setProfileConfigured(true);
+        userRepository.save(user);
+    }
+
     private void sendEmail(RegisterRequestDto request) {
         emailService.sendEmail(request.getEmail(), """
                 Вітаємо Вас на платформі, підтвердіть свій e-mail
                 """);
+    }
+
+    public UserEntity currentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return null;
+        } else {
+            return userRepository.getByEmail((String) auth.getPrincipal());
+
+        }
     }
 
     public AccessTokenDto login(LoginRequestDto request) {

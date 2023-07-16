@@ -24,4 +24,5 @@ public class Pfcc {
     @Column(name = "calories")
     private BigDecimal calories;
 
+
 }
