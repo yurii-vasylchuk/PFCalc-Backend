@@ -1,0 +1,3 @@
+ALTER TABLE meal
+    ADD COLUMN owner_id BIGINT NOT NULL,
+    ADD CONSTRAINT FOREIGN KEY (owner_id) REFERENCES users (id);

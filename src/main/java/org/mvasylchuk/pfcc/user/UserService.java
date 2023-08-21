@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 import org.mvasylchuk.pfcc.platform.email.EmailService;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
-import org.mvasylchuk.pfcc.user.dto.AccessTokenDto;
-import org.mvasylchuk.pfcc.user.dto.CompleteProfileRequestDto;
-import org.mvasylchuk.pfcc.user.dto.LoginRequestDto;
-import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
+import org.mvasylchuk.pfcc.user.dto.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +15,7 @@ import java.util.Collections;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private final UserJooqRepository userJooqRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final JwtService jwtService;
@@ -53,7 +51,7 @@ public class UserService {
         if (auth == null || !auth.isAuthenticated()) {
             return null;
         } else {
-            return userRepository.getByEmail((String) auth.getPrincipal());
+            return userRepository.getByEmail(auth.getName());
 
         }
     }
@@ -69,5 +67,15 @@ public class UserService {
         String token = jwtService.generateToken(user);
 
         return new AccessTokenDto(token);
+    }
+
+    public ProfileDto getUserProfile() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return null;
+        } else {
+            return userJooqRepository.getProfileByUserEmail(auth.getName());
+
+        }
     }
 }

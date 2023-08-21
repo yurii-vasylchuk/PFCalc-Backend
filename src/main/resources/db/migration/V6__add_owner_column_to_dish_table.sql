@@ -1,0 +1,3 @@
+ALTER TABLE dish
+    ADD COLUMN owner_id BIGINT,
+    ADD CONSTRAINT FOREIGN KEY (owner_id) REFERENCES users (id);

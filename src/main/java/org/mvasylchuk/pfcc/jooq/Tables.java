@@ -4,6 +4,10 @@
 package org.mvasylchuk.pfcc.jooq;
 
 
+import org.mvasylchuk.pfcc.jooq.tables.Dish;
+import org.mvasylchuk.pfcc.jooq.tables.Food;
+import org.mvasylchuk.pfcc.jooq.tables.Ingredients;
+import org.mvasylchuk.pfcc.jooq.tables.Meal;
 import org.mvasylchuk.pfcc.jooq.tables.Users;
 
 
@@ -12,6 +16,26 @@ import org.mvasylchuk.pfcc.jooq.tables.Users;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>pfcc.dish</code>.
+     */
+    public static final Dish DISH = Dish.DISH;
+
+    /**
+     * The table <code>pfcc.food</code>.
+     */
+    public static final Food FOOD = Food.FOOD;
+
+    /**
+     * The table <code>pfcc.ingredients</code>.
+     */
+    public static final Ingredients INGREDIENTS = Ingredients.INGREDIENTS;
+
+    /**
+     * The table <code>pfcc.meal</code>.
+     */
+    public static final Meal MEAL = Meal.MEAL;
 
     /**
      * The table <code>pfcc.users</code>.
