@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.domain.dto.FoodDto;
 import org.mvasylchuk.pfcc.domain.service.FoodService;
 import org.mvasylchuk.pfcc.platform.dto.BaseResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/food")
@@ -18,5 +15,10 @@ public class FoodController {
     @PostMapping("/add")
     public BaseResponse<FoodDto> add(@RequestBody FoodDto request) {
         return BaseResponse.success(foodService.addFood(request));
+    }
+    @DeleteMapping("/{id}")
+    public BaseResponse<Void> remove(@PathVariable Long id){
+        foodService.remove(id);
+        return BaseResponse.success(null);
     }
 }

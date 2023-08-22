@@ -51,4 +51,10 @@ public class FoodService {
                 true,
                 request.getIngredients());
     }
+
+    public void remove(Long id) {
+        FoodEntity food = foodRepository.findById(id).orElseThrow();
+        food.setIsDeleted(true);
+        foodRepository.save(food);
+    }
 }
