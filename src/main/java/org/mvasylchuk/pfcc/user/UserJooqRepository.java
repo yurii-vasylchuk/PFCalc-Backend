@@ -5,6 +5,7 @@ import org.jooq.DSLContext;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
 import org.mvasylchuk.pfcc.domain.dto.DishDto;
 import org.mvasylchuk.pfcc.domain.dto.MealDto;
+import org.mvasylchuk.pfcc.jooq.tables.records.UsersRecord;
 import org.mvasylchuk.pfcc.user.dto.ProfileDto;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +24,6 @@ public class UserJooqRepository {
     private final DSLContext ctx;
 
     public ProfileDto getProfileByUserEmail(String email) {
-
-
         ProfileDto profileDto = ctx.select(USERS.EMAIL, USERS.PROFILE_CONFIGURED, USERS.CALORIES_AIM, USERS.CARBOHYDRATES_AIM, USERS.FAT_AIM, USERS.PROTEIN_AIM, USERS.PREFERRED_LANGUAGE).from(USERS).where(USERS.EMAIL.eq(email)).fetchOne((dbuser) -> {
             ProfileDto result = new ProfileDto();
             result.setProfileConfigured(dbuser.get(USERS.PROFILE_CONFIGURED, Boolean.class));

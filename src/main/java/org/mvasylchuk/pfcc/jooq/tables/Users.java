@@ -11,11 +11,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function11;
+import org.jooq.Function12;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row11;
+import org.jooq.Row12;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -106,6 +106,11 @@ public class Users extends TableImpl<UsersRecord> {
      */
     public final TableField<UsersRecord, String> ROLES = createField(DSL.name("roles"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
+    /**
+     * The column <code>pfcc.users.name</code>.
+     */
+    public final TableField<UsersRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -194,18 +199,18 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row12 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, Byte, String, String> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row12<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, Byte, String, String, String> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super Byte, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function12<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super Byte, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -213,7 +218,7 @@ public class Users extends TableImpl<UsersRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super Byte, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function12<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super Byte, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

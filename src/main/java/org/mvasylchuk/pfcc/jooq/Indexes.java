@@ -12,6 +12,7 @@ import org.mvasylchuk.pfcc.jooq.tables.Dish;
 import org.mvasylchuk.pfcc.jooq.tables.Food;
 import org.mvasylchuk.pfcc.jooq.tables.Ingredients;
 import org.mvasylchuk.pfcc.jooq.tables.Meal;
+import org.mvasylchuk.pfcc.jooq.tables.SecurityTokens;
 
 
 /**
@@ -31,4 +32,5 @@ public class Indexes {
     public static final Index DISH_OWNER_ID = Internal.createIndex(DSL.name("owner_id"), Dish.DISH, new OrderField[] { Dish.DISH.OWNER_ID }, false);
     public static final Index FOOD_OWNER_ID = Internal.createIndex(DSL.name("owner_id"), Food.FOOD, new OrderField[] { Food.FOOD.OWNER_ID }, false);
     public static final Index MEAL_OWNER_ID = Internal.createIndex(DSL.name("owner_id"), Meal.MEAL, new OrderField[] { Meal.MEAL.OWNER_ID }, false);
+    public static final Index SECURITY_TOKENS_USER_ID = Internal.createIndex(DSL.name("user_id"), SecurityTokens.SECURITY_TOKENS, new OrderField[] { SecurityTokens.SECURITY_TOKENS.USER_ID }, false);
 }

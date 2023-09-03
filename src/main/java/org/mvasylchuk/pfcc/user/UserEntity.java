@@ -32,6 +32,9 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "preferred_language")
     @Enumerated(value = EnumType.STRING)
     private Language preferredLanguage;

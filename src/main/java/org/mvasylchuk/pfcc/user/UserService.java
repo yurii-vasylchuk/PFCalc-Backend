@@ -2,6 +2,8 @@ package org.mvasylchuk.pfcc.user;
 
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
+import org.mvasylchuk.pfcc.securitytoken.SecurityTokenType;
+import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
 import org.mvasylchuk.pfcc.platform.email.EmailService;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.user.dto.*;
@@ -18,13 +20,26 @@ public class UserService {
     private final UserJooqRepository userJooqRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final SecurityTokenService securityTokenService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     public AccessTokenDto register(RegisterRequestDto request) {
-        UserEntity user = new UserEntity(null, request.getEmail(), passwordEncoder.encode(request.getPassword()), Language.UA, null, false, false, Collections.emptyList());
+        UserEntity user = new UserEntity(null,
+                request.getEmail(),
+                passwordEncoder.encode(request.getPassword()),
+                request.getName(),
+                request.getPreferredLanguage(),
+                null,
+                false,
+                false,
+                Collections.emptyList());
+
         userRepository.save(user);
-        sendEmail(request);
+
+        String emailVerificationToken = securityTokenService.generateSecurityToken(user, SecurityTokenType.EMAIL_VERIFICATION);
+        emailService.sendEmailVerificationMail(request.getEmail(), request.getName(), emailVerificationToken, request.getPreferredLanguage());
+
         String token = jwtService.generateToken(user);
         return new AccessTokenDto(token);
     }
@@ -40,10 +55,13 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private void sendEmail(RegisterRequestDto request) {
-        emailService.sendEmail(request.getEmail(), """
-                Вітаємо Вас на платформі, підтвердіть свій e-mail
-                """);
+    public AccessTokenDto verifyAccount(String verificationToken) {
+        UserEntity user = securityTokenService.validate(verificationToken, SecurityTokenType.EMAIL_VERIFICATION);
+
+        emailService.sendEmailVerifiedConfirmation(user.getEmail(), user.getPreferredLanguage());
+
+        String token = jwtService.generateToken(user);
+        return new AccessTokenDto(token);
     }
 
     public UserEntity currentUser() {
@@ -58,7 +76,7 @@ public class UserService {
 
     public AccessTokenDto login(LoginRequestDto request) {
         UserEntity user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                                        .orElseThrow();
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Password doesn't match");

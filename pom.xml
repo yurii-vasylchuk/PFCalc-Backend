@@ -20,7 +20,23 @@
         <jooq.generator.db.password>password</jooq.generator.db.password>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>2.20.120</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sesv2</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -153,7 +169,7 @@
                         <configuration>
                             <source>
                                 import org.testcontainers.containers.MariaDBContainer
-                                db = new MariaDBContainer("mariadb:10.5")
+                                db = new MariaDBContainer("mariadb:10.7.8")
                                     .withUsername("${jooq.generator.db.user}")
                                     .withDatabaseName("pfcc")
                                     .withPassword("${jooq.generator.db.password}")

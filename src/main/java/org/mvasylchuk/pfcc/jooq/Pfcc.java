@@ -15,6 +15,7 @@ import org.mvasylchuk.pfcc.jooq.tables.Dish;
 import org.mvasylchuk.pfcc.jooq.tables.Food;
 import org.mvasylchuk.pfcc.jooq.tables.Ingredients;
 import org.mvasylchuk.pfcc.jooq.tables.Meal;
+import org.mvasylchuk.pfcc.jooq.tables.SecurityTokens;
 import org.mvasylchuk.pfcc.jooq.tables.Users;
 
 
@@ -52,6 +53,11 @@ public class Pfcc extends SchemaImpl {
     public final Meal MEAL = Meal.MEAL;
 
     /**
+     * The table <code>pfcc.security_tokens</code>.
+     */
+    public final SecurityTokens SECURITY_TOKENS = SecurityTokens.SECURITY_TOKENS;
+
+    /**
      * The table <code>pfcc.users</code>.
      */
     public final Users USERS = Users.USERS;
@@ -75,6 +81,7 @@ public class Pfcc extends SchemaImpl {
             Sequences.DISH_ID_SEQ,
             Sequences.FOOD_ID_SEQ,
             Sequences.MEAL_ID_SEQ,
+            Sequences.SECURITY_TOKEN_ID_SEQ,
             Sequences.USER_ID_SEQ
         );
     }
@@ -86,6 +93,7 @@ public class Pfcc extends SchemaImpl {
             Food.FOOD,
             Ingredients.INGREDIENTS,
             Meal.MEAL,
+            SecurityTokens.SECURITY_TOKENS,
             Users.USERS
         );
     }

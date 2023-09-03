@@ -17,12 +17,12 @@ class UserJooqRepositoryTest {
     void getProfile() {
         ProfileDto result = repository.getProfileByUserEmail("yva@test.com");
         Assertions.assertThat(result.getDishes())
-                .hasSize(2)
-                .anyMatch(dishDto -> dishDto.getId().equals(1L))
-                .anyMatch(dishDto -> dishDto.getId().equals(3L));
+                  .hasSize(2)
+                  .anyMatch(dishDto -> dishDto.getId().equals(1L))
+                  .anyMatch(dishDto -> dishDto.getId().equals(3L));
         Assertions.assertThat(result.getMeals())
-                .hasSize(2)
-                .anyMatch(mealDto -> mealDto.getId().equals(1L))
-                .anyMatch(mealDto -> mealDto.getId().equals(5L));
+                  .hasSize(2)
+                  .anyMatch(mealDto -> mealDto.getId().equals(1L))
+                  .anyMatch(mealDto -> mealDto.getId().equals(5L));
     }
 }

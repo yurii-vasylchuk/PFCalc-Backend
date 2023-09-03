@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Підтвердіть email-адресу</title>
+  <style>
+    * {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: #333333;
+      background-color: #DDDDDD;
+    }
+    .table {
+      width: 100%;
+      border-spacing: 0;
+    }
+    .main-column {
+      box-sizing: border-box;
+      width: 500px;
+      background-color: #FFFFFF;
+      padding: 30px;
+      border-radius: 10px;
+    }
+    .main-column * {
+      background-color: #FFFFFF;
+    }
+    .main-column a {
+      color: #2373f3;
+    }
+    .verify-email-btn {
+      text-decoration: none;
+      padding: 10px 80px;
+      cursor: pointer;
+      color: #ffffff !important;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #5ec25e;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+<table class="table">
+  <tr class="heading">
+    <td>&nbsp;</td>
+    <td class="main-column">
+      <h1>Підтвердіть свою email-адресу</h1>
+      <p>Вітаю {{name}}! Ви отримали цього листатому тому, що ваша email-адреса була використана для реєстрації на сайті <a href="pfcalc.org.ua">pfcalc.org.ua</a>. Будь ласка, натисніть на кнопку нижче щоб підтвердити володіння цим акаунтом</p>
+      <p>В разі, якщо ви не реєструвалися на нашому сайті, просто проігноруйте цей лист</p>
+      <br>
+      <a class="verify-email-btn" href="https://pfcalc.org.ua/verify?token={{token}}">
+        VERIFY YOUR EMAIL
+      </a>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>
