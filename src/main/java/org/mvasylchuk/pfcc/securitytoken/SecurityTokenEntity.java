@@ -23,7 +23,7 @@ public class SecurityTokenEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "code", unique = true, nullable = false, updatable = false, length = 255)
+    @Column(name = "code", unique = true, nullable = false, updatable = false)
     private String code;
 
     @ManyToOne

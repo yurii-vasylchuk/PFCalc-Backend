@@ -1,6 +1,5 @@
 package org.mvasylchuk.pfcc.platform.configuration.model;
 
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;

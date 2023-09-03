@@ -189,16 +189,17 @@
                         </goals>
                         <configuration>
                             <source>
-                                import org.testcontainers.utility.ResourceReaper
+                                import com.github.dockerjava.api.DockerClient
+                                import org.testcontainers.DockerClientFactory
 
                                 containerId = "${testcontainer.containerid}"
                                 imageName = "${testcontainer.imageName}"
 
                                 println("Stopping testcontainer $containerId - $imageName")
 
-                                ResourceReaper
-                                        .instance()
-                                        .stopAndRemoveContainer(containerId, imageName)
+                                DockerClient client = DockerClientFactory.instance().client()
+                                client.startContainerCmd(containerId)
+                                client.removeImageCmd(imageName)
                             </source>
                         </configuration>
                     </execution>
