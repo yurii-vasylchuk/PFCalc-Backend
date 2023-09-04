@@ -20,7 +20,23 @@
         <jooq.generator.db.password>password</jooq.generator.db.password>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>2.20.120</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sesv2</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -153,7 +169,7 @@
                         <configuration>
                             <source>
                                 import org.testcontainers.containers.MariaDBContainer
-                                db = new MariaDBContainer("mariadb:10.5")
+                                db = new MariaDBContainer("mariadb:10.7.8")
                                     .withUsername("${jooq.generator.db.user}")
                                     .withDatabaseName("pfcc")
                                     .withPassword("${jooq.generator.db.password}")
@@ -173,16 +189,17 @@
                         </goals>
                         <configuration>
                             <source>
-                                import org.testcontainers.utility.ResourceReaper
+                                import com.github.dockerjava.api.DockerClient
+                                import org.testcontainers.DockerClientFactory
 
                                 containerId = "${testcontainer.containerid}"
                                 imageName = "${testcontainer.imageName}"
 
                                 println("Stopping testcontainer $containerId - $imageName")
 
-                                ResourceReaper
-                                        .instance()
-                                        .stopAndRemoveContainer(containerId, imageName)
+                                DockerClient client = DockerClientFactory.instance().client()
+                                client.startContainerCmd(containerId)
+                                client.removeImageCmd(imageName)
                             </source>
                         </configuration>
                     </execution>

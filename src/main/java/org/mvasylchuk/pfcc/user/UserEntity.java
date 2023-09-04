@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -31,6 +30,9 @@ public class UserEntity {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "preferred_language")
     @Enumerated(value = EnumType.STRING)

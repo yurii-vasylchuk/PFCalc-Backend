@@ -8,6 +8,7 @@ import org.mvasylchuk.pfcc.jooq.tables.Dish;
 import org.mvasylchuk.pfcc.jooq.tables.Food;
 import org.mvasylchuk.pfcc.jooq.tables.Ingredients;
 import org.mvasylchuk.pfcc.jooq.tables.Meal;
+import org.mvasylchuk.pfcc.jooq.tables.SecurityTokens;
 import org.mvasylchuk.pfcc.jooq.tables.Users;
 
 
@@ -36,6 +37,11 @@ public class Tables {
      * The table <code>pfcc.meal</code>.
      */
     public static final Meal MEAL = Meal.MEAL;
+
+    /**
+     * The table <code>pfcc.security_tokens</code>.
+     */
+    public static final SecurityTokens SECURITY_TOKENS = SecurityTokens.SECURITY_TOKENS;
 
     /**
      * The table <code>pfcc.users</code>.

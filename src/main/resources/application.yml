@@ -5,7 +5,8 @@ spring:
     hibernate:
       ddl-auto: validate
 pfcc:
-  security:
-    jwt:
-      key-algorithm: RSA
-      expiration: 20m
+  mail:
+    do-not-reply-address: 'dont-reply@pfcalc.org.ua'
+  jwt:
+    key-algorithm: RSA
+    expiration: 20m

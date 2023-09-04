@@ -2,7 +2,7 @@ package org.mvasylchuk.pfcc.platform.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.mvasylchuk.pfcc.platform.configuration.model.PfccSecurityConfigurationProperties;
+import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import java.security.spec.X509EncodedKeySpec;
 public class JwtSigningKeyConfiguration {
     public static final String JWT_SIGNING_KEY_BEAN_NAME = "JWT_SIGNING_RSA_KEY";
 
-    private final PfccSecurityConfigurationProperties conf;
+    private final PfccAppConfigurationProperties conf;
 
     @Bean
     @Qualifier(JWT_SIGNING_KEY_BEAN_NAME)

@@ -1,8 +1,9 @@
-INSERT INTO users (id, email, preferred_language, protein_aim,
+INSERT INTO users (id, email, name, preferred_language, protein_aim,
                    fat_aim, carbohydrates_aim, calories_aim,
                    profile_configured, email_confirmed, password)
 VALUES (1,
         'yva@test.com',
+        'yva1',
         'UA',
         120,
         50,
@@ -13,6 +14,7 @@ VALUES (1,
         'pass'),
        (2,
         '2@test.com',
+        'yva2',
         'UA',
         130,
         60,
@@ -28,4 +30,3 @@ INSERT INTO food
 VALUES (1, 'food1', 'INGREDIENT', 30, 50, 90, 200, FALSE, 1, 'description', FALSE),
        (2, 'food2', 'INGREDIENT', 40, 60, 40, 250, FALSE, 2, 'description', FALSE),
        (3, 'food3', 'RECIPE', 35, 55, 95, 250, FALSE, 1, 'description', FALSE);
-

@@ -1,20 +1,30 @@
 package org.mvasylchuk.pfcc.platform.email;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.mvasylchuk.pfcc.platform.configuration.annotations.ConditionalOnMailDisabled;
+import org.mvasylchuk.pfcc.user.Language;
 import org.springframework.stereotype.Component;
 
 
 @Component
 @Slf4j
-@ConditionalOnProperty(name = "pfcc.mail.enabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnMailDisabled
 public class FakeEmailService implements EmailService {
+
     @Override
-    public void sendEmail(String recipient, String body) {
+    public void sendEmailVerificationMail(String address, String name, String token, Language preferredLanguage) {
         log.info("""
-                sending email to {}
-                body:
-                {}
-                """, recipient, body);
+                sending email verification to {}<{}>
+                token: {}
+                preferred language: {}
+                """, address, name, token, preferredLanguage.name());
+    }
+
+    @Override
+    public void sendEmailVerifiedConfirmation(String email, Language preferredLanguage) {
+        log.info("""
+                sending email verification confirmation to {}
+                preferred language: {}
+                """, email, preferredLanguage);
     }
 }

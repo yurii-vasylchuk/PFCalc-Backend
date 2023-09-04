@@ -1,7 +1,7 @@
 package org.mvasylchuk.pfcc.platform.configuration;
 
 import io.jsonwebtoken.Jwts;
-import org.mvasylchuk.pfcc.platform.configuration.model.PfccSecurityConfigurationProperties;
+import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
 import org.mvasylchuk.pfcc.platform.jwt.PfccAuthToken;
 import org.mvasylchuk.pfcc.platform.jwt.PfccJwtHandler;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
 
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
-    private final PfccSecurityConfigurationProperties configuration;
+    private final PfccAppConfigurationProperties configuration;
     private final KeyPair rsaKey;
     private final PfccJwtHandler pfccHandler;
 
-    public JwtAuthenticationProvider(PfccSecurityConfigurationProperties configuration,
+    public JwtAuthenticationProvider(PfccAppConfigurationProperties configuration,
                                      @Qualifier(SecurityConfiguration.JWT_SIGNING_KEY_BEAN_NAME) KeyPair rsaKey) {
         this.configuration = configuration;
         this.rsaKey = rsaKey;
