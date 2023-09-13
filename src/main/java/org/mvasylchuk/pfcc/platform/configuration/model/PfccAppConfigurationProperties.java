@@ -15,6 +15,7 @@ public class PfccAppConfigurationProperties {
     public final PfccAppConfigurationProperties.PfccJwtConfiguration jwt;
     public final PfccAppConfigurationProperties.AwsConfiguration aws;
     public final List<String> cors;
+    public final Boolean exposeException;
 
     @RequiredArgsConstructor
     public static class MailConfiguration {

@@ -19,3 +19,4 @@ pfcc:
     expiration: 10d
   mail:
     enabled: true
+  expose-exception: true

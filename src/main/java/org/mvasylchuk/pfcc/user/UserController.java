@@ -1,7 +1,8 @@
 package org.mvasylchuk.pfcc.user;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.mvasylchuk.pfcc.platform.dto.BaseResponse;
+import org.mvasylchuk.pfcc.common.dto.BaseResponse;
 import org.mvasylchuk.pfcc.user.dto.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public BaseResponse<AccessTokenDto> register(@RequestBody RegisterRequestDto request) {
+    public BaseResponse<AccessTokenDto> register(@RequestBody @Valid RegisterRequestDto request) {
         return BaseResponse.success(userService.register(request));
     }
 
