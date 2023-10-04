@@ -28,8 +28,8 @@ public class FoodJooqRepository {
         foodList.setTotalElements(totalElements);
 
         List<FoodDto> foods = ctx.selectFrom(FOOD)
-                .where (FOOD.OWNER_ID.equal(userId))
-                .or (FOOD.IS_HIDDEN.isFalse())
+                .where(FOOD.OWNER_ID.equal(userId))
+                .or(FOOD.IS_HIDDEN.isFalse())
                 .limit(DSL.inline(size))
                 .offset(DSL.inline(size * page))
 
@@ -49,5 +49,26 @@ public class FoodJooqRepository {
         foodList.setData(foods);
 
         return foodList;
+    }
+
+    public FoodDto getFoodById(Long id, Long userId) {
+        FoodDto result = ctx.selectFrom(FOOD)
+                .where(FOOD.ID.equal(id)
+                        .and(FOOD.OWNER_ID.equal(userId)
+                        .or(FOOD.IS_HIDDEN.isFalse())))
+                .fetchOne(dbFood-> {
+                    FoodDto food = new FoodDto();
+                    food.setId(dbFood.get(FOOD.ID));
+                    food.setName(dbFood.get(FOOD.NAME));
+                    food.setFoodType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
+                    food.setPfcc(new Pfcc(dbFood.get(FOOD.PROTEIN), dbFood.get(FOOD.FAT), dbFood.get(FOOD.CARBOHYDRATES), dbFood.get(FOOD.CALORIES)));
+                    food.setDescription(dbFood.get(FOOD.DESCRIPTION));
+                    food.setIsHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
+                    food.setOwnedByUser(Objects.equals(dbFood.get(FOOD.OWNER_ID), userId));
+
+                    return food;
+                });
+
+        return result;
     }
 }

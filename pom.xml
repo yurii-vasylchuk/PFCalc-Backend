@@ -16,8 +16,8 @@
 
     <properties>
         <java.version>17</java.version>
-        <jooq.generator.db.user>jooq</jooq.generator.db.user>
-        <jooq.generator.db.password>password</jooq.generator.db.password>
+        <jooq.generator.db.user>root</jooq.generator.db.user>
+        <jooq.generator.db.password></jooq.generator.db.password>
     </properties>
 
     <dependencyManagement>

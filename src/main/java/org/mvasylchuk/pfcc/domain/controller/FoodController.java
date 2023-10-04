@@ -22,8 +22,13 @@ public class FoodController {
         foodService.remove(id);
         return BaseResponse.success(null);
     }
-    @GetMapping("/{page}/{pageSize}")
-    public Page<FoodDto> get(@PathVariable Integer page, @PathVariable Integer pageSize){
+    @GetMapping("/")
+    public Page<FoodDto> get(@RequestParam(name = "page",required = false, defaultValue = "0") Integer page,
+                             @RequestParam(name = "pageSize",required = false,defaultValue = "10") Integer pageSize){
         return foodService.getFoodList(page,pageSize);
+    }
+    @GetMapping("/{id}")
+    public  BaseResponse<FoodDto> getById(@PathVariable Long id){
+        return BaseResponse.success(foodService.getFoodById(id));
     }
 }

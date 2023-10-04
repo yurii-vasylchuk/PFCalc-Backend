@@ -18,25 +18,25 @@ public class Sequences {
     /**
      * The sequence <code>pfcc.dish_id_seq</code>
      */
-    public static final Sequence<Long> DISH_ID_SEQ = Internal.createSequence("dish_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, 50L, null, null, false, null);
+    public static final Sequence<Long> DISH_ID_SEQ = Internal.createSequence("dish_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, null, null, null, false, null);
 
     /**
      * The sequence <code>pfcc.food_id_seq</code>
      */
-    public static final Sequence<Long> FOOD_ID_SEQ = Internal.createSequence("food_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, 50L, null, null, false, null);
+    public static final Sequence<Long> FOOD_ID_SEQ = Internal.createSequence("food_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, null, null, null, false, null);
 
     /**
      * The sequence <code>pfcc.meal_id_seq</code>
      */
-    public static final Sequence<Long> MEAL_ID_SEQ = Internal.createSequence("meal_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, 50L, null, null, false, null);
+    public static final Sequence<Long> MEAL_ID_SEQ = Internal.createSequence("meal_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, null, null, null, false, null);
 
     /**
      * The sequence <code>pfcc.security_token_id_seq</code>
      */
-    public static final Sequence<Long> SECURITY_TOKEN_ID_SEQ = Internal.createSequence("security_token_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, 50L, null, null, false, null);
+    public static final Sequence<Long> SECURITY_TOKEN_ID_SEQ = Internal.createSequence("security_token_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, null, null, null, false, null);
 
     /**
      * The sequence <code>pfcc.user_id_seq</code>
      */
-    public static final Sequence<Long> USER_ID_SEQ = Internal.createSequence("user_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, 50L, null, null, false, null);
+    public static final Sequence<Long> USER_ID_SEQ = Internal.createSequence("user_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, null, null, null, false, null);
 }

@@ -21,7 +21,7 @@ public class FoodEntity {
     private static final String ID_SEQ_NAME = "food_id_seq";
     @Id
     @GeneratedValue(generator = ID_GENERATOR_NAME)
-    @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME)
+    @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME, allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

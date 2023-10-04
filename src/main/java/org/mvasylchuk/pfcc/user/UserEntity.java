@@ -21,7 +21,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(generator = ID_GENERATOR_NAME)
-    @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME)
+    @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME, allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

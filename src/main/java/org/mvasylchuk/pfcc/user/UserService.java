@@ -2,17 +2,17 @@ package org.mvasylchuk.pfcc.user;
 
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
-import org.mvasylchuk.pfcc.securitytoken.SecurityTokenType;
-import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
 import org.mvasylchuk.pfcc.platform.email.EmailService;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
+import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
+import org.mvasylchuk.pfcc.securitytoken.SecurityTokenType;
 import org.mvasylchuk.pfcc.user.dto.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class UserService {
                 null,
                 false,
                 false,
-                Collections.emptyList());
+                List.of(UserRole.USER));
 
         userRepository.save(user);
 
@@ -55,8 +55,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public AccessTokenDto verifyAccount(String verificationToken) {
-        UserEntity user = securityTokenService.validate(verificationToken, SecurityTokenType.EMAIL_VERIFICATION);
+    public AccessTokenDto verifyAccount(VerifyAccountRequestDto verificationRequest) {
+        UserEntity user = securityTokenService.validate(verificationRequest.token(),
+                SecurityTokenType.EMAIL_VERIFICATION);
+        user.setEmailConfirmed(true);
+        userRepository.save(user);
 
         emailService.sendEmailVerifiedConfirmation(user.getEmail(), user.getPreferredLanguage());
 
@@ -76,7 +79,7 @@ public class UserService {
 
     public AccessTokenDto login(LoginRequestDto request) {
         UserEntity user = userRepository.findByEmail(request.getEmail())
-                                        .orElseThrow();
+                .orElseThrow();
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Password doesn't match");

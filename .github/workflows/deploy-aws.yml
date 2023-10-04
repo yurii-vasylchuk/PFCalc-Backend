@@ -27,5 +27,5 @@ jobs:
           mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
           ssh-keyscan ${{ secrets.AWS_HOST }} >> ~/.ssh/known_hosts
           scp -i key.pem target/pfcc-*.jar ec2-user@${{ secrets.AWS_HOST }}:/home/ec2-user/pfcc.jar
-          ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} fuser -k 8080/tcp
+          ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} fuser -k 8080/tcp | true
           ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} java -jar pfcc.jar & disown

@@ -54,7 +54,7 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>pfcc.users.id</code>.
      */
-    public final TableField<UsersRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<UsersRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("nextval(`pfcc`.`user_id_seq`)"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>pfcc.users.email</code>.
@@ -104,7 +104,7 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>pfcc.users.roles</code>.
      */
-    public final TableField<UsersRecord, String> ROLES = createField(DSL.name("roles"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<UsersRecord, String> ROLES = createField(DSL.name("roles"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>pfcc.users.name</code>.

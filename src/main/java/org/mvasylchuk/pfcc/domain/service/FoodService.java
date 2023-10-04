@@ -65,4 +65,9 @@ public class FoodService {
         Long userId = userService.currentUser().getId();
         return foodJooqRepository.getFoodList(page, size, userId);
     }
+
+    public FoodDto getFoodById(Long id) {
+        Long userId = userService.currentUser().getId();
+        return foodJooqRepository.getFoodById(id, userId);
+    }
 }

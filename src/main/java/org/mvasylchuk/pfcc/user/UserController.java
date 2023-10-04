@@ -35,4 +35,9 @@ public class UserController {
 
         return BaseResponse.success(userService.getUserProfile());
     }
+
+    @PostMapping("/verify")
+    public BaseResponse<AccessTokenDto> verifyAccount(@RequestBody VerifyAccountRequestDto request) {
+        return BaseResponse.success(userService.verifyAccount(request));
+    }
 }
