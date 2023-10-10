@@ -5,6 +5,7 @@ package org.mvasylchuk.pfcc.jooq;
 
 
 import org.mvasylchuk.pfcc.jooq.tables.Dish;
+import org.mvasylchuk.pfcc.jooq.tables.DishIngredients;
 import org.mvasylchuk.pfcc.jooq.tables.Food;
 import org.mvasylchuk.pfcc.jooq.tables.Ingredients;
 import org.mvasylchuk.pfcc.jooq.tables.Meal;
@@ -22,6 +23,11 @@ public class Tables {
      * The table <code>pfcc.dish</code>.
      */
     public static final Dish DISH = Dish.DISH;
+
+    /**
+     * The table <code>pfcc.dish_ingredients</code>.
+     */
+    public static final DishIngredients DISH_INGREDIENTS = DishIngredients.DISH_INGREDIENTS;
 
     /**
      * The table <code>pfcc.food</code>.

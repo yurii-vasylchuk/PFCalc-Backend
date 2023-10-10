@@ -33,20 +33,27 @@ public class UserJooqRepository {
             result.setEmail(dbuser.get(USERS.EMAIL));
             return result;
         });
+        if (profileDto == null) {
+            return null;
+        }
 
-
-        List<DishDto> dishesList = ctx.select(DISH.asterisk()).from(DISH).join(USERS).on(DISH.OWNER_ID.eq(USERS.ID)).where(USERS.EMAIL.eq(email).and(DISH.DELETED.isFalse())).fetch((dbdish) -> {
-            DishDto result = new DishDto();
-            result.setId(dbdish.get(DISH.ID));
-            result.setCookedOn(dbdish.get(DISH.COOKED_ON));
-            result.setPfcc(new PfccDto(dbdish.get(DISH.PROTEIN), dbdish.get(DISH.FAT), dbdish.get(DISH.CARBOHYDRATES), dbdish.get(DISH.CALORIES)));
-            result.setName(dbdish.get(DISH.NAME));
-            result.setFoodId(dbdish.get(DISH.FOOD_ID));
-            result.setRecipeWeight(dbdish.get(DISH.RECIPE_WEIGHT));
-            result.setCookedWeight(dbdish.get(DISH.COOKED_WEIGHT));
-            result.setDeleted(dbdish.get(DISH.DELETED, Boolean.class));
-            return result;
-        });
+        List<DishDto> dishesList = ctx.select(DISH.asterisk())
+                .from(DISH)
+                .join(USERS).on(DISH.OWNER_ID.eq(USERS.ID))
+                .where(USERS.EMAIL.eq(email)
+                        .and(DISH.DELETED.isFalse()))
+                .fetch((dbdish) -> {
+                    DishDto result = new DishDto();
+                    result.setId(dbdish.get(DISH.ID));
+                    result.setCookedOn(dbdish.get(DISH.COOKED_ON));
+                    result.setPfcc(new PfccDto(dbdish.get(DISH.PROTEIN), dbdish.get(DISH.FAT), dbdish.get(DISH.CARBOHYDRATES), dbdish.get(DISH.CALORIES)));
+                    result.setName(dbdish.get(DISH.NAME));
+                    result.setFoodId(dbdish.get(DISH.FOOD_ID));
+                    result.setRecipeWeight(dbdish.get(DISH.RECIPE_WEIGHT));
+                    result.setCookedWeight(dbdish.get(DISH.COOKED_WEIGHT));
+                    result.setDeleted(dbdish.get(DISH.DELETED, Boolean.class));
+                    return result;
+                });
 
         profileDto.setDishes(dishesList);
 
@@ -56,15 +63,15 @@ public class UserJooqRepository {
                 .where(USERS.EMAIL.eq(email)
                         .and(MEAL.EATEN_ON.greaterOrEqual(startOfTheWeek))
                 ).fetch(m -> {
-            MealDto result = new MealDto();
-            result.setId(m.get(MEAL.ID));
-            result.setEatenOn(m.get(MEAL.EATEN_ON));
-            result.setWeight(m.get(MEAL.WEIGHT));
-            result.setPfcc(new PfccDto(m.get(MEAL.PROTEIN), m.get(MEAL.FAT), m.get(MEAL.CARBOHYDRATES), m.get(MEAL.CALORIES)));
-            result.setFoodId(m.get(MEAL.FOOD_ID));
-            result.setDishId(m.get(MEAL.DISH_ID));
-            return result;
-        });
+                    MealDto result = new MealDto();
+                    result.setId(m.get(MEAL.ID));
+                    result.setEatenOn(m.get(MEAL.EATEN_ON));
+                    result.setWeight(m.get(MEAL.WEIGHT));
+                    result.setPfcc(new PfccDto(m.get(MEAL.PROTEIN), m.get(MEAL.FAT), m.get(MEAL.CARBOHYDRATES), m.get(MEAL.CALORIES)));
+                    result.setFoodId(m.get(MEAL.FOOD_ID));
+                    result.setDishId(m.get(MEAL.DISH_ID));
+                    return result;
+                });
 
         profileDto.setMeals(mealList);
 

@@ -45,15 +45,39 @@ public class SesEmailService implements EmailService {
                     .fromEmailAddress(conf.mail.doNotReplyAddress)
             );
         } catch (JsonProcessingException e) {
-            log.error("Can't prepare data for email verification template", e);
+            log.error("Can't prepare data for 'email verification' template", e);
             throw new RuntimeException(e);
         } catch (SesV2Exception e) {
-            log.error("Failed to send email verification email", e);
+            log.error("Failed to send 'email verification' email", e);
         }
     }
 
     @Override
-    public void sendEmailVerifiedConfirmation(String email, Language preferredLanguage) {
-        //TODO: Implement
+    public void sendEmailVerifiedConfirmation(String email, String name, Language preferredLanguage) {
+        String emailTemplateName = switch (preferredLanguage) {
+            case UA -> "EmailVerifiedUA";
+            case EN -> "EmailVerifiedEN";
+        };
+
+        try {
+            final String templateData = objectMapper.writeValueAsString(
+                    Map.of("name", name)
+            );
+
+            client.sendEmail(emailBuilder -> emailBuilder
+                    .destination(destBuilder -> destBuilder
+                            .toAddresses(email))
+                    .content(contentBuilder -> contentBuilder
+                            .template(templateBuilder -> templateBuilder
+                                    .templateName(emailTemplateName)
+                                    .templateData(templateData)))
+                    .fromEmailAddress(conf.mail.doNotReplyAddress)
+            );
+        } catch (JsonProcessingException e) {
+            log.error("Can't prepare data for 'email verified' template", e);
+            throw new RuntimeException(e);
+        } catch (SesV2Exception e) {
+            log.error("Failed to send 'email verified' email", e);
+        }
     }
 }

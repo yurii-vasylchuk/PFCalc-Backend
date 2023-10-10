@@ -21,10 +21,10 @@ public class FakeEmailService implements EmailService {
     }
 
     @Override
-    public void sendEmailVerifiedConfirmation(String email, Language preferredLanguage) {
+    public void sendEmailVerifiedConfirmation(String email, String name, Language preferredLanguage) {
         log.info("""
-                sending email verification confirmation to {}
+                sending email verification confirmation to {}<{}>
                 preferred language: {}
-                """, email, preferredLanguage);
+                """, email, name, preferredLanguage);
     }
 }

@@ -8,9 +8,11 @@ import org.mvasylchuk.pfcc.domain.entity.FoodType;
 import org.mvasylchuk.pfcc.domain.entity.IngredientEntity;
 import org.mvasylchuk.pfcc.domain.repository.FoodJooqRepository;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
+import org.mvasylchuk.pfcc.domain.repository.IngredientRepository;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,29 +21,38 @@ public class FoodService {
     private final UserService userService;
     private final FoodRepository foodRepository;
     private final FoodJooqRepository foodJooqRepository;
+    private final IngredientRepository ingredientRepository;
 
     public FoodDto addFood(FoodDto request) {
-        List<IngredientEntity> ingredientEntities = null;
-        if (request.getFoodType() == FoodType.RECIPE) {
-            ingredientEntities = request.getIngredients().stream().map(ingredientDto -> {
-                IngredientEntity ingredientEntity = new IngredientEntity();
-
-                ingredientEntity.setIngredientWeight(ingredientDto.getIngredientWeight());
-                ingredientEntity.setIngredient(foodRepository.getReferenceById(ingredientDto.getId()));
-
-                return ingredientEntity;
-            }).toList();
-        }
+        List<IngredientEntity> ingredientEntities = new ArrayList<>();
 
         FoodEntity food = new FoodEntity(null,
                 request.getName(),
                 request.getFoodType(),
-                request.getPfcc(),
+                request.getPfcc().toPfcc(),
                 request.getIsHidden(),
                 userService.currentUser(),
                 request.getDescription(),
                 false,
                 ingredientEntities);
+
+        if (request.getFoodType() == FoodType.RECIPE) {
+            ingredientEntities = request.getIngredients()
+                    .stream()
+                    .map(ingredientDto -> {
+                        IngredientEntity ingredientEntity = new IngredientEntity();
+
+                        ingredientEntity.setIngredientWeight(ingredientDto.getIngredientWeight());
+
+                        ingredientEntity.setIngredient(foodRepository.getReferenceById(ingredientDto.getId()));
+
+                        ingredientEntity.setRecipe(food);
+
+                        return ingredientEntity;
+                    }).toList();
+
+            food.setIngredients(ingredientEntities);
+        }
 
         foodRepository.save(food);
 

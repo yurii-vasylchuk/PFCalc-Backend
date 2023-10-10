@@ -13,15 +13,15 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "ingredients")
-public class IngredientEntity {
+@Table(name = "dish_ingredients")
+public class DishIngredientEntity {
     @EmbeddedId
-    private IngredientPrimaryKey id = new IngredientPrimaryKey();
+    private DishIngredientPrimaryKey id = new DishIngredientPrimaryKey();
 
     @ManyToOne
-    @MapsId("recipeId")
-    @JoinColumn(name = "recipe_id")
-    private FoodEntity recipe;
+    @MapsId("dishId")
+    @JoinColumn(name = "dish_id")
+    private DishEntity dish;
 
     @ManyToOne
     @MapsId("ingredientId")

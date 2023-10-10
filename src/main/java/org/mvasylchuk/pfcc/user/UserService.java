@@ -61,7 +61,7 @@ public class UserService {
         user.setEmailConfirmed(true);
         userRepository.save(user);
 
-        emailService.sendEmailVerifiedConfirmation(user.getEmail(), user.getPreferredLanguage());
+        emailService.sendEmailVerifiedConfirmation(user.getEmail(), user.getName(), user.getPreferredLanguage());
 
         String token = jwtService.generateToken(user);
         return new AccessTokenDto(token);

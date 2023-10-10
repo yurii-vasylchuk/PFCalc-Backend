@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mvasylchuk.pfcc.common.jpa.Pfcc;
+import org.mvasylchuk.pfcc.common.dto.PfccDto;
 import org.mvasylchuk.pfcc.domain.entity.FoodType;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class FoodDto {
     private long id;
     private String name;
     private String description;
-    private Pfcc pfcc;
+    private PfccDto pfcc;
     private Boolean isHidden;
     private FoodType foodType;
     private Boolean ownedByUser;

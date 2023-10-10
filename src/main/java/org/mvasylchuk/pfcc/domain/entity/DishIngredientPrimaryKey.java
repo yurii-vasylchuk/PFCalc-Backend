@@ -10,9 +10,9 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Setter
-public class IngredientPrimaryKey implements Serializable {
-    @Column(name = "recipe_id")
-    private Long recipeId;
+public class DishIngredientPrimaryKey implements Serializable {
+    @Column(name = "dish_id")
+    private Long dishId;
 
     @Column(name = "ingredient_id")
     private Long ingredientId;

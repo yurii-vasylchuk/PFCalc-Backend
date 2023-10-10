@@ -32,7 +32,6 @@ public class UserController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public BaseResponse<ProfileDto> getProfile(){
-
         return BaseResponse.success(userService.getUserProfile());
     }
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
+import org.mvasylchuk.pfcc.domain.entity.DishEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,4 +25,11 @@ public class DishDto {
     private BigDecimal recipeWeight;
     private BigDecimal cookedWeight;
     private Boolean deleted;
+
+    public static DishDto fromDishEntity(DishEntity dishEntity)
+    {
+        return new DishDto(dishEntity.getId(), dishEntity.getCookedOn(),PfccDto.fromPfcc(dishEntity.getPfcc()), dishEntity.getName(),
+                dishEntity.getFood().getId(),dishEntity.getIngredients().stream().map(i->IngredientDto.fromIngredientEntity(i)).toList(),dishEntity.getRecipeWeight(),dishEntity.getCookedWeight(),
+                dishEntity.getDeleted());
+    }
 }

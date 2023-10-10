@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mvasylchuk.pfcc.domain.dto.FoodDto;
 
 import java.util.List;
 
@@ -17,6 +16,6 @@ public class Page<T> {
     private Integer pageSize;
     private Integer totalPages;
     private Integer totalElements;
-    private List<FoodDto> data;
+    private List<T> data;
 
 }

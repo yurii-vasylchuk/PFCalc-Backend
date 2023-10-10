@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Вашу email-адресу підтверджено!</title>
+  <style>
+    * {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: #333333;
+      background-color: #DDDDDD;
+    }
+    .table {
+      width: 100%;
+      border-spacing: 0;
+    }
+    .main-column {
+      box-sizing: border-box;
+      width: 500px;
+      background-color: #FFFFFF;
+      padding: 30px;
+      border-radius: 10px;
+    }
+    .main-column * {
+      background-color: #FFFFFF;
+    }
+    .main-column a {
+      color: #2373f3;
+    }
+    .verify-email-btn {
+      text-decoration: none;
+      padding: 10px 80px;
+      cursor: pointer;
+      color: #ffffff !important;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #5ec25e;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+<table class="table">
+  <tr class="heading">
+    <td>&nbsp;</td>
+    <td class="main-column">
+      <h1>Вашу email-адресу підтверджено!</h1>
+      <p>Дякуємо за реєстрацію {{name}}!</p>
+      <br>
+      <a class="verify-email-btn" href="https://pfcalc.org.ua/verify?token={{token}}">
+        Перейти на сайт
+      </a>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

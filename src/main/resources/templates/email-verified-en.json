@@ -1,0 +1,6 @@
+{
+  "name": "EmailVerifiedEN",
+  "subject": "Email verified",
+  "html": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Your email had been verified!</title><style>*{font-family:Arial,sans-serif;text-align:center;color:#333;background-color:#ddd}.table{width:100%;border-spacing:0}.main-column{box-sizing:border-box;width:500px;background-color:#fff;padding:30px;border-radius:10px}.main-column *{background-color:#fff}.main-column a{color:#2373f3}.verify-email-btn{text-decoration:none;padding:10px 80px;cursor:pointer;color:#fff!important;font-size:20px;font-weight:700;background-color:#5ec25e;border-radius:10px}</style></head><body><table class=\"table\"><tr class=\"heading\"><td>&nbsp;</td><td class=\"main-column\"><h1>Your email had been verified!</h1><p>Thank you for registration {{name}}!</p><br><a class=\"verify-email-btn\" href=\"https://pfcalc.org.ua/verify?token={{token}}\">Go to website</a></td><td>&nbsp;</td></tr></table></body></html>",
+  "text": "Thank you for registration {{name}}!\n\nYour email had been verified "
+}

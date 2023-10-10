@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
+import org.mvasylchuk.pfcc.user.UserEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -51,6 +53,13 @@ public class DishEntity {
 
     @Column(name = "deleted")
     private Boolean deleted;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private UserEntity owner;
+
+    @OneToMany(mappedBy = "dish", cascade = {CascadeType.ALL})
+    List<DishIngredientEntity> ingredients;
 
 
 }
