@@ -17,8 +17,7 @@
     <properties>
         <java.version>17</java.version>
         <jooq.generator.db.user>root</jooq.generator.db.user>
-        <jooq.generator.db.password></jooq.generator.db.password>
-        <cucumber.version>7.14.0</cucumber.version>
+        <jooq.generator.db.password/>
     </properties>
 
     <dependencyManagement>
@@ -27,6 +26,20 @@
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
                 <version>2.20.120</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>5.8.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>7.0.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -119,6 +132,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mariadb</artifactId>
         </dependency>
@@ -141,26 +159,18 @@
         </dependency>
 
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-suite</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
-            <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -194,10 +204,11 @@
                         <configuration>
                             <source>
                                 import org.testcontainers.containers.MariaDBContainer
+
                                 db = new MariaDBContainer("mariadb:10.7.8")
-                                    .withUsername("${jooq.generator.db.user}")
-                                    .withDatabaseName("pfcc")
-                                    .withPassword("${jooq.generator.db.password}")
+                                        .withUsername("${jooq.generator.db.user}")
+                                        .withDatabaseName("pfcc")
+                                        .withPassword("${jooq.generator.db.password}")
 
                                 db.start()
                                 project.properties.setProperty('jooq.generator.db.url', db.getJdbcUrl())
