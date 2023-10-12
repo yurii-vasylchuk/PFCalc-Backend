@@ -28,8 +28,12 @@ public class DishDto {
 
     public static DishDto fromDishEntity(DishEntity dishEntity)
     {
-        return new DishDto(dishEntity.getId(), dishEntity.getCookedOn(),PfccDto.fromPfcc(dishEntity.getPfcc()), dishEntity.getName(),
-                dishEntity.getFood().getId(),dishEntity.getIngredients().stream().map(i->IngredientDto.fromIngredientEntity(i)).toList(),dishEntity.getRecipeWeight(),dishEntity.getCookedWeight(),
+        return new DishDto(dishEntity.getId(), dishEntity.getCookedOn(),
+                PfccDto.fromPfcc(dishEntity.getPfcc()),
+                dishEntity.getName(),
+                dishEntity.getFood().getId(),
+                dishEntity.getIngredients().stream().map(IngredientDto::fromIngredientEntity).toList(),
+                dishEntity.getRecipeWeight(),dishEntity.getCookedWeight(),
                 dishEntity.getDeleted());
     }
 }

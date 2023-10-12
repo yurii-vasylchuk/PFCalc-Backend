@@ -9,7 +9,6 @@ import org.mvasylchuk.pfcc.domain.dto.DishDto;
 import org.mvasylchuk.pfcc.domain.dto.IngredientDto;
 import org.mvasylchuk.pfcc.domain.entity.DishEntity;
 import org.mvasylchuk.pfcc.domain.entity.DishIngredientEntity;
-import org.mvasylchuk.pfcc.domain.repository.DishIngredientRepository;
 import org.mvasylchuk.pfcc.domain.repository.DishJooqRepository;
 import org.mvasylchuk.pfcc.domain.repository.DishRepository;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
@@ -25,7 +24,6 @@ import java.util.List;
 public class DishService {
     private final DishRepository dishRepository;
     private final FoodRepository foodRepository;
-    private final DishIngredientRepository dishIngredientRepository;
     private final UserService userService;
     private final DishJooqRepository jooqRepository;
 
@@ -87,6 +85,7 @@ public class DishService {
         return DishDto.fromDishEntity(dish);
     }
 
+
     private PfccDto getFullPfcc(IngredientDto ingredient) {
         PfccDto ingredientPfcc = ingredient.getPfcc();
         BigDecimal multiplier = ingredient.getIngredientWeight().divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
@@ -96,17 +95,19 @@ public class DishService {
                 ingredientPfcc.getCalories().multiply(multiplier));
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void remove(Long id) {
         DishEntity dish = dishRepository.findById(id).orElseThrow();
         dish.setDeleted(true);
         dishRepository.save(dish);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public DishDto getDishById(Long id) {
         Long userId = userService.currentUser().getId();
         return jooqRepository.getDishById(id, userId);
     }
-
+    @Transactional(rollbackOn = Exception.class)
     public Page<DishDto> getDishList(Integer page, Integer pageSize) {
         Long userId = userService.currentUser().getId();
         return jooqRepository.getDishList(page, pageSize, userId);

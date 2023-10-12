@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
+import org.mvasylchuk.pfcc.user.UserEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,6 +44,10 @@ public class MealEntity {
     @ManyToOne
     @JoinColumn(name = "dish_id")
     private DishEntity dish;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private UserEntity user;
 
     @Column(name = "eaten_on")
     private LocalDateTime eatenOn;
