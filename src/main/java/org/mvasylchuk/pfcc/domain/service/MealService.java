@@ -31,29 +31,20 @@ public class MealService {
     @Transactional(rollbackOn = Exception.class)
     public MealDto addMeal(MealDto request) {
         BigDecimal coef = request.getWeight().divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
-        Pfcc pfcc = new Pfcc();
+        Pfcc pfcc;
 
         if (request.getDishId() != null) {
             DishEntity dish = dishRepository.findById(request.getDishId()).orElseThrow();
-            pfcc.setProtein(dish.getPfcc().getProtein());
-            pfcc.setFat(dish.getPfcc().getFat());
-            pfcc.setCarbohydrates(dish.getPfcc().getCarbohydrates());
-            pfcc.setCalories(dish.getPfcc().getCalories());
+            pfcc = dish.getPfcc().clone();
 
         } else {
             FoodEntity food = foodRepository.findById(request.getFoodId()).orElseThrow();
-            pfcc.setProtein(food.getPfcc().getProtein());
-            pfcc.setFat(food.getPfcc().getFat());
-            pfcc.setCarbohydrates(food.getPfcc().getCarbohydrates());
-            pfcc.setCalories(food.getPfcc().getCalories());
+            pfcc = food.getPfcc().clone();
         }
 
         MealEntity meal = new MealEntity();
         meal.setWeight(request.getWeight());
-        meal.setPfcc(new Pfcc(pfcc.getProtein().multiply(coef),
-                pfcc.getFat().multiply(coef),
-                pfcc.getCalories().multiply(coef),
-                pfcc.getCalories().multiply(coef)));
+        meal.setPfcc(pfcc.multiply(coef));
         if (request.getDishId() != null) {
             DishEntity dish = dishRepository.findById(request.getDishId()).orElseThrow();
             meal.setFood(dish.getFood());

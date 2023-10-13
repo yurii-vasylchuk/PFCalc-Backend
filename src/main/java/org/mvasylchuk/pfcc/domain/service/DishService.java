@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.DishRequest;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
+import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 import org.mvasylchuk.pfcc.domain.dto.DishDto;
 import org.mvasylchuk.pfcc.domain.dto.IngredientDto;
 import org.mvasylchuk.pfcc.domain.entity.DishEntity;
@@ -29,38 +30,23 @@ public class DishService {
 
     @Transactional(rollbackOn = Exception.class)
     public DishDto addDish(DishRequest request) {
+        BigDecimal coefByCookedWeight = BigDecimal.valueOf(100).divide(request.getCookedWeight(), RoundingMode.HALF_UP);
+
         List<IngredientDto> ingredients = request.getIngredients();
 
-        List<PfccDto> pfccList = ingredients.stream()
+        List<Pfcc> pfccList = ingredients.stream()
                 .map(this::getFullPfcc)
+                .map(PfccDto::toPfcc)
                 .toList();
+
+        Pfcc completePfcc = Pfcc.combine(pfccList).multiply(coefByCookedWeight);
 
         BigDecimal recipeWeight = ingredients.stream()
                 .map(IngredientDto::getIngredientWeight)
                 .reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
 
-        BigDecimal protein = pfccList.stream()
-                .map(PfccDto::getProtein)
-                .reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0))
-                .multiply(BigDecimal.valueOf(100))
-                .divide(request.getCookedWeight(), RoundingMode.HALF_UP);
-        BigDecimal fat = pfccList.stream()
-                .map(PfccDto::getFat)
-                .reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0))
-                .multiply(BigDecimal.valueOf(100))
-                .divide(request.getCookedWeight(), RoundingMode.HALF_UP);
-        BigDecimal carbohydrate = pfccList.stream()
-                .map(PfccDto::getCarbohydrates)
-                .reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0))
-                .multiply(BigDecimal.valueOf(100))
-                .divide(request.getCookedWeight(), RoundingMode.HALF_UP);
-        BigDecimal calories = pfccList.stream()
-                .map(PfccDto::getCalories)
-                .reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0))
-                .multiply(BigDecimal.valueOf(100))
-                .divide(request.getCookedWeight(), RoundingMode.HALF_UP);
+        PfccDto pfcc = PfccDto.fromPfcc(completePfcc);
 
-        PfccDto pfcc = new PfccDto(protein, fat, carbohydrate, calories);
         DishEntity dish = new DishEntity();
         dish.setName(request.getName());
         dish.setFood(foodRepository.getReferenceById(request.getFoodId()));
@@ -107,6 +93,7 @@ public class DishService {
         Long userId = userService.currentUser().getId();
         return jooqRepository.getDishById(id, userId);
     }
+
     @Transactional(rollbackOn = Exception.class)
     public Page<DishDto> getDishList(Integer page, Integer pageSize) {
         Long userId = userService.currentUser().getId();
