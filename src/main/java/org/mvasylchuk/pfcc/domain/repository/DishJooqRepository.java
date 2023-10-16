@@ -61,8 +61,8 @@ public class DishJooqRepository {
                             dbIngredient.get(FOOD.FAT),
                             dbIngredient.get(FOOD.CARBOHYDRATES),
                             dbIngredient.get(FOOD.CALORIES)));
-                    ingredient.setIsHidden(dbIngredient.get(FOOD.IS_HIDDEN, boolean.class));
-                    ingredient.setFoodType(FoodType.valueOf(dbIngredient.get(FOOD.TYPE)));
+                    ingredient.setHidden(dbIngredient.get(FOOD.IS_HIDDEN, boolean.class));
+                    ingredient.setType(FoodType.valueOf(dbIngredient.get(FOOD.TYPE)));
                     ingredient.setOwnedByUser(dbIngredient.get(FOOD.OWNER_ID).equals(userId));
                     ingredient.setIngredientWeight(dbIngredient.get(DISH_INGREDIENTS.INGREDIENT_WEIGHT));
 

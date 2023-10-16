@@ -37,10 +37,10 @@ public class FoodJooqRepository {
                     FoodDto food = new FoodDto();
                     food.setId(dbFood.get(FOOD.ID));
                     food.setName(dbFood.get(FOOD.NAME));
-                    food.setFoodType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
+                    food.setType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
                     food.setPfcc(new PfccDto(dbFood.get(FOOD.PROTEIN), dbFood.get(FOOD.FAT), dbFood.get(FOOD.CARBOHYDRATES), dbFood.get(FOOD.CALORIES)));
                     food.setDescription(dbFood.get(FOOD.DESCRIPTION));
-                    food.setIsHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
+                    food.setHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
                     food.setOwnedByUser(Objects.equals(dbFood.get(FOOD.OWNER_ID), userId));
 
                     return food;
@@ -61,10 +61,10 @@ public class FoodJooqRepository {
                     FoodDto food = new FoodDto();
                     food.setId(dbFood.get(FOOD.ID));
                     food.setName(dbFood.get(FOOD.NAME));
-                    food.setFoodType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
+                    food.setType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
                     food.setPfcc(new PfccDto(dbFood.get(FOOD.PROTEIN), dbFood.get(FOOD.FAT), dbFood.get(FOOD.CARBOHYDRATES), dbFood.get(FOOD.CALORIES)));
                     food.setDescription(dbFood.get(FOOD.DESCRIPTION));
-                    food.setIsHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
+                    food.setHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
                     food.setOwnedByUser(Objects.equals(dbFood.get(FOOD.OWNER_ID), userId));
 
                     return food;

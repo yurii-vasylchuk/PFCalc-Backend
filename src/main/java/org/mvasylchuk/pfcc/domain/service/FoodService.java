@@ -29,15 +29,15 @@ public class FoodService {
 
         FoodEntity food = new FoodEntity(null,
                 request.getName(),
-                request.getFoodType(),
+                request.getType(),
                 request.getPfcc().toPfcc(),
-                request.getIsHidden(),
+                request.isHidden(),
                 userService.currentUser(),
                 request.getDescription(),
                 false,
                 ingredientEntities);
 
-        if (request.getFoodType() == FoodType.RECIPE) {
+        if (request.getType() == FoodType.RECIPE) {
             ingredientEntities = request.getIngredients()
                     .stream()
                     .map(ingredientDto -> {
@@ -61,7 +61,7 @@ public class FoodService {
                 food.getName(),
                 food.getDescription(),
                 request.getPfcc(),
-                request.getIsHidden(),
+                request.isHidden(),
                 food.getType(),
                 true,
                 request.getIngredients());
