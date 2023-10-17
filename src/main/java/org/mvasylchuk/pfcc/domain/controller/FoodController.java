@@ -27,9 +27,9 @@ public class FoodController {
     }
     @GetMapping("/")
     @PreAuthorize("isAuthenticated()")
-    public Page<FoodDto> get(@RequestParam(name = "page",required = false, defaultValue = "0") Integer page,
+    public BaseResponse<Page<FoodDto>> get(@RequestParam(name = "page",required = false, defaultValue = "0") Integer page,
                              @RequestParam(name = "pageSize",required = false,defaultValue = "10") Integer pageSize){
-        return foodService.getFoodList(page,pageSize);
+        return BaseResponse.success(foodService.getFoodList(page,pageSize));
     }
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
