@@ -16,7 +16,7 @@ public class DishController {
     private final DishService dishService;
 
 
-    @PostMapping("/")
+    @PostMapping()
     @PreAuthorize("isAuthenticated()")
     public BaseResponse<DishDto> add(@RequestBody DishRequest request) {
         return BaseResponse.success(dishService.addDish(request));
@@ -35,7 +35,7 @@ public class DishController {
         return BaseResponse.success(dishService.getDishById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping()
     @PreAuthorize("isAuthenticated()")
     public Page<DishDto> get(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
                              @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {

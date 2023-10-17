@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class MealController {
     private final MealService mealService;
 
-    @PostMapping("/")
+    @PostMapping()
     @PreAuthorize("isAuthenticated()")
     public BaseResponse<MealDto> add(@RequestBody MealDto request) {
         return BaseResponse.success(mealService.addMeal(request));
@@ -36,7 +36,7 @@ public class MealController {
         return BaseResponse.success(mealService.getById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping()
     @PreAuthorize("isAuthenticated()")
     public BaseResponse <Page<MealDto>> get(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
                              @RequestParam(name = "pageSize", required = false) Integer pageSize,

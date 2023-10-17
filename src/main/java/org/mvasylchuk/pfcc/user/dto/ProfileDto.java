@@ -17,10 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ProfileDto {
     private String email;
+    private String name;
     private Language preferredLanguage;
     private PfccDto aims;
     private Boolean profileConfigured;
     private List<DishDto> dishes;
     private List<MealDto> meals;
-
 }
