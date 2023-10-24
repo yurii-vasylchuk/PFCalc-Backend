@@ -12,5 +12,4 @@ import org.mvasylchuk.pfcc.common.dto.PfccDto;
 @NoArgsConstructor
 public class CompleteProfileRequestDto {
     private PfccDto aims;
-
 }

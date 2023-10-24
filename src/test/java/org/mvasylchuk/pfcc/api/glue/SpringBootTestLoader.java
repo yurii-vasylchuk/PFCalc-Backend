@@ -9,6 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.MariaDBContainer;
 
@@ -45,6 +48,12 @@ public class SpringBootTestLoader {
             hikariConfig.setUsername(mariaDBContainer.getUsername());
             hikariConfig.setPassword(mariaDBContainer.getPassword());
             return new HikariDataSource(hikariConfig);
+        }
+
+        @Bean
+        @Primary
+        public PasswordEncoder passwordEncoder() {
+            return NoOpPasswordEncoder.getInstance();
         }
     }
 
