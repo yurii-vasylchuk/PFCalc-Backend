@@ -2,9 +2,7 @@ package org.mvasylchuk.pfcc.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -12,6 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class DishIngredientPrimaryKey implements Serializable {
     @Column(name = "dish_id")
     private Long dishId;

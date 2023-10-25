@@ -2,7 +2,6 @@ package org.mvasylchuk.pfcc.domain.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.BaseResponse;
-import org.mvasylchuk.pfcc.common.dto.DishRequest;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.domain.dto.DishDto;
 import org.mvasylchuk.pfcc.domain.service.DishService;
@@ -18,7 +17,7 @@ public class DishController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<DishDto> add(@RequestBody DishRequest request) {
+    public BaseResponse<DishDto> add(@RequestBody DishDto request) {
         return BaseResponse.success(dishService.addDish(request));
     }
 

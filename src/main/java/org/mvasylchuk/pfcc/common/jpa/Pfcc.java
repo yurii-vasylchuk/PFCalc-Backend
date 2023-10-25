@@ -35,10 +35,10 @@ public class Pfcc {
 
     public Pfcc divide(BigDecimal divisor) {
 
-        return new Pfcc(this.protein.divide(divisor, RoundingMode.HALF_UP),
-                this.fat.divide(divisor, RoundingMode.HALF_UP),
-                this.carbohydrates.divide(divisor, RoundingMode.HALF_UP),
-                this.calories.divide(divisor, RoundingMode.HALF_UP));
+        return new Pfcc(this.protein.divide(divisor, 4, RoundingMode.HALF_UP),
+                this.fat.divide(divisor, 4, RoundingMode.HALF_UP),
+                this.carbohydrates.divide(divisor, 4, RoundingMode.HALF_UP),
+                this.calories.divide(divisor, 4, RoundingMode.HALF_UP));
     }
 
     public static Pfcc combine(Iterable<Pfcc> inputs) {
@@ -51,8 +51,5 @@ public class Pfcc {
                                 pfcc.calories.add(pfcc2.calories)
                         ));
 
-    }
-    public Pfcc clone (){
-        return new Pfcc(this.protein,this.fat,this.carbohydrates,this.calories);
     }
 }
