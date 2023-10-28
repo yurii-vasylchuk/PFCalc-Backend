@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.domain.dto.FoodDto;
 import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
+import org.mvasylchuk.pfcc.domain.entity.FoodType;
 import org.mvasylchuk.pfcc.domain.repository.FoodJooqRepository;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
 import org.mvasylchuk.pfcc.user.UserService;
@@ -36,9 +37,9 @@ public class FoodService {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public Page<FoodDto> getFoodList(Integer page, Integer size) {
+    public Page<FoodDto> getFoodList(Integer page, Integer size, String name, FoodType type) {
         Long userId = userService.currentUser().getId();
-        return foodJooqRepository.getFoodList(page, size, userId);
+        return foodJooqRepository.getFoodList(page, size, name, type, userId);
     }
 
     @Transactional(rollbackOn = Exception.class)

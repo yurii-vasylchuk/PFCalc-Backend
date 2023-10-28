@@ -16,7 +16,7 @@ class FoodJooqRepositoryTest {
     @Test
     @FlywayTest(locationsForMigrate = "migration/FoodJooqRepositoryTest")
     void getFoodList() {
-        Page<FoodDto> result = repository.getFoodList(0,2,1L);
+        Page<FoodDto> result = repository.getFoodList(0,2,null,null,1L);
         Assertions.assertThat(result.getTotalPages().equals(1));
         Assertions.assertThat(result.getTotalElements().equals(2));
 
