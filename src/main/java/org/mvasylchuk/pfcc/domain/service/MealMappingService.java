@@ -3,7 +3,7 @@ package org.mvasylchuk.pfcc.domain.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
-import org.mvasylchuk.pfcc.domain.dto.MealDto;
+import org.mvasylchuk.pfcc.domain.dto.CommandMealDto;
 import org.mvasylchuk.pfcc.domain.entity.DishEntity;
 import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
 import org.mvasylchuk.pfcc.domain.entity.MealEntity;
@@ -25,7 +25,7 @@ public class MealMappingService {
     private final PfccMappingService pfccMappingService;
 
     @Transactional(rollbackOn = Exception.class)
-    public MealEntity toEntity(MealDto mealDto) {
+    public MealEntity toEntity(CommandMealDto mealDto) {
         MealEntity result = new MealEntity();
 
         BigDecimal coef = mealDto.getWeight().divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
@@ -58,8 +58,8 @@ public class MealMappingService {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public MealDto toDto(MealEntity mealEntity) {
-            return new MealDto(mealEntity.getId(),
+    public CommandMealDto toDto(MealEntity mealEntity) {
+            return new CommandMealDto(mealEntity.getId(),
                     mealEntity.getEatenOn(),
                     mealEntity.getWeight(),
                     pfccMappingService.toPfccDto(mealEntity.getPfcc()),

@@ -3,7 +3,8 @@ package org.mvasylchuk.pfcc.domain.controller;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.BaseResponse;
 import org.mvasylchuk.pfcc.common.dto.Page;
-import org.mvasylchuk.pfcc.domain.dto.MealDto;
+import org.mvasylchuk.pfcc.domain.dto.CommandMealDto;
+import org.mvasylchuk.pfcc.domain.dto.QueryMealDto;
 import org.mvasylchuk.pfcc.domain.service.MealService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class MealController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<MealDto> add(@RequestBody MealDto request) {
+    public BaseResponse<CommandMealDto> add(@RequestBody CommandMealDto request) {
         return BaseResponse.success(mealService.addMeal(request));
     }
 
@@ -32,16 +33,16 @@ public class MealController {
 
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<MealDto> getById(@PathVariable Long id) {
+    public BaseResponse<QueryMealDto> getById(@PathVariable Long id) {
         return BaseResponse.success(mealService.getById(id));
     }
 
     @GetMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse <Page<MealDto>> get(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-                             @RequestParam(name = "pageSize", required = false) Integer pageSize,
-                             @RequestParam(name = "from", required = false) LocalDateTime from,
-                             @RequestParam(name = "to", required = false) LocalDateTime to) {
+    public BaseResponse <Page<QueryMealDto>> get(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+                                                         @RequestParam(name = "pageSize", required = false) Integer pageSize,
+                                                         @RequestParam(name = "from", required = false) LocalDateTime from,
+                                                         @RequestParam(name = "to", required = false) LocalDateTime to) {
 
         return BaseResponse.success(mealService.getMealList(page, pageSize, from, to));
     }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MealDto {
+public class CommandMealDto {
     private Long id;
     private LocalDateTime eatenOn;
     private BigDecimal weight;

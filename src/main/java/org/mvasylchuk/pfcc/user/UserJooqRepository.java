@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
 import org.mvasylchuk.pfcc.domain.dto.DishDto;
-import org.mvasylchuk.pfcc.domain.dto.MealDto;
+import org.mvasylchuk.pfcc.domain.dto.CommandMealDto;
 import org.mvasylchuk.pfcc.user.dto.ProfileDto;
 import org.springframework.stereotype.Component;
 
@@ -75,11 +75,11 @@ public class UserJooqRepository {
                                                     .withSecond(0)
                                                     .withNano(0);
 
-        List<MealDto> mealList = ctx.select(MEAL.asterisk()).from(MEAL).join(USERS).on(MEAL.OWNER_ID.eq(USERS.ID))
+        List<CommandMealDto> mealList = ctx.select(MEAL.asterisk()).from(MEAL).join(USERS).on(MEAL.OWNER_ID.eq(USERS.ID))
                                     .where(USERS.EMAIL.eq(email)
                                                       .and(MEAL.EATEN_ON.greaterOrEqual(startOfTheWeek))
                                     ).fetch(m -> {
-                    MealDto result = new MealDto();
+                    CommandMealDto result = new CommandMealDto();
                     result.setId(m.get(MEAL.ID));
                     result.setEatenOn(m.get(MEAL.EATEN_ON));
                     result.setWeight(m.get(MEAL.WEIGHT));
