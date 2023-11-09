@@ -12,13 +12,12 @@ import org.mvasylchuk.pfcc.api.constants.Constants.TestUser;
 import org.mvasylchuk.pfcc.api.utils.JwtTokenMatcherFactory;
 import org.mvasylchuk.pfcc.jooq.tables.records.SecurityTokensRecord;
 import org.mvasylchuk.pfcc.jooq.tables.records.UsersRecord;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mvasylchuk.pfcc.api.constants.Constants.Db.FALSE;
 import static org.mvasylchuk.pfcc.api.constants.Constants.Db.TRUE;
 import static org.mvasylchuk.pfcc.jooq.Tables.SECURITY_TOKENS;
@@ -27,10 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RequiredArgsConstructor
 @Slf4j
-public class AuthenticationScenario {
+public class AuthenticationSteps {
     private final ApiTestContext ctx;
     private final DSLContext db;
-    private final MockMvc api;
     private final JwtTokenMatcherFactory jwtMatcherFactory;
 
     @Then("User {string} has been saved in db")

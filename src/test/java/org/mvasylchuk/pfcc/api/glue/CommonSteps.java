@@ -9,12 +9,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.jooq.Table;
 import org.mvasylchuk.pfcc.api.ApiTestContext;
 import org.mvasylchuk.pfcc.api.constants.Constants.TestUser;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
@@ -23,9 +25,9 @@ import static org.mvasylchuk.pfcc.api.constants.Constants.Db.FALSE;
 import static org.mvasylchuk.pfcc.api.constants.Constants.Db.TRUE;
 import static org.mvasylchuk.pfcc.jooq.Tables.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Slf4j
 @RequiredArgsConstructor
 public class CommonSteps {
     private final MockMvc api;
@@ -52,7 +54,9 @@ public class CommonSteps {
             req.header("Authorization", "Bearer %s".formatted(ctx.getAuthToken()));
         }
 
-        ctx.setPerformedCalls(api.perform(req));
+        ResultActions performedCall = api.perform(req);
+        log.info("Received response:\n{}", performedCall.andReturn().getResponse().getContentAsString());
+        ctx.setPerformedCalls(performedCall);
     }
 
     @Then("I should receive successful response")
@@ -83,6 +87,12 @@ public class CommonSteps {
     @And("prepared request with following data:")
     public void preparedRequestWithFollowingData(String request) {
         ctx.setRequest(request);
+    }
+
+    @Then("Response should look like:")
+    public void iGetResponseLike(String responseStr) throws Exception {
+        ctx.getPerformedCalls()
+           .andExpect(content().json(responseStr, false));
     }
 
     @And("I'm authenticated as '{}'")

@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FoodDto {
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private PfccDto pfcc;

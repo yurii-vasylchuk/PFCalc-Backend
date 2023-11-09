@@ -41,6 +41,7 @@ Feature: Authentication
 
   Scenario: Complete profile
     Given User 'alpha' with uncompleted profile is present
+    And I'm authenticated as 'alpha'
     And prepared request with following data:
       """json
       {
@@ -52,7 +53,6 @@ Feature: Authentication
         }
       }
       """
-    And I'm authenticated as 'alpha'
     When I'm sending POST request to "/api/user/profile"
     Then I should receive successful response
     And user 'alpha' should have completed profile with following aims
