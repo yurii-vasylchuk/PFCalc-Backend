@@ -57,9 +57,11 @@ public class AuthenticationSteps {
     @And("response contain proper auth tokens for user '{}'")
     public void responseContainJwtProperToken(TestUser user) throws Exception {
         Matcher<String> accessTokenMatcher = pfccMatchers.accessToken(user);
+        Matcher<String> accessTokenExpirityMatcher = pfccMatchers.stringDateIsNearTo(
+                LocalDateTime.now()
+                             .plus(conf.jwt.authTokenExpiration), Duration.ofMillis(3_000));
         Matcher<String> refreshTokenMatcher = pfccMatchers.refreshToken(user);
-        Matcher<String> refreshTokenExpirityMatcher = pfccMatchers.stringDateIsNearTo(LocalDateTime.now()
-                                                                                                   .plus(conf.jwt.expiration), Duration.ofMillis(1_000));
+
         String name = "access-token";
 
         ctx.getPerformedCalls()
@@ -67,7 +69,7 @@ public class AuthenticationSteps {
            .andExpect(cookie().exists(name))
            .andExpect(cookie().httpOnly(name, true))
            .andExpect(cookie().domain(name, new URI(conf.jwt.issuer).getHost()))
-           .andExpect(cookie().attribute(name, "Expires", refreshTokenExpirityMatcher))
+           .andExpect(cookie().attribute(name, "Expires", accessTokenExpirityMatcher))
            .andExpect(cookie().path(name, "/"))
            .andExpect(cookie().value(name, accessTokenMatcher));
     }

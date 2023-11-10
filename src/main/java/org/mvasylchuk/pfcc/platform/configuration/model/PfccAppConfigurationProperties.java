@@ -29,8 +29,8 @@ public class PfccAppConfigurationProperties {
         public final String privateKey;
         public final String keyAlgorithm;
         public final String issuer;
-        public final Duration expiration;
-
+        public final Duration authTokenExpiration;
+        public final Duration refreshTokenExpiration;
     }
 
     @RequiredArgsConstructor

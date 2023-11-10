@@ -9,4 +9,5 @@ pfcc:
     do-not-reply-address: 'dont-reply@pfcalc.org.ua'
   jwt:
     key-algorithm: RSA
-    expiration: 20m
+    auth-token-expiration: 10m
+    refresh-token-expiration: 10d

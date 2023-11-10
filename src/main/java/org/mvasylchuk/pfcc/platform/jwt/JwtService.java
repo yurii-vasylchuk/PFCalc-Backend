@@ -31,7 +31,7 @@ public class JwtService {
                 .setNotBefore(new Date())
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(
-                        LocalDateTime.now().plus(configuration.jwt.expiration)
+                        LocalDateTime.now().plus(configuration.jwt.authTokenExpiration)
                                 .atZone(ZoneId.systemDefault())
                                 .toInstant()))
                 .addClaims(Map.of(

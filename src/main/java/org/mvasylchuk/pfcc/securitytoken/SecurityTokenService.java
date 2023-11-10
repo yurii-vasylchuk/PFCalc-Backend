@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.user.UserEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -16,19 +17,24 @@ public class SecurityTokenService {
     private final Random rnd = new Random();
 
     public String generateSecurityToken(UserEntity user, SecurityTokenType type) {
+        return this.generateSecurityToken(user, type, null);
+    }
+
+    public String generateSecurityToken(UserEntity user, SecurityTokenType type, LocalDateTime validUntil) {
         SecurityTokenEntity securityToken = new SecurityTokenEntity();
 
         securityToken.setUser(user);
         securityToken.setType(type);
         securityToken.setIsActive(true);
         securityToken.setCode(generateCode());
+        securityToken.setValidUntil(validUntil);
 
         repository.save(securityToken);
         return securityToken.getCode();
     }
 
     public UserEntity validate(String code, SecurityTokenType type) {
-        SecurityTokenEntity token = repository.findByCodeAndTypeAndIsActiveIsTrue(code, type)
+        SecurityTokenEntity token = repository.findValid(code, type)
                                               .orElseThrow(() -> new IllegalArgumentException("Invalid security token code: token doesn't exists"));
 
         token.setIsActive(false);

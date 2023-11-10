@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static org.mvasylchuk.pfcc.jooq.Tables.SECURITY_TOKENS;
@@ -68,8 +69,8 @@ public class PfccMatchersFactory {
 
         @Override
         public void describeTo(Description description) {
-            description.appendText(this.expected.format(DateTimeFormatter.RFC_1123_DATE_TIME))
-                       .appendText(", with gap")
+            description.appendText(this.expected.format(DateTimeFormatter.ofPattern("EEE, dd LLL yyyy hh:mm:ss", Locale.US)))
+                       .appendText(", with gap ")
                        .appendText(gap.toString());
         }
     }

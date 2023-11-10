@@ -53,7 +53,7 @@ class SecurityTokenServiceTest {
         UserEntity userEntity = new UserEntity(1L, "email@email.com", "password", "name", Language.UA, null, true, true, Collections.emptyList());
         String code = "TEST_CODE";
 
-        when(repository.findByCodeAndTypeAndIsActiveIsTrue(code, EMAIL_VERIFICATION))
+        when(repository.findValid(code, EMAIL_VERIFICATION))
                 .thenReturn(Optional.of(new SecurityTokenEntity(1L, code, userEntity, EMAIL_VERIFICATION, true, null)));
 
         when(repository.save(tokenCaptor.capture())).thenAnswer(invocation -> invocation.getArgument(0));

@@ -2,6 +2,7 @@ package org.mvasylchuk.pfcc.user;
 
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
+import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
 import org.mvasylchuk.pfcc.platform.email.EmailService;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,6 +25,7 @@ public class UserService {
     private final SecurityTokenService securityTokenService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final PfccAppConfigurationProperties conf;
 
     public AuthTokensDto register(RegisterRequestDto request) {
         UserEntity user = new UserEntity(null,
@@ -82,8 +85,6 @@ public class UserService {
             throw new RuntimeException("Password doesn't match");
         }
 
-        String token = jwtService.generateToken(user);
-
         return generateAuthTokens(user);
     }
 
@@ -103,7 +104,9 @@ public class UserService {
     }
 
     private AuthTokensDto generateAuthTokens(UserEntity user) {
-        String refreshToken = securityTokenService.generateSecurityToken(user, SecurityTokenType.REFRESH_TOKEN);
+        String refreshToken = securityTokenService.generateSecurityToken(user,
+                SecurityTokenType.REFRESH_TOKEN,
+                LocalDateTime.now().plus(conf.jwt.refreshTokenExpiration));
         String token = jwtService.generateToken(user);
         return new AuthTokensDto(token, refreshToken);
     }
