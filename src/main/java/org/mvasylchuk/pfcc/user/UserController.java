@@ -68,7 +68,7 @@ public class UserController {
         ResponseCookie accessToken = ResponseCookie.from("access-token", token.getAccessToken())
                                                    .httpOnly(true)
                                                    .secure(uri.getScheme().equals("https"))
-                                                   .path("/")
+                                                   .path("/api")
                                                    .maxAge(conf.jwt.authTokenExpiration.plus(LOCAL_OFFSET))
                                                    .domain(uri.getHost())
                                                    .build();

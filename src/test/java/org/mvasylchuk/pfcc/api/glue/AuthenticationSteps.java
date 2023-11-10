@@ -70,7 +70,7 @@ public class AuthenticationSteps {
            .andExpect(cookie().httpOnly(name, true))
            .andExpect(cookie().domain(name, new URI(conf.jwt.issuer).getHost()))
            .andExpect(cookie().attribute(name, "Expires", accessTokenExpirityMatcher))
-           .andExpect(cookie().path(name, "/"))
+           .andExpect(cookie().path(name, "/api"))
            .andExpect(cookie().value(name, accessTokenMatcher));
     }
 
