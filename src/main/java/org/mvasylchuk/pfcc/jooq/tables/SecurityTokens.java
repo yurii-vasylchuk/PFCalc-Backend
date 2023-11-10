@@ -4,24 +4,8 @@
 package org.mvasylchuk.pfcc.jooq.tables;
 
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-
-import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Function5;
-import org.jooq.Index;
-import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row5;
-import org.jooq.Schema;
-import org.jooq.SelectField;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -29,6 +13,11 @@ import org.mvasylchuk.pfcc.jooq.Indexes;
 import org.mvasylchuk.pfcc.jooq.Keys;
 import org.mvasylchuk.pfcc.jooq.Pfcc;
 import org.mvasylchuk.pfcc.jooq.tables.records.SecurityTokensRecord;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 
 /**
@@ -76,6 +65,12 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
      * The column <code>pfcc.security_tokens.is_active</code>.
      */
     public final TableField<SecurityTokensRecord, Byte> IS_ACTIVE = createField(DSL.name("is_active"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>pfcc.security_tokens.valid_until</code>.
+     */
+    public final TableField<SecurityTokensRecord, LocalDateTime> VALID_UNTIL = createField(DSL.name("valid_until"), SQLDataType.LOCALDATETIME(0)
+                                                                                                                               .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     private SecurityTokens(Name alias, Table<SecurityTokensRecord> aliased) {
         this(alias, aliased, null);
@@ -187,18 +182,18 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, String, Long, String, Byte> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<Long, String, Long, String, Byte, LocalDateTime> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function5<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -206,7 +201,7 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

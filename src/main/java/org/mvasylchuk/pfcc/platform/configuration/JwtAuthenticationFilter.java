@@ -1,6 +1,8 @@
 package org.mvasylchuk.pfcc.platform.configuration;
 
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,42 +13,45 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private static final String BEARER_TOKEN_PREFIX =  "Bearer ";
-    private static final String AUTH_HEADER = "Authorization";
 
     private final AuthenticationManager authenticationManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            String header = request.getHeader(AUTH_HEADER);
-
-            if (header == null) {
-                log.debug("Can't found Authorization header");
+            if (request.getCookies() == null) {
+                log.debug("Cookies is empty, skipping authorization");
+                //NOT Authenticated
+                SecurityContextHolder.getContext().setAuthentication(null);
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            log.debug("Authorization header '{}'", header);
+            Cookie authCookie = Arrays.stream(request.getCookies())
+                                      .filter(c -> c.getName().equals("access-token"))
+                                      .findFirst()
+                                      .orElse(null);
 
-            if (!header.startsWith(BEARER_TOKEN_PREFIX)) {
-                log.debug("Unsupported authorization token prefix");
+            if (authCookie == null) {
+                log.debug("Can't found Authentication cookie");
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            String token = header.substring(BEARER_TOKEN_PREFIX.length());
+            log.debug("Authorization cookie '{}'", authCookie);
+
+            String token = authCookie.getValue();
 
             JwtAuthentication authenticationReq = JwtAuthentication.unauthenticated(token);
 
             Authentication authentication = this.authenticationManager.authenticate(authenticationReq);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
         } catch (Exception e) {
             log.error("Failed to authenticate request.", e);
         }

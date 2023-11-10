@@ -3,18 +3,31 @@ package org.mvasylchuk.pfcc.api.glue;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 import org.jooq.DSLContext;
 import org.mvasylchuk.pfcc.api.ApiTestContext;
 import org.mvasylchuk.pfcc.api.constants.Constants.TestUser;
-import org.mvasylchuk.pfcc.api.utils.JwtTokenMatcherFactory;
+import org.mvasylchuk.pfcc.api.utils.PfccMatchersFactory;
 import org.mvasylchuk.pfcc.jooq.tables.records.SecurityTokensRecord;
 import org.mvasylchuk.pfcc.jooq.tables.records.UsersRecord;
+import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.net.URI;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,6 +35,8 @@ import static org.mvasylchuk.pfcc.api.constants.Constants.Db.FALSE;
 import static org.mvasylchuk.pfcc.api.constants.Constants.Db.TRUE;
 import static org.mvasylchuk.pfcc.jooq.Tables.SECURITY_TOKENS;
 import static org.mvasylchuk.pfcc.jooq.Tables.USERS;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RequiredArgsConstructor
@@ -29,7 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthenticationSteps {
     private final ApiTestContext ctx;
     private final DSLContext db;
-    private final JwtTokenMatcherFactory jwtMatcherFactory;
+    private final PfccMatchersFactory pfccMatchers;
+    private final PfccAppConfigurationProperties conf;
+    private final MockMvc api;
 
     @Then("User {string} has been saved in db")
     public void userHasBeenSavedInDb(String email) {
@@ -37,10 +54,22 @@ public class AuthenticationSteps {
                 .isEqualTo(1);
     }
 
-    @And("response contain proper jwt token for user '{}'")
+    @And("response contain proper auth tokens for user '{}'")
     public void responseContainJwtProperToken(TestUser user) throws Exception {
-        Matcher<String> tokenMatcher = jwtMatcherFactory.getMatcher(user);
-        ctx.getPerformedCalls().andExpect(jsonPath("$.data.token").value(tokenMatcher));
+        Matcher<String> accessTokenMatcher = pfccMatchers.accessToken(user);
+        Matcher<String> refreshTokenMatcher = pfccMatchers.refreshToken(user);
+        Matcher<String> refreshTokenExpirityMatcher = pfccMatchers.stringDateIsNearTo(LocalDateTime.now()
+                                                                                                   .plus(conf.jwt.expiration), Duration.ofMillis(1_000));
+        String name = "access-token";
+
+        ctx.getPerformedCalls()
+           .andExpect(jsonPath("$.data.refreshToken").value(refreshTokenMatcher))
+           .andExpect(cookie().exists(name))
+           .andExpect(cookie().httpOnly(name, true))
+           .andExpect(cookie().domain(name, new URI(conf.jwt.issuer).getHost()))
+           .andExpect(cookie().attribute(name, "Expires", refreshTokenExpirityMatcher))
+           .andExpect(cookie().path(name, "/"))
+           .andExpect(cookie().value(name, accessTokenMatcher));
     }
 
 
@@ -66,6 +95,7 @@ public class AuthenticationSteps {
         List<SecurityTokensRecord> tokens = db.selectFrom(SECURITY_TOKENS.join(USERS)
                                                                          .on(USERS.ID.eq(SECURITY_TOKENS.USER_ID)))
                                               .where(USERS.EMAIL.eq(email))
+                                              .and(SECURITY_TOKENS.TYPE.eq("EMAIL_VERIFICATION"))
                                               .fetchInto(SecurityTokensRecord.class);
         assertThat(tokens)
                 .hasSize(1)
@@ -140,5 +170,23 @@ public class AuthenticationSteps {
         assertThat(record.getFatAim()).isEqualByComparingTo(aims.get("fat"));
         assertThat(record.getCarbohydratesAim()).isEqualByComparingTo(aims.get("carbohydrates"));
         assertThat(record.getCaloriesAim()).isEqualByComparingTo(aims.get("calories"));
+    }
+
+    @When("I'm refreshing auth token")
+    public void iAmRefreshingAuthToken() throws Exception {
+        MockHttpServletRequestBuilder req = post("/api/user/refresh-auth-token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                            {
+                                "refreshToken": "%s"
+                            }
+                        """.formatted(ctx.getRefreshToken()));
+
+        ResultActions performedCall = api.perform(req);
+        MockHttpServletResponse rsp = performedCall.andReturn().getResponse();
+        log.info("Received response:\n{}\n\n{}",
+                Arrays.stream(rsp.getCookies()).map(Cookie::toString).collect(Collectors.joining("")),
+                rsp.getContentAsString());
+        ctx.setPerformedCalls(performedCall);
     }
 }

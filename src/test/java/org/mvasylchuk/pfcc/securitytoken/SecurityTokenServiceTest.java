@@ -2,7 +2,10 @@ package org.mvasylchuk.pfcc.securitytoken;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mvasylchuk.pfcc.user.Language;
 import org.mvasylchuk.pfcc.user.UserEntity;
@@ -12,8 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.when;
 import static org.mvasylchuk.pfcc.securitytoken.SecurityTokenType.EMAIL_VERIFICATION;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,7 +54,7 @@ class SecurityTokenServiceTest {
         String code = "TEST_CODE";
 
         when(repository.findByCodeAndTypeAndIsActiveIsTrue(code, EMAIL_VERIFICATION))
-                .thenReturn(Optional.of(new SecurityTokenEntity(1L, code, userEntity, EMAIL_VERIFICATION, true)));
+                .thenReturn(Optional.of(new SecurityTokenEntity(1L, code, userEntity, EMAIL_VERIFICATION, true, null)));
 
         when(repository.save(tokenCaptor.capture())).thenAnswer(invocation -> invocation.getArgument(0));
 

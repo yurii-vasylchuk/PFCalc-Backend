@@ -24,7 +24,7 @@ public class UserService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    public AccessTokenDto register(RegisterRequestDto request) {
+    public AuthTokensDto register(RegisterRequestDto request) {
         UserEntity user = new UserEntity(null,
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
@@ -40,8 +40,7 @@ public class UserService {
         String emailVerificationToken = securityTokenService.generateSecurityToken(user, SecurityTokenType.EMAIL_VERIFICATION);
         emailService.sendEmailVerificationMail(request.getEmail(), request.getName(), emailVerificationToken, request.getPreferredLanguage());
 
-        String token = jwtService.generateToken(user);
-        return new AccessTokenDto(token);
+        return generateAuthTokens(user);
     }
 
     public void completeProfile(CompleteProfileRequestDto request) {
@@ -55,7 +54,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public AccessTokenDto verifyAccount(VerifyAccountRequestDto verificationRequest) {
+    public AuthTokensDto verifyAccount(VerifyAccountRequestDto verificationRequest) {
         UserEntity user = securityTokenService.validate(verificationRequest.token(),
                 SecurityTokenType.EMAIL_VERIFICATION);
         user.setEmailConfirmed(true);
@@ -63,8 +62,7 @@ public class UserService {
 
         emailService.sendEmailVerifiedConfirmation(user.getEmail(), user.getName(), user.getPreferredLanguage());
 
-        String token = jwtService.generateToken(user);
-        return new AccessTokenDto(token);
+        return generateAuthTokens(user);
     }
 
     public UserEntity currentUser() {
@@ -73,11 +71,10 @@ public class UserService {
             return null;
         } else {
             return userRepository.getByEmail(auth.getName());
-
         }
     }
 
-    public AccessTokenDto login(LoginRequestDto request) {
+    public AuthTokensDto login(LoginRequestDto request) {
         UserEntity user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
 
@@ -87,7 +84,7 @@ public class UserService {
 
         String token = jwtService.generateToken(user);
 
-        return new AccessTokenDto(token);
+        return generateAuthTokens(user);
     }
 
     public ProfileDto getUserProfile() {
@@ -98,5 +95,16 @@ public class UserService {
             return userJooqRepository.getProfileByUserEmail(auth.getName());
 
         }
+    }
+
+    public AuthTokensDto refreshAuth(RefreshAuthTokenRequestDto request) {
+        UserEntity user = securityTokenService.validate(request.getRefreshToken(), SecurityTokenType.REFRESH_TOKEN);
+        return generateAuthTokens(user);
+    }
+
+    private AuthTokensDto generateAuthTokens(UserEntity user) {
+        String refreshToken = securityTokenService.generateSecurityToken(user, SecurityTokenType.REFRESH_TOKEN);
+        String token = jwtService.generateToken(user);
+        return new AuthTokensDto(token, refreshToken);
     }
 }

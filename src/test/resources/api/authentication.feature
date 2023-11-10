@@ -15,7 +15,7 @@ Feature: Authentication
     Then I should receive successful response
     And User "alpha@test.com" has been saved in db
     And Verify email token for "alpha@test.com" has been saved in db
-    And response contain proper jwt token for user 'alpha'
+    And response contain proper auth tokens for user 'alpha'
 
   Scenario: Sign in with correct email and password
     Given User 'alpha' is present
@@ -28,7 +28,7 @@ Feature: Authentication
       """
     When I'm sending POST request to "/api/user/login"
     Then I should receive successful response
-    And response contain proper jwt token for user 'alpha'
+    And response contain proper auth tokens for user 'alpha'
 
   Scenario: Verify email address
     Given User 'alpha' with unconfirmed email is present
@@ -36,7 +36,7 @@ Feature: Authentication
     And prepared request with that verification token
     When I'm sending POST request to "/api/user/verify"
     Then I should receive successful response
-    And response contain proper jwt token for user 'alpha'
+    And response contain proper auth tokens for user 'alpha'
     And email of user 'alpha' become confirmed
 
   Scenario: Complete profile
@@ -60,5 +60,12 @@ Feature: Authentication
       | fat           | 50   |
       | carbohydrates | 200  |
       | calories      | 2000 |
+
+  Scenario: Refresh auth using refreshToken
+    Given User 'alpha' is present
+    And I'm authenticated as 'alpha'
+    When I'm refreshing auth token
+    Then I should receive successful response
+    And response contain proper auth tokens for user 'alpha'
 
   # TODO: Implement GET Profile scenario

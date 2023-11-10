@@ -37,7 +37,7 @@ public class SecurityTokenService {
         return token.getUser();
     }
 
-    String generateCode() {
+    private String generateCode() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < CODE_LENGTH; i++) {
             builder.append(POSSIBLE_CODE_SYMBOLS[rnd.nextInt(POSSIBLE_CODE_SYMBOLS.length)]);

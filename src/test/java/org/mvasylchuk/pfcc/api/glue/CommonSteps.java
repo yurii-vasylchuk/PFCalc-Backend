@@ -8,6 +8,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
@@ -15,12 +16,16 @@ import org.jooq.Table;
 import org.mvasylchuk.pfcc.api.ApiTestContext;
 import org.mvasylchuk.pfcc.api.constants.Constants.TestUser;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mvasylchuk.pfcc.api.constants.Constants.Db.FALSE;
 import static org.mvasylchuk.pfcc.api.constants.Constants.Db.TRUE;
 import static org.mvasylchuk.pfcc.jooq.Tables.*;
@@ -50,12 +55,15 @@ public class CommonSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(ctx.getRequest());
 
-        if (ctx.getAuthToken() != null) {
-            req.header("Authorization", "Bearer %s".formatted(ctx.getAuthToken()));
+        if (ctx.getAuthCookie() != null) {
+            req.cookie(ctx.getAuthCookie());
         }
 
         ResultActions performedCall = api.perform(req);
-        log.info("Received response:\n{}", performedCall.andReturn().getResponse().getContentAsString());
+        MockHttpServletResponse rsp = performedCall.andReturn().getResponse();
+        log.info("Received response:\n{}\n\n{}",
+                Arrays.stream(rsp.getCookies()).map(Cookie::toString).collect(Collectors.joining("")),
+                rsp.getContentAsString());
         ctx.setPerformedCalls(performedCall);
     }
 
@@ -97,7 +105,7 @@ public class CommonSteps {
 
     @And("I'm authenticated as '{}'")
     public void iMAuthenticatedAsAlpha(TestUser user) throws Exception {
-        String loginRsp = this.api.perform(post("/api/user/login")
+        MockHttpServletResponse rsp = this.api.perform(post("/api/user/login")
                                       .contentType(MediaType.APPLICATION_JSON)
                                       .content("""
                                               {
@@ -105,13 +113,19 @@ public class CommonSteps {
                                                   "password": "%s"
                                               }
                                               """.formatted(user.getEmail(), user.getPassword())))
-                                  .andExpect(status().is(200))
-                                  .andExpect(jsonPath("$.success").value(true))
-                                  .andExpect(jsonPath("$.error").doesNotExist())
-                                  .andReturn().getResponse().getContentAsString();
+                                              .andExpect(status().is(200))
+                                              .andExpect(jsonPath("$.success").value(true))
+                                              .andExpect(jsonPath("$.error").doesNotExist())
+                                              .andReturn().getResponse();
 
-        String authToken = mapper.readValue(loginRsp, JsonNode.class).at("/data/token").asText();
+        String refreshToken = mapper.readValue(rsp.getContentAsString(), JsonNode.class)
+                                    .at("/data/refreshToken")
+                                    .asText();
+        Cookie accessTokenCookie = rsp.getCookie("access-token");
+        assertThat(accessTokenCookie).isNotNull();
+        assertThat(refreshToken).isNotBlank();
 
-        this.ctx.setAuthToken(authToken);
+        this.ctx.setAuthCookie(accessTokenCookie);
+        this.ctx.setRefreshToken(refreshToken);
     }
 }

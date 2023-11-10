@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mvasylchuk.pfcc.user.UserEntity;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "security_tokens")
 @NoArgsConstructor
@@ -36,4 +38,8 @@ public class SecurityTokenEntity {
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
+
+    @Column(name = "valid_until")
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime validUntil;
 }
