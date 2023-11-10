@@ -3,14 +3,15 @@ package org.mvasylchuk.pfcc.platform;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
 import org.mvasylchuk.pfcc.common.dto.BaseResponse;
+import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +26,12 @@ public class RestExceptionHandler {
         log.error("Unhandled exception", e);
         String msg = conf.exposeException != null && conf.exposeException ? e.getMessage() : "Internal error";
         return BaseResponse.fail(msg);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected BaseResponse<Void> handle(AccessDeniedException e) {
+        return BaseResponse.fail("Access denied");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
