@@ -21,6 +21,12 @@ public class FoodController {
         return BaseResponse.success(foodService.addFood(request));
     }
 
+    @PutMapping()
+    @PreAuthorize("isAuthenticated()")
+    public BaseResponse<FoodDto> update (@RequestBody FoodDto request){
+        return BaseResponse.success(foodService.updateFood(request));
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public BaseResponse<Void> remove(@PathVariable Long id) {

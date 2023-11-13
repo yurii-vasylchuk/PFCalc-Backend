@@ -22,7 +22,7 @@ public class FoodService {
 
     @Transactional(rollbackOn = Exception.class)
     public FoodDto addFood(FoodDto request) {
-       FoodEntity foodEntity= foodMappingService.toEntity(request);
+        FoodEntity foodEntity = foodMappingService.toEntity(request);
 
         foodRepository.save(foodEntity);
 
@@ -46,5 +46,18 @@ public class FoodService {
     public FoodDto getFoodById(Long id) {
         Long userId = userService.currentUser().getId();
         return foodJooqRepository.getFoodById(id, userId);
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public FoodDto updateFood(FoodDto request) {
+        if (request.getId() == null) {
+            throw new IllegalArgumentException("Id must not be null");
+        }
+        if (!foodRepository.existsById(request.getId())) {
+            throw new IllegalArgumentException("Food with provided id %d doesn't exists".formatted(request.getId()));
+        }
+        FoodEntity foodEntity = foodMappingService.toEntity(request);
+        foodRepository.save(foodEntity);
+        return foodMappingService.toDto(foodEntity);
     }
 }
