@@ -71,6 +71,7 @@ public class UserController {
                                                    .path("/api")
                                                    .maxAge(conf.jwt.authTokenExpiration.plus(LOCAL_OFFSET))
                                                    .domain(uri.getHost())
+                                                   .sameSite("Strict")
                                                    .build();
 
         return ResponseEntity.ok()
