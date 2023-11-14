@@ -72,6 +72,20 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     public final TableField<SecurityTokensRecord, LocalDateTime> VALID_UNTIL = createField(DSL.name("valid_until"), SQLDataType.LOCALDATETIME(0)
                                                                                                                                .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
+    /**
+     * The column <code>pfcc.security_tokens.created_at</code>.
+     */
+    public final TableField<SecurityTokensRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0)
+                                                                                                                             .nullable(false)
+                                                                                                                             .defaultValue(DSL.field(DSL.raw("'0000-00-00 00:00:00'"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>pfcc.security_tokens.modified_at</code>.
+     */
+    public final TableField<SecurityTokensRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(0)
+                                                                                                                               .nullable(false)
+                                                                                                                               .defaultValue(DSL.field(DSL.raw("'0000-00-00 00:00:00'"), SQLDataType.LOCALDATETIME)), this, "");
+
     private SecurityTokens(Name alias, Table<SecurityTokensRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -182,18 +196,18 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Long, String, Long, String, Byte, LocalDateTime> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row8<Long, String, Long, String, Byte, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -201,7 +215,7 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

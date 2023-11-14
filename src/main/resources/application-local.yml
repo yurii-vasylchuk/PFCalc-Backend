@@ -21,3 +21,6 @@ pfcc:
   mail:
     enabled: true
   expose-exception: true
+  jobs:
+    drop-outdated-security-tokens:
+      enabled: false
