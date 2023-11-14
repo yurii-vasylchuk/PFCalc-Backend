@@ -106,7 +106,7 @@ public class UserService {
     private AuthTokensDto generateAuthTokens(UserEntity user) {
         String refreshToken = securityTokenService.generateSecurityToken(user,
                 SecurityTokenType.REFRESH_TOKEN,
-                LocalDateTime.now().plus(conf.jwt.refreshTokenExpiration));
+                LocalDateTime.now().plus(conf.auth.refreshTokenExpiration));
         String token = jwtService.generateToken(user);
         return new AuthTokensDto(token, refreshToken);
     }

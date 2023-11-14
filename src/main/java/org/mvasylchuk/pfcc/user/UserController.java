@@ -64,14 +64,14 @@ public class UserController {
 
     @NotNull
     private ResponseEntity<BaseResponse<AuthTokenResponseDto>> buildAuthTokenResponse(AuthTokensDto token) throws URISyntaxException {
-        URI uri = new URI(conf.jwt.issuer);
+        URI uri = new URI(conf.auth.issuer);
         ResponseCookie accessToken = ResponseCookie.from("access-token", token.getAccessToken())
                                                    .httpOnly(true)
                                                    .secure(uri.getScheme().equals("https"))
                                                    .path("/api")
-                                                   .maxAge(conf.jwt.authTokenExpiration.plus(LOCAL_OFFSET))
+                                                   .maxAge(conf.auth.authTokenExpiration.plus(LOCAL_OFFSET))
                                                    .domain(uri.getHost())
-                                                   .sameSite("Strict")
+                                                   .sameSite(conf.auth.sameSite.attributeValue())
                                                    .build();
 
         return ResponseEntity.ok()

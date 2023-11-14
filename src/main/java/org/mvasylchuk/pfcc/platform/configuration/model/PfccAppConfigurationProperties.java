@@ -3,6 +3,7 @@ package org.mvasylchuk.pfcc.platform.configuration.model;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.server.Cookie;
 import software.amazon.awssdk.regions.Region;
 
 import java.time.Duration;
@@ -12,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PfccAppConfigurationProperties {
     public final MailConfiguration mail;
-    public final PfccAppConfigurationProperties.PfccJwtConfiguration jwt;
+    public final PfccAuthConfiguration auth;
     public final PfccAppConfigurationProperties.AwsConfiguration aws;
     @NonNull
     public final JobConfiguration jobs;
@@ -26,13 +27,14 @@ public class PfccAppConfigurationProperties {
     }
 
     @RequiredArgsConstructor
-    public static class PfccJwtConfiguration {
+    public static class PfccAuthConfiguration {
         public final String publicKey;
         public final String privateKey;
         public final String keyAlgorithm;
         public final String issuer;
         public final Duration authTokenExpiration;
         public final Duration refreshTokenExpiration;
+        public final Cookie.SameSite sameSite;
     }
 
     @RequiredArgsConstructor

@@ -45,7 +45,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             throw new CredentialsExpiredException("Token is expired");
         }
 
-        if (!decodedToken.issuer().equals(configuration.jwt.issuer)) {
+        if (!decodedToken.issuer().equals(configuration.auth.issuer)) {
             throw new BadCredentialsException("Invalid issuer");
         }
 

@@ -14,6 +14,7 @@ import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
 import org.mvasylchuk.pfcc.user.dto.AuthTokensDto;
 import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
+import org.springframework.boot.web.server.Cookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static java.util.Collections.emptyList;
@@ -41,14 +42,14 @@ class UserServiceTest {
     @Spy
     private PfccAppConfigurationProperties conf = pfccConf(
             null,
-            jwt(
+            auth(
                     null,
                     null,
                     null,
                     null,
                     "PT1M",
-                    "PT30M"
-            ),
+                    "PT30M",
+                    Cookie.SameSite.LAX),
             null,
             jobs(
                     dropOutdatedSecTokensConf(

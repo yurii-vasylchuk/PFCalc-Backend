@@ -2,13 +2,14 @@ package org.mvasylchuk.pfcc.util;
 
 import lombok.NonNull;
 import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
+import org.springframework.boot.web.server.Cookie;
 
 import java.time.Duration;
 import java.util.List;
 
 public class PfccAppConfigurationFactory {
     public static PfccAppConfigurationProperties pfccConf(
-            PfccAppConfigurationProperties.MailConfiguration mailConf, PfccAppConfigurationProperties.PfccJwtConfiguration jwtConf, PfccAppConfigurationProperties.AwsConfiguration awsConf, PfccAppConfigurationProperties.@NonNull JobConfiguration jobsConf, List<String> corsConf, Boolean exposeExceptions) {
+            PfccAppConfigurationProperties.MailConfiguration mailConf, PfccAppConfigurationProperties.PfccAuthConfiguration jwtConf, PfccAppConfigurationProperties.AwsConfiguration awsConf, PfccAppConfigurationProperties.@NonNull JobConfiguration jobsConf, List<String> corsConf, Boolean exposeExceptions) {
         return new PfccAppConfigurationProperties(
                 mailConf,
                 jwtConf,
@@ -26,14 +27,15 @@ public class PfccAppConfigurationFactory {
         );
     }
 
-    public static PfccAppConfigurationProperties.PfccJwtConfiguration jwt(String publicKey, String privateKey, String algorythm, String iss, String authExp, String refreshExp) {
-        return new PfccAppConfigurationProperties.PfccJwtConfiguration(
+    public static PfccAppConfigurationProperties.PfccAuthConfiguration auth(String publicKey, String privateKey, String algorythm, String iss, String authExp, String refreshExp, Cookie.SameSite sameSite) {
+        return new PfccAppConfigurationProperties.PfccAuthConfiguration(
                 publicKey,
                 privateKey,
                 algorythm,
                 iss,
                 Duration.parse(authExp),
-                Duration.parse(refreshExp)
+                Duration.parse(refreshExp),
+                sameSite
         );
     }
 

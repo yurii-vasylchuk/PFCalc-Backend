@@ -107,6 +107,13 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     }
 
     /**
+     * Setter for <code>pfcc.security_tokens.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(6, value);
+    }
+
+    /**
      * Create a detached, initialised SecurityTokensRecord
      */
     public SecurityTokensRecord(Long id, String code, Long userId, String type, Byte isActive, LocalDateTime validUntil, LocalDateTime createdAt, LocalDateTime modifiedAt) {
@@ -135,13 +142,6 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(6);
-    }
-
-    /**
-     * Setter for <code>pfcc.security_tokens.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(6, value);
     }
 
     // -------------------------------------------------------------------------
@@ -197,6 +197,11 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     }
 
     @Override
+    public Field<LocalDateTime> field6() {
+        return SecurityTokens.SECURITY_TOKENS.VALID_UNTIL;
+    }
+
+    @Override
     public Row8<Long, String, Long, String, Byte, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
         return (Row8) super.fieldsRow();
     }
@@ -204,11 +209,6 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     @Override
     public Row8<Long, String, Long, String, Byte, LocalDateTime, LocalDateTime, LocalDateTime> valuesRow() {
         return (Row8) super.valuesRow();
-    }
-
-    @Override
-    public Field<LocalDateTime> field6() {
-        return SecurityTokens.SECURITY_TOKENS.VALID_UNTIL;
     }
 
     @Override
@@ -328,24 +328,10 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     }
 
     @Override
-    public LocalDateTime value7() {
-        return getCreatedAt();
-    }
-
-    @Override
-    public LocalDateTime value8() {
-        return getModifiedAt();
-    }
-
-    @Override
     public SecurityTokensRecord value7(LocalDateTime value) {
         setCreatedAt(value);
         return this;
     }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
 
     @Override
     public SecurityTokensRecord value8(LocalDateTime value) {
@@ -364,5 +350,19 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
         value7(value7);
         value8(value8);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    @Override
+    public LocalDateTime value7() {
+        return getCreatedAt();
+    }
+
+    @Override
+    public LocalDateTime value8() {
+        return getModifiedAt();
     }
 }

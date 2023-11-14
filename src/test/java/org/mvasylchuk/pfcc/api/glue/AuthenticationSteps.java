@@ -59,7 +59,7 @@ public class AuthenticationSteps {
         Matcher<String> accessTokenMatcher = pfccMatchers.accessToken(user);
         Matcher<String> accessTokenExpirityMatcher = pfccMatchers.stringDateIsNearTo(
                 LocalDateTime.now()
-                             .plus(conf.jwt.authTokenExpiration), Duration.ofMillis(3_000));
+                             .plus(conf.auth.authTokenExpiration), Duration.ofMillis(3_000));
         Matcher<String> refreshTokenMatcher = pfccMatchers.refreshToken(user);
 
         String name = "access-token";
@@ -68,7 +68,8 @@ public class AuthenticationSteps {
            .andExpect(jsonPath("$.data.refreshToken").value(refreshTokenMatcher))
            .andExpect(cookie().exists(name))
            .andExpect(cookie().httpOnly(name, true))
-           .andExpect(cookie().domain(name, new URI(conf.jwt.issuer).getHost()))
+           .andExpect(cookie().sameSite(name, "Strict"))
+           .andExpect(cookie().domain(name, new URI(conf.auth.issuer).getHost()))
            .andExpect(cookie().attribute(name, "Expires", accessTokenExpirityMatcher))
            .andExpect(cookie().path(name, "/api"))
            .andExpect(cookie().value(name, accessTokenMatcher));

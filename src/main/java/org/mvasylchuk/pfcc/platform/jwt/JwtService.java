@@ -26,12 +26,12 @@ public class JwtService {
 
     public String generateToken(UserEntity user) {
         return Jwts.builder()
-                .setIssuer(this.configuration.jwt.issuer)
+                   .setIssuer(this.configuration.auth.issuer)
                 .setSubject(user.getEmail())
                 .setNotBefore(new Date())
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(
-                        LocalDateTime.now().plus(configuration.jwt.authTokenExpiration)
+                        LocalDateTime.now().plus(configuration.auth.authTokenExpiration)
                                 .atZone(ZoneId.systemDefault())
                                 .toInstant()))
                 .addClaims(Map.of(
