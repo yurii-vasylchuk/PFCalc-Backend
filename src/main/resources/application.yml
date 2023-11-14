@@ -12,7 +12,8 @@ pfcc:
       cron: '0 0 0 * * *'
   mail:
     do-not-reply-address: 'dont-reply@pfcalc.org.ua'
-  jwt:
+  auth:
     key-algorithm: RSA
     auth-token-expiration: 10m
     refresh-token-expiration: 10d
+    same-site: lax

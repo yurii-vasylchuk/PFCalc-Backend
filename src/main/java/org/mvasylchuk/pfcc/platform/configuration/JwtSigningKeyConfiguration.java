@@ -31,10 +31,10 @@ public class JwtSigningKeyConfiguration {
     @Bean
     @Qualifier(JWT_SIGNING_KEY_BEAN_NAME)
     public KeyPair jwtSigningKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        KeyFactory kf = KeyFactory.getInstance(this.conf.jwt.keyAlgorithm);
+        KeyFactory kf = KeyFactory.getInstance(this.conf.auth.keyAlgorithm);
 
-        EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(Base64.decodeBase64(this.conf.jwt.publicKey));
-        EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(this.conf.jwt.privateKey));
+        EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(Base64.decodeBase64(this.conf.auth.publicKey));
+        EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(this.conf.auth.privateKey));
 
         RSAPublicKey publicKey = (RSAPublicKey) kf.generatePublic(publicKeySpec);
         RSAPrivateKey privateKey = (RSAPrivateKey) kf.generatePrivate(privateKeySpec);
