@@ -40,7 +40,7 @@ public class SpringBootTestLoader {
     }
 
     @TestConfiguration
-    static class PostgresTestConfiguration {
+    static class MariadbTestConfiguration {
         @Bean
         DataSource dataSource() {
             HikariConfig hikariConfig = new HikariConfig();

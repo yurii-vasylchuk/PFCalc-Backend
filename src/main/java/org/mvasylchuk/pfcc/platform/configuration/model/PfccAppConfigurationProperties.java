@@ -14,6 +14,8 @@ public class PfccAppConfigurationProperties {
     public final MailConfiguration mail;
     public final PfccAppConfigurationProperties.PfccJwtConfiguration jwt;
     public final PfccAppConfigurationProperties.AwsConfiguration aws;
+    @NonNull
+    public final JobConfiguration jobs;
     public final List<String> cors;
     public final Boolean exposeException;
 
@@ -40,6 +42,7 @@ public class PfccAppConfigurationProperties {
         @NonNull
         public final AwsCredentialsType credentialsType;
         public final String profile;
+
         public Region getRegion() {
             return Region.of(this.region);
         }
@@ -49,6 +52,19 @@ public class PfccAppConfigurationProperties {
             PROFILE, INSTANCE_PROFILE;
             public static final String PROFILE_VALUE = "PROFILE";
             public static final String INSTANCE_PROFILE_VALUE = "INSTANCE_PROFILE";
+        }
+    }
+
+    @RequiredArgsConstructor
+    public static class JobConfiguration {
+        @NonNull
+        public final DropOutdatedSecurityTokensConfiguration dropOutdatedSecurityTokens;
+
+        @RequiredArgsConstructor
+        public static class DropOutdatedSecurityTokensConfiguration {
+            public final Boolean enabled;
+            public final String cron;
+            public final Duration outdatedSecurityTokenTtl;
         }
     }
 }

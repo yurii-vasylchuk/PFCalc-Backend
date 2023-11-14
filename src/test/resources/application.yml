@@ -12,3 +12,6 @@ pfcc:
     refresh-token-expiration: 30d
   mail:
     enabled: false
+  jobs:
+    drop-outdated-security-tokens:
+      enabled: false

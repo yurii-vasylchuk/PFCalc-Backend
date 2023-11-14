@@ -5,6 +5,11 @@ spring:
     hibernate:
       ddl-auto: validate
 pfcc:
+  jobs:
+    drop-outdated-security-tokens:
+      outdated-security-token-ttl: 10d
+      enabled: true
+      cron: '0 0 0 * * *'
   mail:
     do-not-reply-address: 'dont-reply@pfcalc.org.ua'
   jwt:
