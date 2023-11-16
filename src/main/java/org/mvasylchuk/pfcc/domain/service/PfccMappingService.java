@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PfccMappingService {
     @Transactional(rollbackOn = Exception.class)
-    public Pfcc toPfcc(PfccDto pfccDto){
+    public Pfcc toPfcc(PfccDto pfccDto) {
         return new Pfcc(pfccDto.getProtein(),
                 pfccDto.getFat(),
                 pfccDto.getCarbohydrates(),
@@ -18,7 +18,7 @@ public class PfccMappingService {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public PfccDto toPfccDto(Pfcc pfcc){
+    public PfccDto toPfccDto(Pfcc pfcc) {
         return new PfccDto(pfcc.getProtein(),
                 pfcc.getFat(),
                 pfcc.getCarbohydrates(),

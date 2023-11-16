@@ -33,16 +33,19 @@ public class DishMappingService {
 
             resultPfcc = Pfcc.combine(
                     ingredients.stream()
-                            .map(di -> foodRepository.findById(di.getId()).orElseThrow().getPfcc().multiply(di.getIngredientWeight()))
-                            .toList()
+                               .map(di -> foodRepository.findById(di.getId())
+                                                        .orElseThrow()
+                                                        .getPfcc()
+                                                        .multiply(di.getIngredientWeight()))
+                               .toList()
             ).divide(dishDto.getCookedWeight());
 
             recipeWeight = ingredients.stream()
-                    .map(IngredientDto::getIngredientWeight)
-                    .reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
+                                      .map(IngredientDto::getIngredientWeight)
+                                      .reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
         } else {
             resultPfcc = food.getPfcc().multiply(dishDto.getRecipeWeight())
-                    .divide(dishDto.getCookedWeight());
+                             .divide(dishDto.getCookedWeight());
 
             recipeWeight = dishDto.getRecipeWeight();
         }
@@ -81,24 +84,24 @@ public class DishMappingService {
         List<IngredientDto> ingredientDtoList;
         if ((dishEntity.getIngredients() != null)) {
             ingredientDtoList = dishEntity.getIngredients().stream()
-                    .map(i -> {
-                        UserEntity user = userService.currentUser();
-                        FoodEntity ing = i.getIngredient();
-                        Boolean ownedByUser = user != null &&
-                                ing.getOwner() != null &&
-                                Objects.equals(user.getId(), ing.getOwner().getId());
+                                          .map(i -> {
+                                              UserEntity user = userService.currentUser();
+                                              FoodEntity ing = i.getIngredient();
+                                              Boolean ownedByUser = user != null &&
+                                                      ing.getOwner() != null &&
+                                                      Objects.equals(user.getId(), ing.getOwner().getId());
 
-                        return new IngredientDto(ing.getId(),
-                                ing.getName(),
-                                ing.getDescription(),
-                                pfccMappingService.toPfccDto(ing.getPfcc()),
-                                ing.getIsHidden(),
-                                ing.getType(),
-                                ownedByUser,
-                                null,
-                                i.getIngredientWeight());
-                    })
-                    .toList();
+                                              return new IngredientDto(ing.getId(),
+                                                      ing.getName(),
+                                                      ing.getDescription(),
+                                                      pfccMappingService.toPfccDto(ing.getPfcc()),
+                                                      ing.getIsHidden(),
+                                                      ing.getType(),
+                                                      ownedByUser,
+                                                      null,
+                                                      i.getIngredientWeight());
+                                          })
+                                          .toList();
         } else ingredientDtoList = null;
 
         return new DishDto(dishEntity.getId(),

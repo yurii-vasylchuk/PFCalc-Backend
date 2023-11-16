@@ -37,9 +37,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         }
 
         PfccAuthToken decodedToken = Jwts.parserBuilder()
-                .setSigningKey(rsaKey.getPublic())
-                .build()
-                .parse(jwtAuthentication.getCredentials(), pfccHandler);
+                                         .setSigningKey(rsaKey.getPublic())
+                                         .build()
+                                         .parse(jwtAuthentication.getCredentials(), pfccHandler);
 
         if (decodedToken.expiration().isBefore(LocalDateTime.now())) {
             throw new CredentialsExpiredException("Token is expired");

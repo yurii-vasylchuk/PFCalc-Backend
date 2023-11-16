@@ -17,13 +17,17 @@ import static org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurat
 public class AwsServicesConfiguration {
 
     @Bean
-    @ConditionalOnProperty(value = "pfcc.aws.credentialsType", havingValue = INSTANCE_PROFILE_VALUE)
+    @ConditionalOnProperty(prefix = "pfcc.aws",
+                           value = {"credentials-type", "credentialsType"},
+                           havingValue = INSTANCE_PROFILE_VALUE)
     public AwsCredentialsProvider iamCredentialsProvider() {
         return ProfileCredentialsProvider.create();
     }
 
     @Bean
-    @ConditionalOnProperty(value = "pfcc.aws.credentialsType", havingValue = PROFILE_VALUE)
+    @ConditionalOnProperty(prefix = "pfcc.aws",
+                           value = {"credentials-type", "credentialsType"},
+                           havingValue = PROFILE_VALUE)
     public AwsCredentialsProvider authTokenCredentialsProvider(PfccAppConfigurationProperties conf) {
         return ProfileCredentialsProvider.create(conf.aws.profile);
     }
@@ -31,13 +35,8 @@ public class AwsServicesConfiguration {
     @Bean
     @ConditionalOnMailEnabled
     @ConditionalOnBean(AwsCredentialsProvider.class)
-    public SesV2Client sesV2Client(PfccAppConfigurationProperties conf,
-                                   AwsCredentialsProvider credentialsProvider) {
-        return SesV2Client
-                .builder()
-                .region(conf.aws.getRegion())
-                .credentialsProvider(credentialsProvider)
-                .build();
+    public SesV2Client sesV2Client(PfccAppConfigurationProperties conf, AwsCredentialsProvider credentialsProvider) {
+        return SesV2Client.builder().region(conf.aws.getRegion()).credentialsProvider(credentialsProvider).build();
     }
 
 }

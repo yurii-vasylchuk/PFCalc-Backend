@@ -79,7 +79,7 @@ public class UserService {
 
     public AuthTokensDto login(LoginRequestDto request) {
         UserEntity user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                                        .orElseThrow();
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Password doesn't match");

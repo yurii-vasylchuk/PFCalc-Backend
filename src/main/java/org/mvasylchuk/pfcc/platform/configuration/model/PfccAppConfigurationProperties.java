@@ -40,10 +40,10 @@ public class PfccAppConfigurationProperties {
     @RequiredArgsConstructor
     public static class AwsConfiguration {
         @NonNull
-        private final String region;
-        @NonNull
         public final AwsCredentialsType credentialsType;
         public final String profile;
+        @NonNull
+        private final String region;
 
         public Region getRegion() {
             return Region.of(this.region);

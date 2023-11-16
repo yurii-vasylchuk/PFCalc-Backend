@@ -30,8 +30,12 @@ public class FoodController {
 
     @GetMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<Page<FoodDto>> get(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-                                           @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+    public BaseResponse<Page<FoodDto>> get(@RequestParam(name = "page",
+                                                         required = false,
+                                                         defaultValue = "0") Integer page,
+                                           @RequestParam(name = "pageSize",
+                                                         required = false,
+                                                         defaultValue = "10") Integer pageSize,
                                            @RequestParam(name = "name", required = false) String name,
                                            @RequestParam(name = "type", required = false) FoodType type) {
         return BaseResponse.success(foodService.getFoodList(page, pageSize, name, type));

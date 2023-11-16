@@ -18,7 +18,7 @@ public class FoodDto {
     private String name;
     private String description;
     private PfccDto pfcc;
-    private boolean isHidden ;
+    private boolean isHidden;
     private FoodType type;
     private Boolean ownedByUser;
     private List<IngredientDto> ingredients;
