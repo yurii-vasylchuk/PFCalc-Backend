@@ -34,6 +34,7 @@ public class SecurityTokenService {
     }
 
     public UserEntity validate(String code, SecurityTokenType type) {
+        //TODO: Exception - switch to PfccException
         SecurityTokenEntity token = repository.findValid(code, type)
                                               .orElseThrow(() -> new IllegalArgumentException("Invalid security token code: token doesn't exists"));
 
