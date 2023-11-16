@@ -18,7 +18,7 @@ public class AwsServicesConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "pfcc.aws",
-                           value = {"credentials-type", "credentialsType"},
+                           value = "credentials-type",
                            havingValue = INSTANCE_PROFILE_VALUE)
     public AwsCredentialsProvider iamCredentialsProvider() {
         return ProfileCredentialsProvider.create();
@@ -26,7 +26,7 @@ public class AwsServicesConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "pfcc.aws",
-                           value = {"credentials-type", "credentialsType"},
+                           value = "credentials-type",
                            havingValue = PROFILE_VALUE)
     public AwsCredentialsProvider authTokenCredentialsProvider(PfccAppConfigurationProperties conf) {
         return ProfileCredentialsProvider.create(conf.aws.profile);
