@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.mvasylchuk.pfcc.platform.configuration.annotations.ConditionalOnMailEnabled;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.sesv2.SesV2Client;
@@ -14,11 +17,7 @@ import software.amazon.awssdk.services.sesv2.model.GetEmailTemplateResponse;
 import software.amazon.awssdk.services.sesv2.model.ListEmailTemplatesResponse;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @ConditionalOnMailEnabled
 class SesTemplateSynchronizer {
-    private static final String TEMPLATES_PATH = "/templates";
+    private static final String TEMPLATES_PATH = "templates";
     private static final int LIST_TEMPLATE_PAGE_SIZE = 50;
 
     private final ObjectMapper objectMapper;
@@ -120,20 +119,16 @@ class SesTemplateSynchronizer {
     }
 
     @NotNull
-    List<TemplateDto> loadTemplates() throws URISyntaxException, IOException {
-        URI templatesUri = SesTemplateSynchronizer.class.getResource(TEMPLATES_PATH).toURI();
-        List<Path> templatesPaths = Files.walk(Paths.get(templatesUri))
-                                         .filter(path -> !Files.isDirectory(path) && path.getFileName()
-                                                                                         .toString()
-                                                                                         .endsWith(".json"))
-                                         .toList();
+    List<TemplateDto> loadTemplates() throws IOException {
+        ResourcePatternResolver resourcePatResolver = new PathMatchingResourcePatternResolver();
+        Resource[] templates = resourcePatResolver.getResources("classpath*:%s/*.json".formatted(TEMPLATES_PATH));
 
         List<TemplateDto> localTemplates = new ArrayList<>();
-        for (Path templatePath : templatesPaths) {
+        for (Resource template : templates) {
             try {
-                localTemplates.add(objectMapper.readValue(templatePath.toFile(), TemplateDto.class));
+                localTemplates.add(objectMapper.readValue(template.getInputStream(), TemplateDto.class));
             } catch (Exception e) {
-                log.error("Unable to parse template: %s".formatted(templatePath.toString()), e);
+                log.error("Unable to parse template: %s".formatted(template.getFilename()), e);
             }
         }
         return localTemplates;

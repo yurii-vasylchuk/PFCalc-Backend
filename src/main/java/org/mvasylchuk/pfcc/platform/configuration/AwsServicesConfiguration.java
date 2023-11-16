@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.InstanceProfileCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.services.sesv2.SesV2Client;
 
@@ -21,7 +22,7 @@ public class AwsServicesConfiguration {
                            value = "credentials-type",
                            havingValue = INSTANCE_PROFILE_VALUE)
     public AwsCredentialsProvider iamCredentialsProvider() {
-        return ProfileCredentialsProvider.create();
+        return InstanceProfileCredentialsProvider.create();
     }
 
     @Bean
