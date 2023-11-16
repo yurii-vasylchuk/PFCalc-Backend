@@ -17,13 +17,13 @@ import static org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurat
 public class AwsServicesConfiguration {
 
     @Bean
-    @ConditionalOnProperty(value = "pfcc.security.aws.credentialsType", havingValue = INSTANCE_PROFILE_VALUE)
+    @ConditionalOnProperty(value = "pfcc.aws.credentialsType", havingValue = INSTANCE_PROFILE_VALUE)
     public AwsCredentialsProvider iamCredentialsProvider() {
         return ProfileCredentialsProvider.create();
     }
 
     @Bean
-    @ConditionalOnProperty(value = "pfcc.security.aws.credentialsType", havingValue = PROFILE_VALUE)
+    @ConditionalOnProperty(value = "pfcc.aws.credentialsType", havingValue = PROFILE_VALUE)
     public AwsCredentialsProvider authTokenCredentialsProvider(PfccAppConfigurationProperties conf) {
         return ProfileCredentialsProvider.create(conf.aws.profile);
     }
