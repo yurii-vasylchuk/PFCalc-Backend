@@ -41,9 +41,9 @@ public class PfccAppConfigurationFactory {
 
     public static PfccAppConfigurationProperties.AwsConfiguration aws(@NonNull String region, PfccAppConfigurationProperties.AwsConfiguration.@NonNull AwsCredentialsType type, String profile) {
         return new PfccAppConfigurationProperties.AwsConfiguration(
-                region,
                 type,
-                profile
+                profile,
+                region
         );
     }
 

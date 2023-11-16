@@ -22,7 +22,7 @@ public class FoodService {
 
     @Transactional(rollbackOn = Exception.class)
     public FoodDto addFood(FoodDto request) {
-       FoodEntity foodEntity= foodMappingService.toEntity(request);
+        FoodEntity foodEntity = foodMappingService.toEntity(request);
 
         foodRepository.save(foodEntity);
 

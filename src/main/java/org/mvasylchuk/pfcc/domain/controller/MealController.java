@@ -39,10 +39,12 @@ public class MealController {
 
     @GetMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse <Page<QueryMealDto>> get(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-                                                         @RequestParam(name = "pageSize", required = false) Integer pageSize,
-                                                         @RequestParam(name = "from", required = false) LocalDateTime from,
-                                                         @RequestParam(name = "to", required = false) LocalDateTime to) {
+    public BaseResponse<Page<QueryMealDto>> get(@RequestParam(name = "page",
+                                                              required = false,
+                                                              defaultValue = "0") Integer page,
+                                                @RequestParam(name = "pageSize", required = false) Integer pageSize,
+                                                @RequestParam(name = "from", required = false) LocalDateTime from,
+                                                @RequestParam(name = "to", required = false) LocalDateTime to) {
 
         return BaseResponse.success(mealService.getMealList(page, pageSize, from, to));
     }

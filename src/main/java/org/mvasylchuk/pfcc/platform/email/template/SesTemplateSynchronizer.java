@@ -123,7 +123,9 @@ class SesTemplateSynchronizer {
     List<TemplateDto> loadTemplates() throws URISyntaxException, IOException {
         URI templatesUri = SesTemplateSynchronizer.class.getResource(TEMPLATES_PATH).toURI();
         List<Path> templatesPaths = Files.walk(Paths.get(templatesUri))
-                                         .filter(path -> !Files.isDirectory(path) && path.getFileName().toString().endsWith(".json"))
+                                         .filter(path -> !Files.isDirectory(path) && path.getFileName()
+                                                                                         .toString()
+                                                                                         .endsWith(".json"))
                                          .toList();
 
         List<TemplateDto> localTemplates = new ArrayList<>();

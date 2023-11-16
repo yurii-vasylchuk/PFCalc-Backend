@@ -38,32 +38,32 @@ public class MealJooqRepository {
         result.setPageSize(pageSize);
         result.setTotalPages((totalElements / pageSize) + (totalElements % pageSize > 0 ? 1 : 0));
         List<QueryMealDto> meals = ctx.selectFrom(MEAL
-                        .leftJoin(FOOD)
-                        .on(MEAL.FOOD_ID.equal(FOOD.ID))
-                        .leftJoin(DISH)
-                        .on(MEAL.DISH_ID.equal(DISH.ID)))
-                .where(condition)
-                .limit(pageSize)
-                .offset(page * pageSize)
-                .fetch(dbMeal -> {
-                    QueryMealDto meal = new QueryMealDto();
-                    meal.setId(dbMeal.get(MEAL.ID));
-                    if (dbMeal.get(MEAL.DISH_ID) != null) {
-                        meal.setName(dbMeal.get(DISH.NAME));
-                    } else {
-                        meal.setName(dbMeal.get(FOOD.NAME));
-                    }
-                    meal.setEatenOn(dbMeal.get(MEAL.EATEN_ON));
-                    meal.setWeight(dbMeal.get(MEAL.WEIGHT));
-                    meal.setPfcc(new PfccDto(dbMeal.get(MEAL.PROTEIN),
-                            dbMeal.get(MEAL.FAT),
-                            dbMeal.get(MEAL.CARBOHYDRATES),
-                            dbMeal.get(MEAL.CALORIES)));
-                    meal.setFoodId(dbMeal.get(MEAL.FOOD_ID));
-                    meal.setDishId(dbMeal.get(MEAL.DISH_ID));
+                                              .leftJoin(FOOD)
+                                              .on(MEAL.FOOD_ID.equal(FOOD.ID))
+                                              .leftJoin(DISH)
+                                              .on(MEAL.DISH_ID.equal(DISH.ID)))
+                                      .where(condition)
+                                      .limit(pageSize)
+                                      .offset(page * pageSize)
+                                      .fetch(dbMeal -> {
+                                          QueryMealDto meal = new QueryMealDto();
+                                          meal.setId(dbMeal.get(MEAL.ID));
+                                          if (dbMeal.get(MEAL.DISH_ID) != null) {
+                                              meal.setName(dbMeal.get(DISH.NAME));
+                                          } else {
+                                              meal.setName(dbMeal.get(FOOD.NAME));
+                                          }
+                                          meal.setEatenOn(dbMeal.get(MEAL.EATEN_ON));
+                                          meal.setWeight(dbMeal.get(MEAL.WEIGHT));
+                                          meal.setPfcc(new PfccDto(dbMeal.get(MEAL.PROTEIN),
+                                                  dbMeal.get(MEAL.FAT),
+                                                  dbMeal.get(MEAL.CARBOHYDRATES),
+                                                  dbMeal.get(MEAL.CALORIES)));
+                                          meal.setFoodId(dbMeal.get(MEAL.FOOD_ID));
+                                          meal.setDishId(dbMeal.get(MEAL.DISH_ID));
 
-                    return meal;
-                });
+                                          return meal;
+                                      });
         result.setData(meals);
         return result;
     }
@@ -71,29 +71,29 @@ public class MealJooqRepository {
     public QueryMealDto getById(Long id) {
 
         return ctx.selectFrom(MEAL
-                .leftJoin(FOOD)
-                .on(MEAL.FOOD_ID.equal(FOOD.ID))
-                .leftJoin(DISH)
-                .on(MEAL.DISH_ID.equal(DISH.ID)))
-                .where(MEAL.ID.equal(id))
-                .fetchOne(dbMeal -> {
-                    QueryMealDto meal = new QueryMealDto();
-                    meal.setId(dbMeal.get(MEAL.ID));
-                    if (dbMeal.get(MEAL.DISH_ID) != null) {
-                        meal.setName(dbMeal.get(DISH.NAME));
-                    } else {
-                        meal.setName(dbMeal.get(FOOD.NAME));
-                    }
-                    meal.setEatenOn(dbMeal.get(MEAL.EATEN_ON));
-                    meal.setWeight(dbMeal.get(MEAL.WEIGHT));
-                    meal.setPfcc(new PfccDto(dbMeal.get(MEAL.PROTEIN),
-                            dbMeal.get(MEAL.FAT),
-                            dbMeal.get(MEAL.CARBOHYDRATES),
-                            dbMeal.get(MEAL.CALORIES)));
-                    meal.setFoodId(dbMeal.get(MEAL.FOOD_ID));
-                    meal.setDishId(dbMeal.get(MEAL.DISH_ID));
+                          .leftJoin(FOOD)
+                          .on(MEAL.FOOD_ID.equal(FOOD.ID))
+                          .leftJoin(DISH)
+                          .on(MEAL.DISH_ID.equal(DISH.ID)))
+                  .where(MEAL.ID.equal(id))
+                  .fetchOne(dbMeal -> {
+                      QueryMealDto meal = new QueryMealDto();
+                      meal.setId(dbMeal.get(MEAL.ID));
+                      if (dbMeal.get(MEAL.DISH_ID) != null) {
+                          meal.setName(dbMeal.get(DISH.NAME));
+                      } else {
+                          meal.setName(dbMeal.get(FOOD.NAME));
+                      }
+                      meal.setEatenOn(dbMeal.get(MEAL.EATEN_ON));
+                      meal.setWeight(dbMeal.get(MEAL.WEIGHT));
+                      meal.setPfcc(new PfccDto(dbMeal.get(MEAL.PROTEIN),
+                              dbMeal.get(MEAL.FAT),
+                              dbMeal.get(MEAL.CARBOHYDRATES),
+                              dbMeal.get(MEAL.CALORIES)));
+                      meal.setFoodId(dbMeal.get(MEAL.FOOD_ID));
+                      meal.setDishId(dbMeal.get(MEAL.DISH_ID));
 
-                    return meal;
-                });
+                      return meal;
+                  });
     }
 }

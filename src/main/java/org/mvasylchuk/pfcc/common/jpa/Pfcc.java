@@ -26,6 +26,18 @@ public class Pfcc {
     @Column(name = "calories")
     private BigDecimal calories;
 
+    public static Pfcc combine(Iterable<Pfcc> inputs) {
+        return StreamSupport.stream(inputs.spliterator(), true)
+                            .reduce(new Pfcc(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                                    (pfcc, pfcc2) -> new Pfcc(
+                                            pfcc.protein.add(pfcc2.protein),
+                                            pfcc.fat.add(pfcc2.fat),
+                                            pfcc.carbohydrates.add(pfcc2.carbohydrates),
+                                            pfcc.calories.add(pfcc2.calories)
+                                    ));
+
+    }
+
     public Pfcc multiply(BigDecimal multiplier) {
         return new Pfcc(this.protein.multiply(multiplier),
                 this.fat.multiply(multiplier),
@@ -39,17 +51,5 @@ public class Pfcc {
                 this.fat.divide(divisor, 4, RoundingMode.HALF_UP),
                 this.carbohydrates.divide(divisor, 4, RoundingMode.HALF_UP),
                 this.calories.divide(divisor, 4, RoundingMode.HALF_UP));
-    }
-
-    public static Pfcc combine(Iterable<Pfcc> inputs) {
-        return StreamSupport.stream(inputs.spliterator(), true)
-                .reduce(new Pfcc(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
-                        (pfcc, pfcc2) -> new Pfcc(
-                                pfcc.protein.add(pfcc2.protein),
-                                pfcc.fat.add(pfcc2.fat),
-                                pfcc.carbohydrates.add(pfcc2.carbohydrates),
-                                pfcc.calories.add(pfcc2.calories)
-                        ));
-
     }
 }

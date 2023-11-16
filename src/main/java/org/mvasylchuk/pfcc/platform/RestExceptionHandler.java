@@ -30,7 +30,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    protected BaseResponse<Void> handle(AccessDeniedException e) {
+    protected BaseResponse<Void> handle(AccessDeniedException ignored) {
         return BaseResponse.fail("Access denied");
     }
 
@@ -38,12 +38,12 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected BaseResponse<Void> handle(MethodArgumentNotValidException e) {
         return BaseResponse.fail(new ValidationErrorsDescriptor(e.getFieldErrors().stream()
-                .map(fe -> new ValidationErrorsDescriptor.FieldValidationErrorsDescriptor(
-                        fe.getField(),
-                        fe.getRejectedValue(),
-                        fe.getDefaultMessage()
-                ))
-                .toList()));
+                                                                 .map(fe -> new ValidationErrorsDescriptor.FieldValidationErrorsDescriptor(
+                                                                         fe.getField(),
+                                                                         fe.getRejectedValue(),
+                                                                         fe.getDefaultMessage()
+                                                                 ))
+                                                                 .toList()));
     }
 
     @Getter
