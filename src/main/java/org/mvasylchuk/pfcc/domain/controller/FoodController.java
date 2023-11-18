@@ -17,8 +17,8 @@ public class FoodController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<FoodDto> add(@RequestBody FoodDto request) {
-        return BaseResponse.success(foodService.addFood(request));
+    public BaseResponse<FoodDto> save(@RequestBody FoodDto request) {
+        return BaseResponse.success(foodService.saveFood(request));
     }
 
     @DeleteMapping("/{id}")

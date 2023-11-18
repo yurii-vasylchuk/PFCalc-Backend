@@ -4,14 +4,14 @@
 package org.mvasylchuk.pfcc.jooq.tables.records;
 
 
+import java.time.LocalDateTime;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record8;
 import org.jooq.Row8;
 import org.jooq.impl.UpdatableRecordImpl;
 import org.mvasylchuk.pfcc.jooq.tables.SecurityTokens;
-
-import java.time.LocalDateTime;
 
 
 /**
@@ -93,10 +93,10 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     }
 
     /**
-     * Create a detached SecurityTokensRecord
+     * Setter for <code>pfcc.security_tokens.valid_until</code>.
      */
-    public SecurityTokensRecord() {
-        super(SecurityTokens.SECURITY_TOKENS);
+    public void setValidUntil(LocalDateTime value) {
+        set(5, value);
     }
 
     /**
@@ -121,27 +121,17 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     }
 
     /**
-     * Create a detached, initialised SecurityTokensRecord
+     * Setter for <code>pfcc.security_tokens.modified_at</code>.
      */
-    public SecurityTokensRecord(Long id, String code, Long userId, String type, Byte isActive, LocalDateTime validUntil, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        super(SecurityTokens.SECURITY_TOKENS);
-
-        setId(id);
-        setCode(code);
-        setUserId(userId);
-        setType(type);
-        setIsActive(isActive);
-        setValidUntil(validUntil);
-        setCreatedAt(createdAt);
-        setModifiedAt(modifiedAt);
-        resetChangedOnNotNull();
+    public void setModifiedAt(LocalDateTime value) {
+        set(7, value);
     }
 
     /**
-     * Setter for <code>pfcc.security_tokens.valid_until</code>.
+     * Getter for <code>pfcc.security_tokens.modified_at</code>.
      */
-    public void setValidUntil(LocalDateTime value) {
-        set(5, value);
+    public LocalDateTime getModifiedAt() {
+        return (LocalDateTime) get(7);
     }
 
     // -------------------------------------------------------------------------
@@ -157,18 +147,14 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     // Record8 type implementation
     // -------------------------------------------------------------------------
 
-    /**
-     * Getter for <code>pfcc.security_tokens.modified_at</code>.
-     */
-    public LocalDateTime getModifiedAt() {
-        return (LocalDateTime) get(7);
+    @Override
+    public Row8<Long, String, Long, String, Byte, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
-    /**
-     * Setter for <code>pfcc.security_tokens.modified_at</code>.
-     */
-    public void setModifiedAt(LocalDateTime value) {
-        set(7, value);
+    @Override
+    public Row8<Long, String, Long, String, Byte, LocalDateTime, LocalDateTime, LocalDateTime> valuesRow() {
+        return (Row8) super.valuesRow();
     }
 
     @Override
@@ -202,13 +188,13 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     }
 
     @Override
-    public Row8<Long, String, Long, String, Byte, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Field<LocalDateTime> field7() {
+        return SecurityTokens.SECURITY_TOKENS.CREATED_AT;
     }
 
     @Override
-    public Row8<Long, String, Long, String, Byte, LocalDateTime, LocalDateTime, LocalDateTime> valuesRow() {
-        return (Row8) super.valuesRow();
+    public Field<LocalDateTime> field8() {
+        return SecurityTokens.SECURITY_TOKENS.MODIFIED_AT;
     }
 
     @Override
@@ -242,13 +228,13 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     }
 
     @Override
-    public Field<LocalDateTime> field7() {
-        return SecurityTokens.SECURITY_TOKENS.CREATED_AT;
+    public LocalDateTime component7() {
+        return getCreatedAt();
     }
 
     @Override
-    public Field<LocalDateTime> field8() {
-        return SecurityTokens.SECURITY_TOKENS.MODIFIED_AT;
+    public LocalDateTime component8() {
+        return getModifiedAt();
     }
 
     @Override
@@ -277,18 +263,18 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     }
 
     @Override
-    public LocalDateTime component7() {
+    public LocalDateTime value6() {
+        return getValidUntil();
+    }
+
+    @Override
+    public LocalDateTime value7() {
         return getCreatedAt();
     }
 
     @Override
-    public LocalDateTime component8() {
+    public LocalDateTime value8() {
         return getModifiedAt();
-    }
-
-    @Override
-    public LocalDateTime value6() {
-        return getValidUntil();
     }
 
     @Override
@@ -356,13 +342,27 @@ public class SecurityTokensRecord extends UpdatableRecordImpl<SecurityTokensReco
     // Constructors
     // -------------------------------------------------------------------------
 
-    @Override
-    public LocalDateTime value7() {
-        return getCreatedAt();
+    /**
+     * Create a detached SecurityTokensRecord
+     */
+    public SecurityTokensRecord() {
+        super(SecurityTokens.SECURITY_TOKENS);
     }
 
-    @Override
-    public LocalDateTime value8() {
-        return getModifiedAt();
+    /**
+     * Create a detached, initialised SecurityTokensRecord
+     */
+    public SecurityTokensRecord(Long id, String code, Long userId, String type, Byte isActive, LocalDateTime validUntil, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        super(SecurityTokens.SECURITY_TOKENS);
+
+        setId(id);
+        setCode(code);
+        setUserId(userId);
+        setType(type);
+        setIsActive(isActive);
+        setValidUntil(validUntil);
+        setCreatedAt(createdAt);
+        setModifiedAt(modifiedAt);
+        resetChangedOnNotNull();
     }
 }

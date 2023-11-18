@@ -4,8 +4,25 @@
 package org.mvasylchuk.pfcc.jooq.tables;
 
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Function8;
+import org.jooq.Index;
+import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.*;
+import org.jooq.Records;
+import org.jooq.Row8;
+import org.jooq.Schema;
+import org.jooq.SelectField;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -13,11 +30,6 @@ import org.mvasylchuk.pfcc.jooq.Indexes;
 import org.mvasylchuk.pfcc.jooq.Keys;
 import org.mvasylchuk.pfcc.jooq.Pfcc;
 import org.mvasylchuk.pfcc.jooq.tables.records.SecurityTokensRecord;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
 
 
 /**
@@ -69,22 +81,17 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     /**
      * The column <code>pfcc.security_tokens.valid_until</code>.
      */
-    public final TableField<SecurityTokensRecord, LocalDateTime> VALID_UNTIL = createField(DSL.name("valid_until"), SQLDataType.LOCALDATETIME(0)
-                                                                                                                               .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<SecurityTokensRecord, LocalDateTime> VALID_UNTIL = createField(DSL.name("valid_until"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>pfcc.security_tokens.created_at</code>.
      */
-    public final TableField<SecurityTokensRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0)
-                                                                                                                             .nullable(false)
-                                                                                                                             .defaultValue(DSL.field(DSL.raw("'0000-00-00 00:00:00'"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<SecurityTokensRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("'0000-00-00 00:00:00'"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>pfcc.security_tokens.modified_at</code>.
      */
-    public final TableField<SecurityTokensRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(0)
-                                                                                                                               .nullable(false)
-                                                                                                                               .defaultValue(DSL.field(DSL.raw("'0000-00-00 00:00:00'"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<SecurityTokensRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("'0000-00-00 00:00:00'"), SQLDataType.LOCALDATETIME)), this, "");
 
     private SecurityTokens(Name alias, Table<SecurityTokensRecord> aliased) {
         this(alias, aliased, null);

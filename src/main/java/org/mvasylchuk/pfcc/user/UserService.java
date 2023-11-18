@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
 import org.mvasylchuk.pfcc.platform.email.EmailService;
+import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
+import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenType;
@@ -79,10 +81,10 @@ public class UserService {
 
     public AuthTokensDto login(LoginRequestDto request) {
         UserEntity user = userRepository.findByEmail(request.getEmail())
-                                        .orElseThrow();
+                .orElseThrow(() -> new PfccException(ApiErrorCode.SECURITY));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Password doesn't match");
+            throw new PfccException("Password doesn't match", ApiErrorCode.SECURITY);
         }
 
         return generateAuthTokens(user);

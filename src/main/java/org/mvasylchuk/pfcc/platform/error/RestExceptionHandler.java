@@ -1,4 +1,4 @@
-package org.mvasylchuk.pfcc.platform;
+package org.mvasylchuk.pfcc.platform.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +25,20 @@ public class RestExceptionHandler {
     protected BaseResponse<Void> handle(Exception e) {
         log.error("Unhandled exception", e);
         String msg = conf.exposeException != null && conf.exposeException ? e.getMessage() : "Internal error";
-        return BaseResponse.fail(msg);
+        return BaseResponse.fail(msg, null);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     protected BaseResponse<Void> handle(AccessDeniedException ignored) {
-        return BaseResponse.fail("Access denied");
+        return BaseResponse.fail("Access denied", null);
+    }
+
+    @ExceptionHandler(PfccException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected BaseResponse<Void> handle(PfccException e) {
+        log.info("Invalid request", e);
+        return BaseResponse.fail("Invalid request", e.getErrorCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -43,7 +50,7 @@ public class RestExceptionHandler {
                                                                          fe.getRejectedValue(),
                                                                          fe.getDefaultMessage()
                                                                  ))
-                                                                 .toList()));
+                                                                 .toList()), ApiErrorCode.VALIDATION);
     }
 
     @Getter

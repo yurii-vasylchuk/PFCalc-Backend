@@ -1,5 +1,8 @@
 package org.mvasylchuk.pfcc.domain.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +18,13 @@ import java.util.List;
 @NoArgsConstructor
 public class FoodDto {
     private Long id;
+    @NotEmpty
     private String name;
     private String description;
+    @Valid
     private PfccDto pfcc;
     private boolean isHidden;
+    @NotNull
     private FoodType type;
     private Boolean ownedByUser;
     private List<IngredientDto> ingredients;
