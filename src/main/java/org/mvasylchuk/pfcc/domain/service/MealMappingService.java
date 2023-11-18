@@ -9,6 +9,8 @@ import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
 import org.mvasylchuk.pfcc.domain.entity.MealEntity;
 import org.mvasylchuk.pfcc.domain.repository.DishRepository;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
+import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
+import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +34,11 @@ public class MealMappingService {
         Pfcc pfcc;
 
         if (mealDto.getDishId() != null) {
-            DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow();
+            DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow(()->new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
             pfcc = dish.getPfcc();
 
         } else {
-            FoodEntity food = foodRepository.findById(mealDto.getFoodId()).orElseThrow();
+            FoodEntity food = foodRepository.findById(mealDto.getFoodId()).orElseThrow(()->new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
             pfcc = food.getPfcc();
 
         }
@@ -45,11 +47,11 @@ public class MealMappingService {
         result.setWeight(mealDto.getWeight());
         result.setPfcc(pfcc.multiply(coef));
         if (mealDto.getDishId() != null) {
-            DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow();
+            DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow(()->new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
             result.setFood(dish.getFood());
             result.setDish(dish);
         } else {
-            result.setFood(foodRepository.findById(mealDto.getFoodId()).orElseThrow());
+            result.setFood(foodRepository.findById(mealDto.getFoodId()).orElseThrow(()->new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND)));
         }
         result.setUser(userService.currentUser());
         result.setEatenOn(mealDto.getEatenOn());

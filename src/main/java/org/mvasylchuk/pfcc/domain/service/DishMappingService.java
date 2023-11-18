@@ -7,6 +7,8 @@ import org.mvasylchuk.pfcc.domain.dto.DishDto;
 import org.mvasylchuk.pfcc.domain.dto.IngredientDto;
 import org.mvasylchuk.pfcc.domain.entity.*;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
+import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
+import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.user.UserEntity;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class DishMappingService {
 
     @Transactional(rollbackOn = Exception.class)
     public DishEntity toEntity(DishDto dishDto) {
-        FoodEntity food = foodRepository.findById(dishDto.getFoodId()).orElseThrow();
+        FoodEntity food = foodRepository.findById(dishDto.getFoodId()).orElseThrow(()->new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
         List<IngredientDto> ingredients = dishDto.getIngredients();
         Pfcc resultPfcc;
         BigDecimal recipeWeight;
@@ -34,7 +36,7 @@ public class DishMappingService {
             resultPfcc = Pfcc.combine(
                     ingredients.stream()
                                .map(di -> foodRepository.findById(di.getId())
-                                                        .orElseThrow()
+                                                        .orElseThrow(()->new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND))
                                                         .getPfcc()
                                                         .multiply(di.getIngredientWeight()))
                                .toList()

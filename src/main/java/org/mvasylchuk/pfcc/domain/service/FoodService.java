@@ -8,8 +8,12 @@ import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
 import org.mvasylchuk.pfcc.domain.entity.FoodType;
 import org.mvasylchuk.pfcc.domain.repository.FoodJooqRepository;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
+import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
+import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +25,12 @@ public class FoodService {
 
 
     @Transactional(rollbackOn = Exception.class)
-    public FoodDto addFood(FoodDto request) {
+    public FoodDto saveFood(FoodDto request) {
+        Long currentUserId = userService.currentUser().getId();
         FoodEntity foodEntity = foodMappingService.toEntity(request);
-
+        if (!Objects.equals(foodEntity.getOwner().getId(), currentUserId)) {
+            throw new PfccException(ApiErrorCode.USER_IS_NOT_OWNER);
+        }
         foodRepository.save(foodEntity);
 
         return foodMappingService.toDto(foodEntity);
@@ -31,7 +38,14 @@ public class FoodService {
 
     @Transactional(rollbackOn = Exception.class)
     public void remove(Long id) {
-        FoodEntity food = foodRepository.findById(id).orElseThrow();
+        FoodEntity food = foodRepository.findById(id).orElseThrow(() -> new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
+
+        Long foodOwner = food.getOwner().getId();
+        Long currentUserId = userService.currentUser().getId();
+        if (!Objects.equals(foodOwner, currentUserId)) {
+            throw new PfccException(ApiErrorCode.USER_IS_NOT_OWNER);
+        }
+
         food.setIsDeleted(true);
         foodRepository.save(food);
     }
@@ -46,18 +60,5 @@ public class FoodService {
     public FoodDto getFoodById(Long id) {
         Long userId = userService.currentUser().getId();
         return foodJooqRepository.getFoodById(id, userId);
-    }
-
-    @Transactional(rollbackOn = Exception.class)
-    public FoodDto updateFood(FoodDto request) {
-        if (request.getId() == null) {
-            throw new IllegalArgumentException("Id must not be null");
-        }
-        if (!foodRepository.existsById(request.getId())) {
-            throw new IllegalArgumentException("Food with provided id %d doesn't exists".formatted(request.getId()));
-        }
-        FoodEntity foodEntity = foodMappingService.toEntity(request);
-        foodRepository.save(foodEntity);
-        return foodMappingService.toDto(foodEntity);
     }
 }

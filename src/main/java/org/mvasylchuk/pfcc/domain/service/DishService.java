@@ -7,6 +7,8 @@ import org.mvasylchuk.pfcc.domain.dto.DishDto;
 import org.mvasylchuk.pfcc.domain.entity.DishEntity;
 import org.mvasylchuk.pfcc.domain.repository.DishJooqRepository;
 import org.mvasylchuk.pfcc.domain.repository.DishRepository;
+import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
+import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,7 @@ public class DishService {
 
     @Transactional(rollbackOn = Exception.class)
     public void remove(Long id) {
-        DishEntity dish = dishRepository.findById(id).orElseThrow();
+        DishEntity dish = dishRepository.findById(id).orElseThrow(()->new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
         dish.setDeleted(true);
         dishRepository.save(dish);
     }
