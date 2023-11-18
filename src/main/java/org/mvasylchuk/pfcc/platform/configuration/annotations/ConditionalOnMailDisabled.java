@@ -7,8 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@ConditionalOnProperty(name = "pfcc.app.mail.enabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(name = "pfcc.mail.enabled", havingValue = "false", matchIfMissing = true)
 public @interface ConditionalOnMailDisabled {
 }

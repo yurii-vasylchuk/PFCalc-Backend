@@ -59,11 +59,11 @@ public class MealMappingService {
 
     @Transactional(rollbackOn = Exception.class)
     public CommandMealDto toDto(MealEntity mealEntity) {
-            return new CommandMealDto(mealEntity.getId(),
-                    mealEntity.getEatenOn(),
-                    mealEntity.getWeight(),
-                    pfccMappingService.toPfccDto(mealEntity.getPfcc()),
-                    mealEntity.getFood() != null ? mealEntity.getFood().getId() : null,
-                    mealEntity.getDish() != null ? mealEntity.getDish().getId() : null);
+        return new CommandMealDto(mealEntity.getId(),
+                mealEntity.getEatenOn(),
+                mealEntity.getWeight(),
+                pfccMappingService.toPfccDto(mealEntity.getPfcc()),
+                mealEntity.getFood() != null ? mealEntity.getFood().getId() : null,
+                mealEntity.getDish() != null ? mealEntity.getDish().getId() : null);
     }
 }

@@ -39,21 +39,23 @@ public class FoodMappingService {
         if (foodDto.getType() == FoodType.RECIPE) {
 
             ingredientList = foodDto.getIngredients()
-                    .stream()
-                    .map(ingredientDto -> {
-                        IngredientEntity ingredientEntity = new IngredientEntity();
+                                    .stream()
+                                    .map(ingredientDto -> {
+                                        IngredientEntity ingredientEntity = new IngredientEntity();
 
-                        ingredientEntity.setIngredientWeight(ingredientDto.getIngredientWeight());
+                                        ingredientEntity.setIngredientWeight(ingredientDto.getIngredientWeight());
 
-                        ingredientEntity.setIngredient(foodRepository.findById(ingredientDto.getId()).orElseThrow());
+                                        ingredientEntity.setIngredient(foodRepository.findById(ingredientDto.getId())
+                                                                                     .orElseThrow());
 
-                        ingredientEntity.setRecipe(result);
+                                        ingredientEntity.setRecipe(result);
 
-                        return ingredientEntity;
-                    }).toList();
+                                        return ingredientEntity;
+                                    }).toList();
 
             pfcc = Pfcc.combine(ingredientList.stream()
-                    .map(ingredientEntity -> ingredientEntity.getIngredient().getPfcc()).toList());
+                                              .map(ingredientEntity -> ingredientEntity.getIngredient().getPfcc())
+                                              .toList());
 
             result.setIngredients(ingredientList);
             result.setPfcc(pfcc);
@@ -69,23 +71,23 @@ public class FoodMappingService {
         List<IngredientDto> ingredientList = new ArrayList<>();
         if (foodEntity.getIngredients() != null) {
             ingredientList = foodEntity.getIngredients().stream()
-                    .map(ingredientEntity -> {
-                        FoodEntity ing = ingredientEntity.getIngredient();
-                        UserEntity user = userService.currentUser();
-                        Boolean ownedByUser = user.getId().equals(ing.getOwner().getId());
+                                       .map(ingredientEntity -> {
+                                           FoodEntity ing = ingredientEntity.getIngredient();
+                                           UserEntity user = userService.currentUser();
+                                           Boolean ownedByUser = user.getId().equals(ing.getOwner().getId());
 
-                        return new IngredientDto(
-                                ing.getId(),
-                                ing.getName(),
-                                ing.getDescription(),
-                                pfccMappingService.toPfccDto(ing.getPfcc()),
-                                ing.getIsHidden(),
-                                ing.getType(),
-                                ownedByUser,
-                                null,
-                                ingredientEntity.getIngredientWeight()
-                        );
-                    }).toList();
+                                           return new IngredientDto(
+                                                   ing.getId(),
+                                                   ing.getName(),
+                                                   ing.getDescription(),
+                                                   pfccMappingService.toPfccDto(ing.getPfcc()),
+                                                   ing.getIsHidden(),
+                                                   ing.getType(),
+                                                   ownedByUser,
+                                                   null,
+                                                   ingredientEntity.getIngredientWeight()
+                                           );
+                                       }).toList();
         }
         return new FoodDto(foodEntity.getId(),
                 foodEntity.getName(),

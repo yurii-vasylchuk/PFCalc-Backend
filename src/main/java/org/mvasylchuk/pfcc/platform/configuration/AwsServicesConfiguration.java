@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.InstanceProfileCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.services.sesv2.SesV2Client;
 
@@ -17,13 +18,17 @@ import static org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurat
 public class AwsServicesConfiguration {
 
     @Bean
-    @ConditionalOnProperty(value = "pfcc.security.aws.credentialsType", havingValue = INSTANCE_PROFILE_VALUE)
+    @ConditionalOnProperty(prefix = "pfcc.aws",
+                           value = "credentials-type",
+                           havingValue = INSTANCE_PROFILE_VALUE)
     public AwsCredentialsProvider iamCredentialsProvider() {
-        return ProfileCredentialsProvider.create();
+        return InstanceProfileCredentialsProvider.create();
     }
 
     @Bean
-    @ConditionalOnProperty(value = "pfcc.security.aws.credentialsType", havingValue = PROFILE_VALUE)
+    @ConditionalOnProperty(prefix = "pfcc.aws",
+                           value = "credentials-type",
+                           havingValue = PROFILE_VALUE)
     public AwsCredentialsProvider authTokenCredentialsProvider(PfccAppConfigurationProperties conf) {
         return ProfileCredentialsProvider.create(conf.aws.profile);
     }
@@ -31,13 +36,8 @@ public class AwsServicesConfiguration {
     @Bean
     @ConditionalOnMailEnabled
     @ConditionalOnBean(AwsCredentialsProvider.class)
-    public SesV2Client sesV2Client(PfccAppConfigurationProperties conf,
-                                   AwsCredentialsProvider credentialsProvider) {
-        return SesV2Client
-                .builder()
-                .region(conf.aws.getRegion())
-                .credentialsProvider(credentialsProvider)
-                .build();
+    public SesV2Client sesV2Client(PfccAppConfigurationProperties conf, AwsCredentialsProvider credentialsProvider) {
+        return SesV2Client.builder().region(conf.aws.getRegion()).credentialsProvider(credentialsProvider).build();
     }
 
 }

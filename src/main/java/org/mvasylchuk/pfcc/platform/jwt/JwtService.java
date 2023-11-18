@@ -26,18 +26,18 @@ public class JwtService {
 
     public String generateToken(UserEntity user) {
         return Jwts.builder()
-                .setIssuer(this.configuration.jwt.issuer)
-                .setSubject(user.getEmail())
-                .setNotBefore(new Date())
-                .setIssuedAt(new Date())
-                .setExpiration(Date.from(
-                        LocalDateTime.now().plus(configuration.jwt.authTokenExpiration)
-                                .atZone(ZoneId.systemDefault())
-                                .toInstant()))
-                .addClaims(Map.of(
-                        PfccAuthToken.ID_CLAIM_NAME, user.getId(),
-                        PfccAuthToken.ROLES_CLAIM_NAME, user.getRoles()))
-                .signWith(rsaKey.getPrivate())
-                .compact();
+                   .setIssuer(this.configuration.auth.issuer)
+                   .setSubject(user.getEmail())
+                   .setNotBefore(new Date())
+                   .setIssuedAt(new Date())
+                   .setExpiration(Date.from(
+                           LocalDateTime.now().plus(configuration.auth.authTokenExpiration)
+                                        .atZone(ZoneId.systemDefault())
+                                        .toInstant()))
+                   .addClaims(Map.of(
+                           PfccAuthToken.ID_CLAIM_NAME, user.getId(),
+                           PfccAuthToken.ROLES_CLAIM_NAME, user.getRoles()))
+                   .signWith(rsaKey.getPrivate())
+                   .compact();
     }
 }

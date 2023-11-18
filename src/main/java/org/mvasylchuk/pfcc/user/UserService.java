@@ -79,7 +79,7 @@ public class UserService {
 
     public AuthTokensDto login(LoginRequestDto request) {
         UserEntity user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                                        .orElseThrow();
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Password doesn't match");
@@ -106,7 +106,7 @@ public class UserService {
     private AuthTokensDto generateAuthTokens(UserEntity user) {
         String refreshToken = securityTokenService.generateSecurityToken(user,
                 SecurityTokenType.REFRESH_TOKEN,
-                LocalDateTime.now().plus(conf.jwt.refreshTokenExpiration));
+                LocalDateTime.now().plus(conf.auth.refreshTokenExpiration));
         String token = jwtService.generateToken(user);
         return new AuthTokensDto(token, refreshToken);
     }

@@ -14,16 +14,16 @@ import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
 import org.mvasylchuk.pfcc.user.dto.AuthTokensDto;
 import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
+import org.springframework.boot.web.server.Cookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-
+import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mvasylchuk.pfcc.securitytoken.SecurityTokenType.EMAIL_VERIFICATION;
 import static org.mvasylchuk.pfcc.securitytoken.SecurityTokenType.REFRESH_TOKEN;
+import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -40,17 +40,26 @@ class UserServiceTest {
     @Mock
     private SecurityTokenService securityTokenService;
     @Spy
-    private PfccAppConfigurationProperties conf = new PfccAppConfigurationProperties(
+    private PfccAppConfigurationProperties conf = pfccConf(
             null,
-            new PfccAppConfigurationProperties.PfccJwtConfiguration(
+            auth(
                     null,
                     null,
                     null,
                     null,
-                    Duration.of(10, ChronoUnit.DAYS),
-                    Duration.of(30, ChronoUnit.DAYS)
+                    "PT1M",
+                    "PT30M",
+                    Cookie.SameSite.LAX),
+            null,
+            jobs(
+                    dropOutdatedSecTokensConf(
+                            false,
+                            null,
+                            null
+                    )
             ),
-            null, null, null
+            emptyList(),
+            false
     );
 
     @Test
@@ -66,9 +75,9 @@ class UserServiceTest {
                .sendEmailVerificationMail(eq("email"), eq("name"), eq(validationTokenCode), eq(Language.UA));
         when(jwtService.generateToken(any())).thenReturn(accessToken);
         when(securityTokenService.generateSecurityToken(any(), eq(EMAIL_VERIFICATION)))
-               .thenReturn(validationTokenCode);
+                .thenReturn(validationTokenCode);
         when(securityTokenService.generateSecurityToken(any(), eq(REFRESH_TOKEN), any()))
-               .thenReturn(refreshTokenCode);
+                .thenReturn(refreshTokenCode);
 
         AuthTokensDto result = underTest.register(new RegisterRequestDto("email", "password", "name", Language.UA));
 

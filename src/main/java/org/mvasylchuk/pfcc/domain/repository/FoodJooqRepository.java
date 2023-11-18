@@ -28,8 +28,8 @@ public class FoodJooqRepository {
         result.setPageSize(size);
 
         Condition condition = FOOD.OWNER_ID.equal(userId)
-                .or(FOOD.IS_HIDDEN.isFalse())
-                        .and(FOOD.DELETED.isFalse());
+                                           .or(FOOD.IS_HIDDEN.isFalse())
+                                           .and(FOOD.DELETED.isFalse());
 
         if (name != null) {
             condition = condition.and(FOOD.NAME.like("%" + name + "%"));
@@ -43,22 +43,22 @@ public class FoodJooqRepository {
         result.setTotalElements(totalElements);
 
         List<FoodDto> foods = ctx.selectFrom(FOOD)
-                .where(condition)
-                .limit(DSL.inline(size))
-                .offset(DSL.inline(size * page))
+                                 .where(condition)
+                                 .limit(DSL.inline(size))
+                                 .offset(DSL.inline(size * page))
 
-                .fetch(dbFood -> {
-                    FoodDto food = new FoodDto();
-                    food.setId(dbFood.get(FOOD.ID));
-                    food.setName(dbFood.get(FOOD.NAME));
-                    food.setType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
-                    food.setPfcc(new PfccDto(dbFood.get(FOOD.PROTEIN), dbFood.get(FOOD.FAT), dbFood.get(FOOD.CARBOHYDRATES), dbFood.get(FOOD.CALORIES)));
-                    food.setDescription(dbFood.get(FOOD.DESCRIPTION));
-                    food.setHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
-                    food.setOwnedByUser(Objects.equals(dbFood.get(FOOD.OWNER_ID), userId));
+                                 .fetch(dbFood -> {
+                                     FoodDto food = new FoodDto();
+                                     food.setId(dbFood.get(FOOD.ID));
+                                     food.setName(dbFood.get(FOOD.NAME));
+                                     food.setType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
+                                     food.setPfcc(new PfccDto(dbFood.get(FOOD.PROTEIN), dbFood.get(FOOD.FAT), dbFood.get(FOOD.CARBOHYDRATES), dbFood.get(FOOD.CALORIES)));
+                                     food.setDescription(dbFood.get(FOOD.DESCRIPTION));
+                                     food.setHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
+                                     food.setOwnedByUser(Objects.equals(dbFood.get(FOOD.OWNER_ID), userId));
 
-                    return food;
-                });
+                                     return food;
+                                 });
 
         result.setData(foods);
 
@@ -67,45 +67,46 @@ public class FoodJooqRepository {
 
     public FoodDto getFoodById(Long id, Long userId) {
         FoodDto result = ctx.selectFrom(FOOD)
-                .where(FOOD.ID.equal(id)
-                        .and(FOOD.OWNER_ID.equal(userId)
-                                .or(FOOD.IS_HIDDEN.isFalse())))
-                .fetchOne(dbFood -> {
-                    FoodDto food = new FoodDto();
-                    food.setId(dbFood.get(FOOD.ID));
-                    food.setName(dbFood.get(FOOD.NAME));
-                    food.setType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
-                    food.setPfcc(new PfccDto(dbFood.get(FOOD.PROTEIN), dbFood.get(FOOD.FAT), dbFood.get(FOOD.CARBOHYDRATES), dbFood.get(FOOD.CALORIES)));
-                    food.setDescription(dbFood.get(FOOD.DESCRIPTION));
-                    food.setHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
-                    food.setOwnedByUser(Objects.equals(dbFood.get(FOOD.OWNER_ID), userId));
+                            .where(FOOD.ID.equal(id)
+                                          .and(FOOD.OWNER_ID.equal(userId)
+                                                            .or(FOOD.IS_HIDDEN.isFalse())))
+                            .fetchOne(dbFood -> {
+                                FoodDto food = new FoodDto();
+                                food.setId(dbFood.get(FOOD.ID));
+                                food.setName(dbFood.get(FOOD.NAME));
+                                food.setType(FoodType.valueOf(dbFood.get(FOOD.TYPE)));
+                                food.setPfcc(new PfccDto(dbFood.get(FOOD.PROTEIN), dbFood.get(FOOD.FAT), dbFood.get(FOOD.CARBOHYDRATES), dbFood.get(FOOD.CALORIES)));
+                                food.setDescription(dbFood.get(FOOD.DESCRIPTION));
+                                food.setHidden(dbFood.get(FOOD.IS_HIDDEN, Boolean.class));
+                                food.setOwnedByUser(Objects.equals(dbFood.get(FOOD.OWNER_ID), userId));
 
-                    return food;
-                });
+                                return food;
+                            });
 
         if (result.getType().equals(FoodType.RECIPE)) {
             List<IngredientDto> ingredientList = ctx.selectFrom(
-                            INGREDIENTS
-                                    .join(FOOD)
-                                    .on(INGREDIENTS.INGREDIENT_ID.equal(FOOD.ID)))
-                    .where(INGREDIENTS.RECIPE_ID.equal(id))
-                    .fetch(dbIngredient ->
-                    {
-                        IngredientDto ingredient = new IngredientDto();
-                        ingredient.setId(dbIngredient.get(FOOD.ID));
-                        ingredient.setName(dbIngredient.get(FOOD.NAME));
-                        ingredient.setDescription(dbIngredient.get(FOOD.DESCRIPTION));
-                        ingredient.setPfcc(new PfccDto(dbIngredient.get(FOOD.PROTEIN),
-                                dbIngredient.get(FOOD.FAT),
-                                dbIngredient.get(FOOD.CARBOHYDRATES),
-                                dbIngredient.get(FOOD.CALORIES)));
-                        ingredient.setHidden(dbIngredient.get(FOOD.IS_HIDDEN, boolean.class));
-                        ingredient.setType(FoodType.valueOf(dbIngredient.get(FOOD.TYPE)));
-                        ingredient.setOwnedByUser(dbIngredient.get(FOOD.OWNER_ID).equals(userId));
-                        ingredient.setIngredientWeight(dbIngredient.get(INGREDIENTS.INGREDIENT_WEIGHT));
+                                                            INGREDIENTS
+                                                                    .join(FOOD)
+                                                                    .on(INGREDIENTS.INGREDIENT_ID.equal(FOOD.ID)))
+                                                    .where(INGREDIENTS.RECIPE_ID.equal(id))
+                                                    .fetch(dbIngredient ->
+                                                    {
+                                                        IngredientDto ingredient = new IngredientDto();
+                                                        ingredient.setId(dbIngredient.get(FOOD.ID));
+                                                        ingredient.setName(dbIngredient.get(FOOD.NAME));
+                                                        ingredient.setDescription(dbIngredient.get(FOOD.DESCRIPTION));
+                                                        ingredient.setPfcc(new PfccDto(dbIngredient.get(FOOD.PROTEIN),
+                                                                dbIngredient.get(FOOD.FAT),
+                                                                dbIngredient.get(FOOD.CARBOHYDRATES),
+                                                                dbIngredient.get(FOOD.CALORIES)));
+                                                        ingredient.setHidden(dbIngredient.get(FOOD.IS_HIDDEN, boolean.class));
+                                                        ingredient.setType(FoodType.valueOf(dbIngredient.get(FOOD.TYPE)));
+                                                        ingredient.setOwnedByUser(dbIngredient.get(FOOD.OWNER_ID)
+                                                                                              .equals(userId));
+                                                        ingredient.setIngredientWeight(dbIngredient.get(INGREDIENTS.INGREDIENT_WEIGHT));
 
-                        return ingredient;
-                    });
+                                                        return ingredient;
+                                                    });
 
             result.setIngredients(ingredientList);
         }
