@@ -1,5 +1,6 @@
 package org.mvasylchuk.pfcc.domain.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.BaseResponse;
 import org.mvasylchuk.pfcc.common.dto.Page;
@@ -17,7 +18,7 @@ public class DishController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<DishDto> add(@RequestBody DishDto request) {
+    public BaseResponse<DishDto> add(@RequestBody @Valid DishDto request) {
         return BaseResponse.success(dishService.addDish(request));
     }
 

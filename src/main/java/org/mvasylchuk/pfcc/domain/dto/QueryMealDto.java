@@ -1,5 +1,8 @@
 package org.mvasylchuk.pfcc.domain.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +17,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueryMealDto {
+    @NotEmpty
     private String name;
     private Long id;
     private LocalDateTime eatenOn;
+    @Min(value = 0, message = "Weight should not be less than 0")
     private BigDecimal weight;
+    @Valid
     private PfccDto pfcc;
     private Long foodId;
     private Long dishId;
