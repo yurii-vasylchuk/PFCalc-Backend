@@ -24,5 +24,4 @@ public class DishDto {
     private BigDecimal recipeWeight;
     private BigDecimal cookedWeight;
     private Boolean deleted;
-
 }

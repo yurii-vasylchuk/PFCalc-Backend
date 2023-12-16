@@ -19,8 +19,6 @@ import java.util.List;
 public class FoodEntity {
     private static final String ID_GENERATOR_NAME = "food_id_gen";
     private static final String ID_SEQ_NAME = "food_id_seq";
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    List<IngredientEntity> ingredients;
     @Id
     @GeneratedValue(generator = ID_GENERATOR_NAME)
     @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME, allocationSize = 1)
@@ -48,4 +46,6 @@ public class FoodEntity {
     private String description;
     @Column(name = "deleted")
     private Boolean isDeleted;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    List<IngredientEntity> ingredients;
 }
