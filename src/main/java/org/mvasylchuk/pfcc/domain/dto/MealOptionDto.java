@@ -16,4 +16,5 @@ public class MealOptionDto {
     private String name;
     private PfccDto pfcc;
     private MealOptionType type;
+    private Boolean ownedByUser;
 }

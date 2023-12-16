@@ -53,16 +53,28 @@ class MealControllerTest {
 
         assertThat(page.getData())
                 .hasSize(7)
-                .anyMatch(o -> Objects.equals(o.getFoodId(), 1L) && INGREDIENT.equals(o.getType()))
-                .anyMatch(o -> Objects.equals(o.getFoodId(), 2L) && INGREDIENT.equals(o.getType()))
-                .anyMatch(o -> Objects.equals(o.getFoodId(), 3L) && RECIPE.equals(o.getType()))
-                .anyMatch(o -> Objects.equals(o.getFoodId(), 5L) && INGREDIENT.equals(o.getType()))
-                .anyMatch(o -> Objects.equals(o.getFoodId(), 8L) && RECIPE.equals(o.getType()))
+                .anyMatch(o -> Objects.equals(o.getFoodId(), 1L) &&
+                        INGREDIENT.equals(o.getType()) &&
+                        o.getOwnedByUser())
+                .anyMatch(o -> Objects.equals(o.getFoodId(), 2L) &&
+                        INGREDIENT.equals(o.getType()) &&
+                        o.getOwnedByUser())
+                .anyMatch(o -> Objects.equals(o.getFoodId(), 3L) &&
+                        RECIPE.equals(o.getType()) &&
+                        o.getOwnedByUser())
+                .anyMatch(o -> Objects.equals(o.getFoodId(), 5L) &&
+                        INGREDIENT.equals(o.getType()) &&
+                        !o.getOwnedByUser())
+                .anyMatch(o -> Objects.equals(o.getFoodId(), 8L) &&
+                        RECIPE.equals(o.getType()) &&
+                        !o.getOwnedByUser())
                 .anyMatch(o -> Objects.equals(o.getFoodId(), 3L) &&
                         Objects.equals(o.getDishId(), 1L) &&
-                        DISH.equals(o.getType()))
+                        DISH.equals(o.getType()) &&
+                        o.getOwnedByUser())
                 .anyMatch(o -> Objects.equals(o.getFoodId(), 8L) &&
                         Objects.equals(o.getDishId(), 2L) &&
-                        DISH.equals(o.getType()));
+                        DISH.equals(o.getType()) &&
+                        o.getOwnedByUser());
     }
 }

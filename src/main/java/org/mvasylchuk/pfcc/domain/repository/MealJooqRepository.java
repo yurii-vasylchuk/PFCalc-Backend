@@ -120,7 +120,8 @@ public class MealJooqRepository {
                                      FOOD.FAT.as("fat"),
                                      FOOD.CARBOHYDRATES.as("carbohydrates"),
                                      FOOD.CALORIES.as("calories"),
-                                     FOOD.TYPE.as("type")
+                                     FOOD.TYPE.as("type"),
+                                     FOOD.OWNER_ID.as("ownerId")
                              )
                              .from(FOOD)
                              .where(foodCondition);
@@ -132,7 +133,8 @@ public class MealJooqRepository {
                                       DISH.FAT.as("fat"),
                                       DISH.CARBOHYDRATES.as("carbohydrates"),
                                       DISH.CALORIES.as("calories"),
-                                      DSL.field("'%s'".formatted(MealOptionType.DISH.name()), String.class).as("type"))
+                                      DSL.field("'%s'".formatted(MealOptionType.DISH.name()), String.class).as("type"),
+                                      DISH.OWNER_ID.as("ownerId"))
                               .from(DISH)
                               .where(dishCondition);
 
@@ -149,7 +151,8 @@ public class MealJooqRepository {
                                     fromDb.get("fat", BigDecimal.class),
                                     fromDb.get("carbohydrates", BigDecimal.class),
                                     fromDb.get("calories", BigDecimal.class)),
-                        MealOptionType.valueOf(fromDb.get("type", String.class))
+                        MealOptionType.valueOf(fromDb.get("type", String.class)),
+                        fromDb.get("ownerId", Long.class).equals(userId)
                 ));
 
         return new Page<>(page,
