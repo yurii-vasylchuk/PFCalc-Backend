@@ -143,6 +143,8 @@ public class MealJooqRepository {
         int count = ctx.fetchCount(completeSelect);
 
         List<MealOptionDto> data = completeSelect
+                .limit(pageSize)
+                .offset(page * pageSize)
                 .fetch(fromDb -> new MealOptionDto(
                         fromDb.get("foodId", Long.class),
                         fromDb.get("dishId", Long.class),
