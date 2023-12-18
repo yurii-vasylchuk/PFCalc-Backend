@@ -1,5 +1,6 @@
 package org.mvasylchuk.pfcc.domain.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.BaseResponse;
 import org.mvasylchuk.pfcc.common.dto.Page;
@@ -17,7 +18,7 @@ public class FoodController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<FoodDto> save(@RequestBody FoodDto request) {
+    public BaseResponse<FoodDto> save(@RequestBody @Valid FoodDto request) {
         return BaseResponse.success(foodService.saveFood(request));
     }
 

@@ -1,5 +1,6 @@
 package org.mvasylchuk.pfcc.domain.dto;
 
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class IngredientDto extends FoodDto {
+    @Min(value = 0, message = "Weight should not be less than 0")
     private BigDecimal ingredientWeight;
 
 
