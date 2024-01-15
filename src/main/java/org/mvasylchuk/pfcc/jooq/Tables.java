@@ -9,6 +9,7 @@ import org.mvasylchuk.pfcc.jooq.tables.DishIngredients;
 import org.mvasylchuk.pfcc.jooq.tables.Food;
 import org.mvasylchuk.pfcc.jooq.tables.Ingredients;
 import org.mvasylchuk.pfcc.jooq.tables.Meal;
+import org.mvasylchuk.pfcc.jooq.tables.Measurement;
 import org.mvasylchuk.pfcc.jooq.tables.SecurityTokens;
 import org.mvasylchuk.pfcc.jooq.tables.Users;
 
@@ -43,6 +44,11 @@ public class Tables {
      * The table <code>pfcc.meal</code>.
      */
     public static final Meal MEAL = Meal.MEAL;
+
+    /**
+     * The table <code>pfcc.measurement</code>.
+     */
+    public static final Measurement MEASUREMENT = Measurement.MEASUREMENT;
 
     /**
      * The table <code>pfcc.security_tokens</code>.
