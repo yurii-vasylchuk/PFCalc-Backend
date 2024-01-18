@@ -31,5 +31,4 @@ public class DishDto {
     @Min(value = 0, message = "Weight should not be less than 0")
     private BigDecimal cookedWeight;
     private Boolean deleted;
-
 }

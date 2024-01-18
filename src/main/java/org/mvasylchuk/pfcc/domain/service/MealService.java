@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.domain.dto.CommandMealDto;
+import org.mvasylchuk.pfcc.domain.dto.MealOptionDto;
 import org.mvasylchuk.pfcc.domain.dto.QueryMealDto;
 import org.mvasylchuk.pfcc.domain.entity.MealEntity;
 import org.mvasylchuk.pfcc.domain.repository.MealJooqRepository;
@@ -46,5 +47,12 @@ public class MealService {
         Long userId = userService.currentUser().getId();
 
         return mealJooqRepository.getMealList(page, pageSize, from, to, userId);
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public Page<MealOptionDto> getMealOptions(String filter, Integer page, Integer pageSize) {
+        Long userId = userService.currentUser().getId();
+
+        return mealJooqRepository.getMealOptions(filter, userId, page, pageSize);
     }
 }

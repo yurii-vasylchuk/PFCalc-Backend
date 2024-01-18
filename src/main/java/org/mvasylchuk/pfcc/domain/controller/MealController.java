@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.BaseResponse;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.domain.dto.CommandMealDto;
+import org.mvasylchuk.pfcc.domain.dto.MealOptionDto;
 import org.mvasylchuk.pfcc.domain.dto.QueryMealDto;
 import org.mvasylchuk.pfcc.domain.service.MealService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,5 +49,16 @@ public class MealController {
                                                 @RequestParam(name = "to", required = false) LocalDateTime to) {
 
         return BaseResponse.success(mealService.getMealList(page, pageSize, from, to));
+    }
+
+    @GetMapping("/options")
+    @PreAuthorize("isAuthenticated()")
+    public BaseResponse<Page<MealOptionDto>> getOptions(@RequestParam(name = "filter", required = false) String filter,
+                                                        @RequestParam(name = "page",
+                                                                      required = false,
+                                                                      defaultValue = "0") Integer page,
+                                                        @RequestParam(name = "pageSize",
+                                                                      required = false) Integer pageSize) {
+        return BaseResponse.success(this.mealService.getMealOptions(filter, page, pageSize));
     }
 }
