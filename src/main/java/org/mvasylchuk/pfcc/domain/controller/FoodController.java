@@ -7,20 +7,34 @@ import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.domain.dto.FoodDto;
 import org.mvasylchuk.pfcc.domain.entity.FoodType;
 import org.mvasylchuk.pfcc.domain.service.FoodService;
+import org.mvasylchuk.pfcc.domain.service.FoodSyncService;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/food")
 @RequiredArgsConstructor
 public class FoodController {
     private final FoodService foodService;
+    private final FoodSyncService foodSyncService;
 
-    @PostMapping()
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("isAuthenticated()")
     public BaseResponse<FoodDto> save(@RequestBody @Valid FoodDto request) {
         return BaseResponse.success(foodService.saveFood(request));
     }
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public BaseResponse<Void> sync(@RequestParam("file") MultipartFile file) throws IOException {
+        foodSyncService.sync(file.getBytes());
+        return BaseResponse.success(null);
+    }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
@@ -46,5 +60,6 @@ public class FoodController {
     @PreAuthorize("isAuthenticated()")
     public BaseResponse<FoodDto> getById(@PathVariable Long id) {
         return BaseResponse.success(foodService.getFoodById(id));
+
     }
 }

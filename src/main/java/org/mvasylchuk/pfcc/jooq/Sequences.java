@@ -31,6 +31,11 @@ public class Sequences {
     public static final Sequence<Long> MEAL_ID_SEQ = Internal.createSequence("meal_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, null, null, null, false, null);
 
     /**
+     * The sequence <code>pfcc.measurement_id_seq</code>
+     */
+    public static final Sequence<Long> MEASUREMENT_ID_SEQ = Internal.createSequence("measurement_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, null, null, null, false, null);
+
+    /**
      * The sequence <code>pfcc.security_token_id_seq</code>
      */
     public static final Sequence<Long> SECURITY_TOKEN_ID_SEQ = Internal.createSequence("security_token_id_seq", Pfcc.PFCC, SQLDataType.BIGINT, null, null, null, null, false, null);
