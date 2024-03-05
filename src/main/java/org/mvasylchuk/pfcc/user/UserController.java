@@ -75,7 +75,7 @@ public class UserController {
                                                    .build();
 
         return ResponseEntity.ok()
-                             .header(SET_COOKIE, accessToken.toString())
+                             .header(SET_COOKIE, accessToken + "; Partitioned;")
                              .body(BaseResponse.success(new AuthTokenResponseDto(token.getRefreshToken())));
     }
 }
