@@ -8,6 +8,7 @@ import org.mvasylchuk.pfcc.domain.dto.IngredientDto;
 import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
 import org.mvasylchuk.pfcc.domain.entity.FoodType;
 import org.mvasylchuk.pfcc.domain.entity.IngredientEntity;
+import org.mvasylchuk.pfcc.domain.entity.IngredientPrimaryKey;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
 import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
 import org.mvasylchuk.pfcc.platform.error.PfccException;
@@ -57,6 +58,10 @@ public class FoodMappingService {
                     .stream()
                     .map(ingredientDto -> {
                         IngredientEntity ingredientEntity = new IngredientEntity();
+
+                        if (result.getId() != null) {
+                            ingredientEntity.setId(new IngredientPrimaryKey(result.getId(), ingredientDto.getId()));
+                        }
 
                         ingredientEntity.setIngredientWeight(ingredientDto.getIngredientWeight());
 
