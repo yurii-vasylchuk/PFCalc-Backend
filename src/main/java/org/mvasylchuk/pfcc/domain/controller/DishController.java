@@ -22,6 +22,12 @@ public class DishController {
         return BaseResponse.success(dishService.addDish(request));
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public BaseResponse<DishDto> update(@PathVariable("id") Long id, @RequestBody @Valid DishDto req) {
+        return BaseResponse.success(dishService.update(id, req));
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public BaseResponse<Void> remove(@PathVariable Long id) {

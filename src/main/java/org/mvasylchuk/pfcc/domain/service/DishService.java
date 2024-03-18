@@ -12,6 +12,8 @@ import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class DishService {
@@ -33,7 +35,8 @@ public class DishService {
 
     @Transactional(rollbackOn = Exception.class)
     public void remove(Long id) {
-        DishEntity dish = dishRepository.findById(id).orElseThrow(()->new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
+        DishEntity dish = dishRepository.findById(id)
+                                        .orElseThrow(() -> new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
         dish.setDeleted(true);
         dishRepository.save(dish);
     }
@@ -48,5 +51,21 @@ public class DishService {
     public Page<DishDto> getDishList(Integer page, Integer pageSize) {
         Long userId = userService.currentUser().getId();
         return jooqRepository.getDishList(page, pageSize, userId);
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public DishDto update(Long id, DishDto req) {
+        DishEntity origin = dishRepository.findById(id)
+                                          .orElseThrow(() -> new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
+
+        Long userId = userService.currentUser().getId();
+        if (!Objects.equals(userId, origin.getOwner().getId())) {
+            throw new PfccException(ApiErrorCode.USER_IS_NOT_OWNER);
+        }
+
+        DishEntity newDish = dishMappingService.toEntity(req);
+        newDish.setId(id);
+        dishRepository.save(newDish);
+        return dishMappingService.toDto(newDish);
     }
 }

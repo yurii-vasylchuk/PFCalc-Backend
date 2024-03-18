@@ -40,7 +40,6 @@ public class FoodSyncService {
             while (iter.hasNext()) {
                 FoodSyncDto n = iter.next();
                 FoodEntity foodEntity = new FoodEntity(
-                        null,
                         n.id,
                         n.name,
                         FoodType.INGREDIENT,
@@ -48,7 +47,8 @@ public class FoodSyncService {
                         false,
                         userService.currentUser(),
                         n.description,
-                        false
+                        false,
+                        null
                 );
                 foodEntityList.add(foodEntity);
             }
