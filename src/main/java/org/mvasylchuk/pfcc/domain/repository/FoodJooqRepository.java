@@ -106,6 +106,7 @@ public class FoodJooqRepository {
                         ingredient.setType(FoodType.valueOf(dbIngredient.get(FOOD.TYPE)));
                         ingredient.setOwnedByUser(dbIngredient.get(FOOD.OWNER_ID)
                                 .equals(userId));
+                        ingredient.setIngredientIndex(dbIngredient.get(INGREDIENTS.INGREDIENT_INDEX));
                         ingredient.setIngredientWeight(dbIngredient.get(INGREDIENTS.INGREDIENT_WEIGHT));
 
                         return ingredient;

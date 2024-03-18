@@ -71,6 +71,7 @@ public class DishMappingService {
                         DishIngredientEntity entity = new DishIngredientEntity();
                         entity.setId(new DishIngredientPrimaryKey(dishDto.getId(), dto.getId()));
                         entity.setIngredientWeight(dto.getIngredientWeight());
+                        entity.setIngredientIndex(dto.getIngredientIndex());
                         entity.setDish(result);
                         entity.setIngredient(foodRepository.getReferenceById(dto.getId()));
                         return entity;
@@ -94,6 +95,7 @@ public class DishMappingService {
                                                       Objects.equals(user.getId(), ing.getOwner().getId());
 
                                               return new IngredientDto(ing.getId(),
+                                                      i.getIngredientIndex(),
                                                       ing.getName(),
                                                       ing.getDescription(),
                                                       pfccMappingService.toPfccDto(ing.getPfcc()),

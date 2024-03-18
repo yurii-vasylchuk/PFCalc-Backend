@@ -30,5 +30,7 @@ public class IngredientEntity {
 
     @Column(name = "ingredient_weight")
     private BigDecimal ingredientWeight;
+    @Column(name="ingredient_index")
+    private Long ingredientIndex;
 
 }
