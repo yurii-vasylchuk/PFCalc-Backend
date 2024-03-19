@@ -64,9 +64,10 @@ public class FoodMappingService {
                         }
 
                         ingredientEntity.setIngredientWeight(ingredientDto.getIngredientWeight());
+                        ingredientEntity.setIngredientIndex(ingredientDto.getIngredientIndex());
 
                         ingredientEntity.setIngredient(foodRepository.findById(ingredientDto.getId())
-                                .orElseThrow(()->new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND)));
+                                .orElseThrow(() -> new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND)));
 
                         ingredientEntity.setRecipe(result);
 
@@ -98,6 +99,7 @@ public class FoodMappingService {
 
                         return new IngredientDto(
                                 ing.getId(),
+                                ingredientEntity.getIngredientIndex(),
                                 ing.getName(),
                                 ing.getDescription(),
                                 pfccMappingService.toPfccDto(ing.getPfcc()),
