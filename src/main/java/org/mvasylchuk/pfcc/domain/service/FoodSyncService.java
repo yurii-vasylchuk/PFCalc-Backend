@@ -23,7 +23,9 @@ import java.util.List;
 public class FoodSyncService {
 
     private final CsvMapper mapper = new CsvMapper();
-    private final CsvSchema schema = mapper.typedSchemaFor(FoodSyncDto.class).withHeader();
+    private final CsvSchema schema = mapper.typedSchemaFor(FoodSyncDto.class)
+                                           .withUseHeader(true)
+                                           .withColumnReordering(true);
 
     public FoodSyncService(FoodRepository foodRepository, UserService userService) {
         this.foodRepository = foodRepository;

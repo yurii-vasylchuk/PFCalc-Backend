@@ -29,7 +29,7 @@ public class FoodController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public BaseResponse<Void> sync(@RequestParam("file") MultipartFile file) throws IOException {
         foodSyncService.sync(file.getBytes());
         return BaseResponse.success(null);
