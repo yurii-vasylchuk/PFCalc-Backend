@@ -14,11 +14,11 @@ VALUES (1, 'Food1', 'INGREDIENT', 23.0, 3.8, 14.5, 285, 1, TRUE, FALSE),#owned I
        (7, 'Food7', 'INGREDIENT', 1, 2, 3, 4, 2, FALSE, TRUE),#not owned, deleted
        (8, 'Food8', 'RECIPE', 1, 2, 3, 4, 2, FALSE, FALSE);#not owned RECIPE
 
-INSERT INTO ingredients (recipe_id, ingredient_id, ingredient_weight)
-VALUES (3, 1, 100),
-       (3, 2, 200),
-       (8, 6, 120),
-       (8, 7, 55);
+INSERT INTO ingredients (recipe_id, ingredient_id, ingredient_weight, ingredient_index)
+VALUES (3, 1, 100,1),
+       (3, 2, 200,2),
+       (8, 6, 120,3),
+       (8, 7, 55,4);
 
 INSERT INTO dish(id, name, food_id, recipe_weight, cooked_weight, protein, fat, carbohydrates, calories, owner_id,
                  deleted)
