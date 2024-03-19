@@ -23,8 +23,7 @@ public class MealService {
     private final MealMappingService mealMappingService;
 
     @Transactional(rollbackOn = Exception.class)
-    public CommandMealDto addMeal(CommandMealDto request) {
-
+    public CommandMealDto save(CommandMealDto request) {
         MealEntity mealEntity = mealMappingService.toEntity(request);
 
         mealRepository.save(mealEntity);

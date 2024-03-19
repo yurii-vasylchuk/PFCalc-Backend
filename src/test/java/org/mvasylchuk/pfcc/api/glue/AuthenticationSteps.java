@@ -83,7 +83,6 @@ public class AuthenticationSteps {
           .set(USERS.NAME, user.getName())
           .set(USERS.PASSWORD, user.getPassword())
           .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-          .set(USERS.PROFILE_CONFIGURED, (user.getProfileConfigured() ? TRUE : FALSE))
           .set(USERS.EMAIL_CONFIRMED, FALSE)
           .set(USERS.PROTEIN_AIM, user.getProteinAim())
           .set(USERS.FAT_AIM, user.getFatAim())
@@ -148,14 +147,13 @@ public class AuthenticationSteps {
                 .isTrue();
     }
 
-    @Given("User '{}' with uncompleted profile is present")
-    public void userAlphaWithUncompletedProfileIsPresent(TestUser user) {
+    @Given("User '{}' without aims set is present")
+    public void userWithoutAimsIsPresent(TestUser user) {
         db.insertInto(USERS)
           .set(USERS.EMAIL, user.getEmail())
           .set(USERS.NAME, user.getName())
           .set(USERS.PASSWORD, user.getPassword())
           .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-          .set(USERS.PROFILE_CONFIGURED, FALSE)
           .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed() ? TRUE : FALSE)
           .set(USERS.ROLES, user.getRoles())
           .execute();
@@ -168,7 +166,6 @@ public class AuthenticationSteps {
                                .fetchOne();
 
         assertNotNull(record);
-        assertThat(record.getProfileConfigured()).isEqualTo(TRUE);
         assertThat(record.getProteinAim()).isEqualByComparingTo(aims.get("protein"));
         assertThat(record.getFatAim()).isEqualByComparingTo(aims.get("fat"));
         assertThat(record.getCarbohydratesAim()).isEqualByComparingTo(aims.get("carbohydrates"));

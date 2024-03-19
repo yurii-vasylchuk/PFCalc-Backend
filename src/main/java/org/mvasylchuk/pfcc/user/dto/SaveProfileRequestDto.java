@@ -10,6 +10,7 @@ import org.mvasylchuk.pfcc.common.dto.PfccDto;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompleteProfileRequestDto {
+public class SaveProfileRequestDto {
     private PfccDto aims;
+    private String name;
 }

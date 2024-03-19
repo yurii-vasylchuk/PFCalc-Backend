@@ -22,8 +22,8 @@ public class MealController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<CommandMealDto> add(@RequestBody @Valid CommandMealDto request) {
-        return BaseResponse.success(mealService.addMeal(request));
+    public BaseResponse<CommandMealDto> save(@RequestBody @Valid CommandMealDto request) {
+        return BaseResponse.success(mealService.save(request));
     }
 
     @DeleteMapping("/{id}")

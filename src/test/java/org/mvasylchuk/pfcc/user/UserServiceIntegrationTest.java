@@ -4,8 +4,8 @@ import org.flywaydb.test.annotation.FlywayTest;
 import org.junit.jupiter.api.Test;
 import org.mvasylchuk.pfcc.IntegrationTest;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
-import org.mvasylchuk.pfcc.user.dto.CompleteProfileRequestDto;
 import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
+import org.mvasylchuk.pfcc.user.dto.SaveProfileRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,8 +40,11 @@ class UserServiceIntegrationTest {
         SecurityContextHolder.getContext()
                              .setAuthentication(UsernamePasswordAuthenticationToken.authenticated("email", "pass", List.of()));
 
-        underTest.completeProfile(new CompleteProfileRequestDto(new PfccDto(new BigDecimal(10),
-                new BigDecimal(50), new BigDecimal(30), new BigDecimal(550))));
+        underTest.saveProfile(new SaveProfileRequestDto(new PfccDto(new BigDecimal(10),
+                                                                    new BigDecimal(50),
+                                                                    new BigDecimal(30),
+                                                                    new BigDecimal(550)),
+                                                        null));
         UserEntity user = userRepository.getByEmail("email");
         org.assertj.core.api.Assertions.assertThat(user.getAims().getProtein()).isEqualByComparingTo("10");
         org.assertj.core.api.Assertions.assertThat(user.getAims().getCarbohydrates()).isEqualByComparingTo("30");

@@ -31,37 +31,45 @@ public class UserService {
 
     public AuthTokensDto register(RegisterRequestDto request) {
         UserEntity user = new UserEntity(null,
-                request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
-                request.getName(),
-                request.getPreferredLanguage(),
-                null,
-                false,
-                false,
-                List.of(UserRole.USER));
+                                         request.getEmail(),
+                                         passwordEncoder.encode(request.getPassword()),
+                                         request.getName(),
+                                         request.getPreferredLanguage(),
+                                         null,
+                                         false,
+                                         List.of(UserRole.USER));
 
         userRepository.save(user);
 
-        String emailVerificationToken = securityTokenService.generateSecurityToken(user, SecurityTokenType.EMAIL_VERIFICATION);
-        emailService.sendEmailVerificationMail(request.getEmail(), request.getName(), emailVerificationToken, request.getPreferredLanguage());
+        String emailVerificationToken = securityTokenService.generateSecurityToken(user,
+                                                                                   SecurityTokenType.EMAIL_VERIFICATION);
+        emailService.sendEmailVerificationMail(request.getEmail(),
+                                               request.getName(),
+                                               emailVerificationToken,
+                                               request.getPreferredLanguage());
 
         return generateAuthTokens(user);
     }
 
-    public void completeProfile(CompleteProfileRequestDto request) {
+    public void saveProfile(SaveProfileRequestDto request) {
         UserEntity user = currentUser();
-        Pfcc aims = new Pfcc(request.getAims().getProtein(),
-                request.getAims().getFat(),
-                request.getAims().getCarbohydrates(),
-                request.getAims().getCalories());
-        user.setAims(aims);
-        user.setProfileConfigured(true);
+        if (request.getAims() != null) {
+            Pfcc aims = new Pfcc(request.getAims().getProtein(),
+                                 request.getAims().getFat(),
+                                 request.getAims().getCarbohydrates(),
+                                 request.getAims().getCalories());
+            user.setAims(aims);
+        }
+
+        if (request.getName() != null) {
+            user.setName(request.getName());
+        }
         userRepository.save(user);
     }
 
     public AuthTokensDto verifyAccount(VerifyAccountRequestDto verificationRequest) {
         UserEntity user = securityTokenService.validate(verificationRequest.token(),
-                SecurityTokenType.EMAIL_VERIFICATION);
+                                                        SecurityTokenType.EMAIL_VERIFICATION);
         user.setEmailConfirmed(true);
         userRepository.save(user);
 
@@ -81,7 +89,7 @@ public class UserService {
 
     public AuthTokensDto login(LoginRequestDto request) {
         UserEntity user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new PfccException(ApiErrorCode.SECURITY));
+                                        .orElseThrow(() -> new PfccException(ApiErrorCode.SECURITY));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new PfccException("Password doesn't match", ApiErrorCode.SECURITY);
@@ -107,8 +115,9 @@ public class UserService {
 
     private AuthTokensDto generateAuthTokens(UserEntity user) {
         String refreshToken = securityTokenService.generateSecurityToken(user,
-                SecurityTokenType.REFRESH_TOKEN,
-                LocalDateTime.now().plus(conf.auth.refreshTokenExpiration));
+                                                                         SecurityTokenType.REFRESH_TOKEN,
+                                                                         LocalDateTime.now()
+                                                                                      .plus(conf.auth.refreshTokenExpiration));
         String token = jwtService.generateToken(user);
         return new AuthTokensDto(token, refreshToken);
     }

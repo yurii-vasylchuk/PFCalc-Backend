@@ -16,5 +16,4 @@ public class ProfileDto {
     private String name;
     private Language preferredLanguage;
     private PfccDto aims;
-    private Boolean profileConfigured;
 }

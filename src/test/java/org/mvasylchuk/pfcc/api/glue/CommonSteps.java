@@ -76,13 +76,12 @@ public class CommonSteps {
     }
 
     @Given("User '{}' is present")
-    public void userYvaIsPresent(TestUser user) {
+    public void userIsPresent(TestUser user) {
         db.insertInto(USERS)
           .set(USERS.EMAIL, user.getEmail())
           .set(USERS.NAME, user.getName())
           .set(USERS.PASSWORD, user.getPassword())
           .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-          .set(USERS.PROFILE_CONFIGURED, user.getProfileConfigured() ? TRUE : FALSE)
           .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed() ? TRUE : FALSE)
           .set(USERS.PROTEIN_AIM, user.getProteinAim())
           .set(USERS.FAT_AIM, user.getFatAim())

@@ -36,11 +36,9 @@ public class MealMappingService {
         if (mealDto.getDishId() != null) {
             DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow(()->new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
             pfcc = dish.getPfcc();
-
         } else {
             FoodEntity food = foodRepository.findById(mealDto.getFoodId()).orElseThrow(()->new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
             pfcc = food.getPfcc();
-
         }
 
         result.setId(mealDto.getId());

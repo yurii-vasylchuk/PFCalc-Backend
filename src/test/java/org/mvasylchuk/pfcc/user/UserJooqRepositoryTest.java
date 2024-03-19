@@ -22,7 +22,6 @@ class UserJooqRepositoryTest {
 
         assertEquals("name", result.getName());
         assertEquals("yva@test.com", result.getEmail());
-        assertEquals(true, result.getProfileConfigured());
         assertEquals(Language.UA, result.getPreferredLanguage());
         assertNotNull(result.getAims());
         assertThat(result.getAims().getProtein())
