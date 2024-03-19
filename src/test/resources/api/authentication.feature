@@ -40,7 +40,7 @@ Feature: Authentication
     And email of user 'alpha' become confirmed
 
   Scenario: Complete profile
-    Given User 'alpha' with uncompleted profile is present
+    Given User 'alpha' without aims set is present
     And I'm authenticated as 'alpha'
     And prepared request with following data:
       """json

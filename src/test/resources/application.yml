@@ -16,3 +16,7 @@ pfcc:
   jobs:
     drop-outdated-security-tokens:
       enabled: false
+logging:
+  level:
+    org:
+      jooq: DEBUG

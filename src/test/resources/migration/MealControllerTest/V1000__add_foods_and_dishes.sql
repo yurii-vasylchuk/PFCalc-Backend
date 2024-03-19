@@ -1,8 +1,7 @@
 INSERT INTO users (id, email, preferred_language, protein_aim, fat_aim, carbohydrates_aim, calories_aim,
-                   profile_configured,
                    email_confirmed, password, roles, name)
-VALUES (1, 'test1@mail.com', 'EN', 120, 50, 180, null, 1, 1, 'test', 'USER', 'test1'),
-       (2, 'test2@mail.com', 'EN', 120, 50, 180, null, 1, 1, 'test', 'USER', 'test2');
+VALUES (1, 'test1@mail.com', 'EN', 120, 50, 180, null, 1, 'test', 'USER', 'test1'),
+       (2, 'test2@mail.com', 'EN', 120, 50, 180, null, 1, 'test', 'USER', 'test2');
 
 INSERT INTO food (id, name, type, protein, fat, carbohydrates, calories, owner_id, is_hidden, deleted)
 VALUES (1, 'Food1', 'INGREDIENT', 23.0, 3.8, 14.5, 285, 1, TRUE, FALSE),#owned INGREDIENT

@@ -36,8 +36,8 @@ public class UserController {
 
     @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<Void> completeProfile(@RequestBody CompleteProfileRequestDto request) {
-        userService.completeProfile(request);
+    public BaseResponse<Void> saveProfile(@RequestBody SaveProfileRequestDto request) {
+        userService.saveProfile(request);
         return BaseResponse.success(null);
     }
 

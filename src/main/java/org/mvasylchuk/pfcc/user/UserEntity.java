@@ -47,9 +47,6 @@ public class UserEntity {
     })
     private Pfcc aims;
 
-    @Column(name = "profile_configured")
-    private Boolean profileConfigured;
-
     @Column(name = "email_confirmed")
     private Boolean emailConfirmed;
 

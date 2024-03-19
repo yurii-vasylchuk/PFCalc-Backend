@@ -1,6 +1,6 @@
 INSERT INTO users (id, email, name, preferred_language, protein_aim,
                    fat_aim, carbohydrates_aim, calories_aim,
-                   profile_configured, email_confirmed, password, roles)
+                   email_confirmed, password, roles)
 VALUES (1,
         'yva@test.com',
         'name',
@@ -9,7 +9,6 @@ VALUES (1,
         50,
         200,
         1000,
-        TRUE,
         TRUE,
         'pass',
         'USER'),
@@ -21,7 +20,6 @@ VALUES (1,
         60,
         400,
         1500,
-        TRUE,
         TRUE,
         'pass2',
         'USER');
