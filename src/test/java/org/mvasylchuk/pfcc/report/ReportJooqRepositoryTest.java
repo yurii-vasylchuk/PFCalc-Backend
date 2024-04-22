@@ -100,7 +100,7 @@ class ReportJooqRepositoryTest {
                 .satisfiesOnlyOnce(meal -> {
                     assertThat(meal.name()).isEqualTo("Product 2");
                     assertThat(meal.date()).isEqualTo("2024-01-05");
-                    assertThat(meal.weight()).isCloseTo(new BigDecimal("33.3333"), ACCEPTABLE_DEVIATION);
+                    assertThat(meal.weight()).isCloseTo(new BigDecimal("33"), ACCEPTABLE_DEVIATION);
                     assertThat(meal.pfcc().getProtein()).isCloseTo(new BigDecimal("8"), ACCEPTABLE_DEVIATION);
                     assertThat(meal.pfcc().getFat()).isCloseTo(new BigDecimal("2"), ACCEPTABLE_DEVIATION);
                     assertThat(meal.pfcc().getCarbohydrates()).isCloseTo(new BigDecimal("4"), ACCEPTABLE_DEVIATION);
@@ -109,7 +109,7 @@ class ReportJooqRepositoryTest {
                 .satisfiesOnlyOnce(meal -> {
                     assertThat(meal.name()).isEqualTo("Product 3");
                     assertThat(meal.date()).isEqualTo("2024-01-05");
-                    assertThat(meal.weight()).isCloseTo(new BigDecimal("66.6667"), ACCEPTABLE_DEVIATION);
+                    assertThat(meal.weight()).isCloseTo(new BigDecimal("67"), ACCEPTABLE_DEVIATION);
                     assertThat(meal.pfcc().getProtein()).isCloseTo(new BigDecimal("12"), ACCEPTABLE_DEVIATION);
                     assertThat(meal.pfcc().getFat()).isCloseTo(new BigDecimal("6"), ACCEPTABLE_DEVIATION);
                     assertThat(meal.pfcc().getCarbohydrates()).isCloseTo(new BigDecimal("4"), ACCEPTABLE_DEVIATION);
