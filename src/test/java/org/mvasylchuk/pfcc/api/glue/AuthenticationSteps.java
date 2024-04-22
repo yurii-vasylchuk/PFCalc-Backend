@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -56,49 +57,51 @@ public class AuthenticationSteps {
 
     @And("response contain proper auth tokens for user '{}'")
     public void responseContainJwtProperToken(TestUser user) throws Exception {
-        Matcher<String> accessTokenMatcher = pfccMatchers.accessToken(user);
+        Matcher<String> accessTokenMatcher = pfccMatchers.accessToken(user,
+                LocalDateTime.now().plus(conf.auth.authTokenExpiration),
+                Duration.ofMillis(3_000));
         Matcher<String> accessTokenExpirityMatcher = pfccMatchers.stringDateIsNearTo(
-                LocalDateTime.now()
-                             .plus(conf.auth.authTokenExpiration), Duration.ofMillis(3_000));
+                ZonedDateTime.now().plus(conf.auth.authTokenExpiration),
+                Duration.ofMillis(3_000));
         Matcher<String> refreshTokenMatcher = pfccMatchers.refreshToken(user);
 
         String name = "access-token";
 
         ctx.getPerformedCalls()
-           .andExpect(jsonPath("$.data.refreshToken").value(refreshTokenMatcher))
-           .andExpect(cookie().exists(name))
-           .andExpect(cookie().httpOnly(name, true))
-           .andExpect(cookie().sameSite(name, "Strict"))
-           .andExpect(cookie().domain(name, new URI(conf.auth.issuer).getHost()))
-           .andExpect(cookie().attribute(name, "Expires", accessTokenExpirityMatcher))
-           .andExpect(cookie().path(name, "/api"))
-           .andExpect(cookie().value(name, accessTokenMatcher));
+                .andExpect(jsonPath("$.data.refreshToken").value(refreshTokenMatcher))
+                .andExpect(cookie().exists(name))
+                .andExpect(cookie().httpOnly(name, true))
+                .andExpect(cookie().sameSite(name, "Strict"))
+                .andExpect(cookie().domain(name, new URI(conf.auth.issuer).getHost()))
+                .andExpect(cookie().attribute(name, "Expires", accessTokenExpirityMatcher))
+                .andExpect(cookie().path(name, "/api"))
+                .andExpect(cookie().value(name, accessTokenMatcher));
     }
 
 
     @Given("User '{}' with unconfirmed email is present")
     public void userWithUnconfirmedEmailIsPresent(TestUser user) {
         db.insertInto(USERS)
-          .set(USERS.EMAIL, user.getEmail())
-          .set(USERS.NAME, user.getName())
-          .set(USERS.PASSWORD, user.getPassword())
-          .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-          .set(USERS.EMAIL_CONFIRMED, FALSE)
-          .set(USERS.PROTEIN_AIM, user.getProteinAim())
-          .set(USERS.FAT_AIM, user.getFatAim())
-          .set(USERS.CARBOHYDRATES_AIM, user.getCarbohydratesAim())
-          .set(USERS.CALORIES_AIM, user.getCaloriesAim())
-          .set(USERS.ROLES, user.getRoles())
-          .execute();
+                .set(USERS.EMAIL, user.getEmail())
+                .set(USERS.NAME, user.getName())
+                .set(USERS.PASSWORD, user.getPassword())
+                .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
+                .set(USERS.EMAIL_CONFIRMED, FALSE)
+                .set(USERS.PROTEIN_AIM, user.getProteinAim())
+                .set(USERS.FAT_AIM, user.getFatAim())
+                .set(USERS.CARBOHYDRATES_AIM, user.getCarbohydratesAim())
+                .set(USERS.CALORIES_AIM, user.getCaloriesAim())
+                .set(USERS.ROLES, user.getRoles())
+                .execute();
     }
 
     @And("Verify email token for {string} has been saved in db")
     public void verifyEmailTokenForHasBeenSavedInDb(String email) {
         List<SecurityTokensRecord> tokens = db.selectFrom(SECURITY_TOKENS.join(USERS)
-                                                                         .on(USERS.ID.eq(SECURITY_TOKENS.USER_ID)))
-                                              .where(USERS.EMAIL.eq(email))
-                                              .and(SECURITY_TOKENS.TYPE.eq("EMAIL_VERIFICATION"))
-                                              .fetchInto(SecurityTokensRecord.class);
+                        .on(USERS.ID.eq(SECURITY_TOKENS.USER_ID)))
+                .where(USERS.EMAIL.eq(email))
+                .and(SECURITY_TOKENS.TYPE.eq("EMAIL_VERIFICATION"))
+                .fetchInto(SecurityTokensRecord.class);
         assertThat(tokens)
                 .hasSize(1)
                 .allSatisfy(token -> {
@@ -125,11 +128,11 @@ public class AuthenticationSteps {
         String code = "mx5aYiTZSXXYKz+UNBE4wjj1K3FMoaSH+QGeA0agUIfrQVnq7tQEFeK7mHqyts791p4jQhdH6ZBWPESSoYEXDqRECg9l6a0TqB02TX4NHxabPEaKFzjw4vQB19hZ32H+qZtNbTqRX7kiI4bk7dy1gdpVZOFKCMR1u+4tvJ2FOdc3Vrhd9G2XMygtJSYPfTZZYFVh3dGGKStbcWEQ4K9AIXaIHEKmMx16y4lQ0rYfUtVLT5JyN0NU71tJ946v4V3";
 
         db.insertInto(SECURITY_TOKENS)
-          .set(SECURITY_TOKENS.TYPE, "EMAIL_VERIFICATION")
-          .set(SECURITY_TOKENS.IS_ACTIVE, TRUE)
-          .set(SECURITY_TOKENS.CODE, code)
-          .set(SECURITY_TOKENS.USER_ID, db.select(USERS.ID).from(USERS).where(USERS.EMAIL.eq(user.getEmail())))
-          .execute();
+                .set(SECURITY_TOKENS.TYPE, "EMAIL_VERIFICATION")
+                .set(SECURITY_TOKENS.IS_ACTIVE, TRUE)
+                .set(SECURITY_TOKENS.CODE, code)
+                .set(SECURITY_TOKENS.USER_ID, db.select(USERS.ID).from(USERS).where(USERS.EMAIL.eq(user.getEmail())))
+                .execute();
 
         ctx.setVerifyEmailToken(code);
     }
@@ -138,9 +141,9 @@ public class AuthenticationSteps {
     @And("email of user '{}' become confirmed")
     public void userEmailBecomeConfirmed(TestUser user) {
         Boolean isEmailConfirmed = db.select(USERS.EMAIL_CONFIRMED)
-                                     .from(USERS)
-                                     .where(USERS.EMAIL.eq(user.getEmail()))
-                                     .fetchOneInto(Boolean.class);
+                .from(USERS)
+                .where(USERS.EMAIL.eq(user.getEmail()))
+                .fetchOneInto(Boolean.class);
 
         assertThat(isEmailConfirmed)
                 .isNotNull()
@@ -150,20 +153,20 @@ public class AuthenticationSteps {
     @Given("User '{}' without aims set is present")
     public void userWithoutAimsIsPresent(TestUser user) {
         db.insertInto(USERS)
-          .set(USERS.EMAIL, user.getEmail())
-          .set(USERS.NAME, user.getName())
-          .set(USERS.PASSWORD, user.getPassword())
-          .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-          .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed() ? TRUE : FALSE)
-          .set(USERS.ROLES, user.getRoles())
-          .execute();
+                .set(USERS.EMAIL, user.getEmail())
+                .set(USERS.NAME, user.getName())
+                .set(USERS.PASSWORD, user.getPassword())
+                .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
+                .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed() ? TRUE : FALSE)
+                .set(USERS.ROLES, user.getRoles())
+                .execute();
     }
 
     @And("user '{}' should have completed profile with following aims")
     public void userAlphaShouldHaveCompletedProfileWithFollowingAims(TestUser user, Map<String, String> aims) {
         UsersRecord record = db.selectFrom(USERS)
-                               .where(USERS.EMAIL.eq(user.getEmail()))
-                               .fetchOne();
+                .where(USERS.EMAIL.eq(user.getEmail()))
+                .fetchOne();
 
         assertNotNull(record);
         assertThat(record.getProteinAim()).isEqualByComparingTo(aims.get("protein"));

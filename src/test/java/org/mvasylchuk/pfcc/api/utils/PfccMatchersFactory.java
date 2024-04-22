@@ -15,6 +15,8 @@ import org.testcontainers.shaded.com.trilead.ssh2.crypto.Base64;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +32,11 @@ public class PfccMatchersFactory {
     private final ObjectMapper mapper;
     private final DSLContext db;
 
-    public Matcher<String> accessToken(TestUser user) {
-        return new AccessTokenMatcher(user, mapper, db);
+    public Matcher<String> accessToken(TestUser user, LocalDateTime expectedExp, Duration expGap) {
+        return new AccessTokenMatcher(user, expectedExp, expGap, mapper, db);
     }
 
-    public Matcher<String> stringDateIsNearTo(LocalDateTime expected, Duration gap) {
+    public Matcher<String> stringDateIsNearTo(ZonedDateTime expected, Duration gap) {
         return new StringDateIsNearToMatcher(expected, gap);
     }
 
@@ -44,7 +46,7 @@ public class PfccMatchersFactory {
 
     @RequiredArgsConstructor
     private static class StringDateIsNearToMatcher extends BaseMatcher<String> {
-        private final LocalDateTime expected;
+        private final ZonedDateTime expected;
         private final Duration gap;
 
 
@@ -54,30 +56,33 @@ public class PfccMatchersFactory {
                 return false;
             }
 
-            LocalDateTime actual;
+            ZonedDateTime actual;
             try {
-                actual = LocalDateTime.parse((String) actualStr, DateTimeFormatter.RFC_1123_DATE_TIME);
+                actual = ZonedDateTime.parse((String) actualStr, DateTimeFormatter.RFC_1123_DATE_TIME);
             } catch (Exception e) {
                 return false;
             }
+            actual = actual.withZoneSameInstant(expected.getZone());
 
-            LocalDateTime lowerBoundary = expected.minus(gap);
-            LocalDateTime upperBoundary = expected.plus(gap);
+            ZonedDateTime lowerBoundary = expected.minus(gap);
+            ZonedDateTime upperBoundary = expected.plus(gap);
             return (lowerBoundary.isBefore(actual) || expected.isEqual(actual)) &&
                     (upperBoundary.isAfter(actual) || expected.isEqual(actual));
         }
 
         @Override
         public void describeTo(Description description) {
-            description.appendText(this.expected.format(DateTimeFormatter.ofPattern("EEE, dd LLL yyyy hh:mm:ss", Locale.US)))
-                       .appendText(", with gap ")
-                       .appendText(gap.toString());
+            description.appendText(this.expected.format(DateTimeFormatter.ofPattern("EEE, dd LLL yyyy hh:mm:ss VV", Locale.US)))
+                    .appendText(", with gap ")
+                    .appendText(gap.toString());
         }
     }
 
     @RequiredArgsConstructor
     private static class AccessTokenMatcher extends BaseMatcher<String> {
         private final TestUser user;
+        private final LocalDateTime expectedExp;
+        private final Duration expGap;
         private final ObjectMapper mapper;
         private final DSLContext db;
 
@@ -103,6 +108,17 @@ public class PfccMatchersFactory {
                     Objects.equals(user.getEmail(), claims.get("sub").asText()) &&
                     Objects.equals(expectedId, claims.get("id").asLong()) &&
                     rolesNode.isArray()) {
+                return false;
+            }
+
+
+            LocalDateTime exp = LocalDateTime.ofEpochSecond(
+                    claims.get("exp").asLong(),
+                    0,
+                    OffsetDateTime.now().getOffset());
+            LocalDateTime lowerBoundary = expectedExp.minus(expGap);
+            LocalDateTime upperBoundary = expectedExp.plus(expGap);
+            if (lowerBoundary.isAfter(exp) || upperBoundary.isBefore(exp)) {
                 return false;
             }
 
@@ -132,9 +148,9 @@ public class PfccMatchersFactory {
             }
             Long expectedId = db.select(USERS.ID).from(USERS).where(USERS.EMAIL.eq(user.getEmail())).fetchOne(USERS.ID);
             SecurityTokensRecord token = db.selectFrom(SECURITY_TOKENS)
-                                           .where(SECURITY_TOKENS.CODE.eq((String) actual))
-                                           .and(SECURITY_TOKENS.TYPE.eq("REFRESH_TOKEN"))
-                                           .fetchAny();
+                    .where(SECURITY_TOKENS.CODE.eq((String) actual))
+                    .and(SECURITY_TOKENS.TYPE.eq("REFRESH_TOKEN"))
+                    .fetchAny();
 
             return token != null &&
                     token.getIsActive().equals((byte) 1) &&

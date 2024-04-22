@@ -1,22 +1,25 @@
 package org.mvasylchuk.pfcc.util;
 
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
 import org.springframework.boot.web.server.Cookie;
 
+import java.nio.file.Files;
 import java.time.Duration;
 import java.util.List;
 
 public class PfccAppConfigurationFactory {
     public static PfccAppConfigurationProperties pfccConf(
-            PfccAppConfigurationProperties.MailConfiguration mailConf, PfccAppConfigurationProperties.PfccAuthConfiguration jwtConf, PfccAppConfigurationProperties.AwsConfiguration awsConf, PfccAppConfigurationProperties.@NonNull JobConfiguration jobsConf, List<String> corsConf, Boolean exposeExceptions) {
+            PfccAppConfigurationProperties.MailConfiguration mailConf, PfccAppConfigurationProperties.PfccAuthConfiguration jwtConf, PfccAppConfigurationProperties.AwsConfiguration awsConf, PfccAppConfigurationProperties.@NonNull JobConfiguration jobsConf, List<String> corsConf, Boolean exposeExceptions, PfccAppConfigurationProperties.ReportingConfiguration reportingConf) {
         return new PfccAppConfigurationProperties(
                 mailConf,
                 jwtConf,
                 awsConf,
                 jobsConf,
                 corsConf,
-                exposeExceptions
+                exposeExceptions,
+                reportingConf
         );
     }
 
@@ -58,6 +61,14 @@ public class PfccAppConfigurationFactory {
                 enabled,
                 cron,
                 ttl == null ? null : Duration.parse(ttl)
+        );
+    }
+
+    @SneakyThrows
+    public static PfccAppConfigurationProperties.ReportingConfiguration reporting(String storePathPrefix) {
+        return new PfccAppConfigurationProperties.ReportingConfiguration(
+                Files.createTempDirectory(storePathPrefix),
+                "chrome"
         );
     }
 }

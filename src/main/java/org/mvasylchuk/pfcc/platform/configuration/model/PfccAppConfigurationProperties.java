@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.server.Cookie;
 import software.amazon.awssdk.regions.Region;
 
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class PfccAppConfigurationProperties {
     public final JobConfiguration jobs;
     public final List<String> cors;
     public final Boolean exposeException;
+    @NonNull
+    public final ReportingConfiguration reports;
 
     @RequiredArgsConstructor
     public static class MailConfiguration {
@@ -68,5 +71,13 @@ public class PfccAppConfigurationProperties {
             public final String cron;
             public final Duration outdatedSecurityTokenTtl;
         }
+    }
+
+    @RequiredArgsConstructor
+    public static class ReportingConfiguration {
+        @NonNull
+        public final Path storePath;
+        @NonNull
+        public final String chromeExecutable;
     }
 }

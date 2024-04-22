@@ -4,14 +4,14 @@
 package org.mvasylchuk.pfcc.jooq.tables.records;
 
 
+import java.math.BigDecimal;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record11;
 import org.jooq.Row11;
 import org.jooq.impl.UpdatableRecordImpl;
 import org.mvasylchuk.pfcc.jooq.tables.Users;
-
-import java.math.BigDecimal;
 
 
 /**
@@ -121,40 +121,10 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     /**
-     * Create a detached, initialised UsersRecord
+     * Setter for <code>pfcc.users.email_confirmed</code>.
      */
-    public UsersRecord(Long id,
-                       String email,
-                       String preferredLanguage,
-                       BigDecimal proteinAim,
-                       BigDecimal fatAim,
-                       BigDecimal carbohydratesAim,
-                       BigDecimal caloriesAim,
-                       Byte emailConfirmed,
-                       String password,
-                       String roles,
-                       String name) {
-        super(Users.USERS);
-
-        setId(id);
-        setEmail(email);
-        setPreferredLanguage(preferredLanguage);
-        setProteinAim(proteinAim);
-        setFatAim(fatAim);
-        setCarbohydratesAim(carbohydratesAim);
-        setCaloriesAim(caloriesAim);
-        setEmailConfirmed(emailConfirmed);
-        setPassword(password);
-        setRoles(roles);
-        setName(name);
-        resetChangedOnNotNull();
-    }
-
-    /**
-     * Create a detached UsersRecord
-     */
-    public UsersRecord() {
-        super(Users.USERS);
+    public void setEmailConfirmed(Byte value) {
+        set(7, value);
     }
 
     /**
@@ -165,10 +135,10 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     /**
-     * Setter for <code>pfcc.users.email_confirmed</code>.
+     * Setter for <code>pfcc.users.password</code>.
      */
-    public void setEmailConfirmed(Byte value) {
-        set(7, value);
+    public void setPassword(String value) {
+        set(8, value);
     }
 
     /**
@@ -179,10 +149,10 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     /**
-     * Setter for <code>pfcc.users.password</code>.
+     * Setter for <code>pfcc.users.roles</code>.
      */
-    public void setPassword(String value) {
-        set(8, value);
+    public void setRoles(String value) {
+        set(9, value);
     }
 
     /**
@@ -193,10 +163,17 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     /**
-     * Setter for <code>pfcc.users.roles</code>.
+     * Setter for <code>pfcc.users.name</code>.
      */
-    public void setRoles(String value) {
-        set(9, value);
+    public void setName(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>pfcc.users.name</code>.
+     */
+    public String getName() {
+        return (String) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -212,18 +189,14 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     // Record11 type implementation
     // -------------------------------------------------------------------------
 
-    /**
-     * Getter for <code>pfcc.users.name</code>.
-     */
-    public String getName() {
-        return (String) get(10);
+    @Override
+    public Row11<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, String, String, String> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 
-    /**
-     * Setter for <code>pfcc.users.name</code>.
-     */
-    public void setName(String value) {
-        set(10, value);
+    @Override
+    public Row11<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, String, String, String> valuesRow() {
+        return (Row11) super.valuesRow();
     }
 
     @Override
@@ -267,18 +240,18 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     @Override
-    public Row11<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, String, String, String> fieldsRow() {
-        return (Row11) super.fieldsRow();
-    }
-
-    @Override
-    public Row11<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, String, String, String> valuesRow() {
-        return (Row11) super.valuesRow();
-    }
-
-    @Override
     public Field<String> field9() {
         return Users.USERS.PASSWORD;
+    }
+
+    @Override
+    public Field<String> field10() {
+        return Users.USERS.ROLES;
+    }
+
+    @Override
+    public Field<String> field11() {
+        return Users.USERS.NAME;
     }
 
     @Override
@@ -317,23 +290,23 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     @Override
-    public Field<String> field10() {
-        return Users.USERS.ROLES;
-    }
-
-    @Override
     public Byte component8() {
         return getEmailConfirmed();
     }
 
     @Override
-    public Field<String> field11() {
-        return Users.USERS.NAME;
+    public String component9() {
+        return getPassword();
     }
 
     @Override
-    public String component9() {
-        return getPassword();
+    public String component10() {
+        return getRoles();
+    }
+
+    @Override
+    public String component11() {
+        return getName();
     }
 
     @Override
@@ -377,18 +350,18 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     @Override
-    public String component10() {
+    public String value9() {
+        return getPassword();
+    }
+
+    @Override
+    public String value10() {
         return getRoles();
     }
 
     @Override
-    public String component11() {
+    public String value11() {
         return getName();
-    }
-
-    @Override
-    public String value9() {
-        return getPassword();
     }
 
     @Override
@@ -434,19 +407,9 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     @Override
-    public String value10() {
-        return getRoles();
-    }
-
-    @Override
     public UsersRecord value8(Byte value) {
         setEmailConfirmed(value);
         return this;
-    }
-
-    @Override
-    public String value11() {
-        return getName();
     }
 
     @Override
@@ -461,10 +424,6 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     @Override
     public UsersRecord value11(String value) {
         setName(value);
@@ -472,17 +431,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     @Override
-    public UsersRecord values(Long value1,
-                              String value2,
-                              String value3,
-                              BigDecimal value4,
-                              BigDecimal value5,
-                              BigDecimal value6,
-                              BigDecimal value7,
-                              Byte value8,
-                              String value9,
-                              String value10,
-                              String value11) {
+    public UsersRecord values(Long value1, String value2, String value3, BigDecimal value4, BigDecimal value5, BigDecimal value6, BigDecimal value7, Byte value8, String value9, String value10, String value11) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -495,5 +444,36 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
         value10(value10);
         value11(value11);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached UsersRecord
+     */
+    public UsersRecord() {
+        super(Users.USERS);
+    }
+
+    /**
+     * Create a detached, initialised UsersRecord
+     */
+    public UsersRecord(Long id, String email, String preferredLanguage, BigDecimal proteinAim, BigDecimal fatAim, BigDecimal carbohydratesAim, BigDecimal caloriesAim, Byte emailConfirmed, String password, String roles, String name) {
+        super(Users.USERS);
+
+        setId(id);
+        setEmail(email);
+        setPreferredLanguage(preferredLanguage);
+        setProteinAim(proteinAim);
+        setFatAim(fatAim);
+        setCarbohydratesAim(carbohydratesAim);
+        setCaloriesAim(caloriesAim);
+        setEmailConfirmed(emailConfirmed);
+        setPassword(password);
+        setRoles(roles);
+        setName(name);
+        resetChangedOnNotNull();
     }
 }

@@ -23,7 +23,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mvasylchuk.pfcc.securitytoken.SecurityTokenType.EMAIL_VERIFICATION;
 import static org.mvasylchuk.pfcc.securitytoken.SecurityTokenType.REFRESH_TOKEN;
-import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.*;
+import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.auth;
+import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.dropOutdatedSecTokensConf;
+import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.jobs;
+import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.pfccConf;
+import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.reporting;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -59,7 +63,10 @@ class UserServiceTest {
                     )
             ),
             emptyList(),
-            false
+            false,
+            reporting(
+                    "reports"
+            )
     );
 
     @Test
@@ -71,8 +78,8 @@ class UserServiceTest {
         when(passwordEncoder.encode(any())).thenReturn("pass");
         when(userRepository.save(any())).thenReturn(null);
         Mockito.doNothing()
-               .when(emailService)
-               .sendEmailVerificationMail(eq("email"), eq("name"), eq(validationTokenCode), eq(Language.UA));
+                .when(emailService)
+                .sendEmailVerificationMail(eq("email"), eq("name"), eq(validationTokenCode), eq(Language.UA));
         when(jwtService.generateToken(any())).thenReturn(accessToken);
         when(securityTokenService.generateSecurityToken(any(), eq(EMAIL_VERIFICATION)))
                 .thenReturn(validationTokenCode);

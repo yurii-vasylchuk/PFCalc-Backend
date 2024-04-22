@@ -69,7 +69,7 @@ public class UserController {
                                                    .httpOnly(true)
                                                    .secure(uri.getScheme().equals("https"))
                                                    .path("/api")
-                                                   .maxAge(conf.auth.authTokenExpiration.plus(LOCAL_OFFSET))
+                                                   .maxAge(conf.auth.authTokenExpiration)
                                                    .domain(uri.getHost())
                                                    .sameSite(conf.auth.sameSite.attributeValue())
                                                    .build();

@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title th:text="#{document.title}">Тижневий звіт</title>
+    <style th:insert="weeklyReport.css"></style>
+</head>
+<!--/*@thymesVar id="userName" type="java.lang.String"*/-->
+<!--/*@thymesVar id="start" type="java.time.LocalDate"*/-->
+<!--/*@thymesVar id="end" type="java.time.LocalDate"*/-->
+<!--/*@thymesVar id="average" type="org.mvasylchuk.pfcc.common.dto.PfccDto"*/-->
+<!--/*@thymesVar id="total" type="org.mvasylchuk.pfcc.common.dto.PfccDto"*/-->
+<!--/*@thymesVar id="max" type="org.mvasylchuk.pfcc.common.dto.PfccDto"*/-->
+<!--/*@thymesVar id="min" type="org.mvasylchuk.pfcc.common.dto.PfccDto"*/-->
+<!--/*@thymesVar id="aim" type="org.mvasylchuk.pfcc.common.dto.PfccDto"*/-->
+<!--/*@thymesVar id="percent" type="org.mvasylchuk.pfcc.common.dto.PfccDto"*/-->
+<!--/*@thymesVar id="days" type="java.util.Map<java.time.LocalDate, org.mvasylchuk.pfcc.report.dto.PeriodReportData.DailyReportData>"*/-->
+<!--/*@thymesVar id="util" type="org.mvasylchuk.pfcc.common.ThymeleafPfcalcUtil"*/-->
+<body>
+<div class="totals">
+    <div class="totals-charts">
+        <div class="totals-charts__group">
+            <h2 th:text="#{title.daily-average}">Середній за день</h2>
+            <div class="totals-charts__group-gauges">
+                <div class="totals-charts__pfcc-value pfcc-value">
+                    <svg class="pfcc-value__gauge"
+                         viewBox="0 0 110 110">
+                        <circle fill="transparent"
+                                cx="55"
+                                cy="55"
+                                r="47.5"
+                                stroke-width="15"
+                                stroke="#bf3060"></circle>
+                        <circle fill="transparent"
+                                stroke-linecap="round"
+                                class="foreground-circle"
+                                cx="55"
+                                cy="55"
+                                r="47.5"
+                                stroke-width="15"
+                                stroke="#ff4081"
+                                th:attr="stroke-dasharray=${aim.protein} ? ${util.strokeDasharray('47.5', average.protein, aim.protein)} : null"
+                                stroke-dasharray="240.04128296983245 58.410019121197905"
+                                transform="rotate(-90, 55, 55)"></circle>
+                        <text font-weight="bold"
+                              text-anchor="middle"
+                              class="title"
+                              font-size="35"
+                              x="55"
+                              y="55"
+                              th:text="#{common.protein.sign}"> Б
+                        </text>
+                        <text text-anchor="middle"
+                              class="subtitle ng-star-inserted"
+                              font-size="20"
+                              x="55"
+                              y="75"
+                              th:text="${average.protein}"> 131.1
+                        </text>
+                    </svg>
+                    <span class="pfcc-value__text" th:text="${#strings.capitalize(#messages.msg('common.protein'))}">Білки</span>
+                    <span class="pfcc-value__text"
+                          th:text="${aim.protein} ? ${average.protein} + ' / ' + ${aim.protein} : ${average.protein}">
+                        627.35 / 720
+                    </span>
+                </div>
+
+                <div class="totals-charts__pfcc-value pfcc-value">
+                    <svg class="pfcc-value__gauge"
+                         viewBox="0 0 110 110">
+                        <circle fill="transparent"
+                                cx="55"
+                                cy="55"
+                                r="47.5"
+                                stroke-width="15"
+                                stroke="#bf3060"></circle>
+                        <circle fill="transparent"
+                                stroke-linecap="round"
+                                class="foreground-circle"
+                                cx="55"
+                                cy="55"
+                                r="47.5"
+                                stroke-width="15"
+                                stroke="#ff4081"
+                                th:attr="stroke-dasharray=${aim.fat} ? ${util.strokeDasharray('47.5', average.fat, aim.fat)} : null"
+                                stroke-dasharray="240.04128296983245 58.410019121197905"
+                                transform="rotate(-90, 55, 55)"></circle>
+                        <text font-weight="bold"
+                              text-anchor="middle"
+                              class="title"
+                              font-size="35"
+                              x="55"
+                              y="55"
+                              th:text="#{common.fat.sign}"> Ж
+                        </text>
+                        <text text-anchor="middle"
+                              class="subtitle ng-star-inserted"
+                              font-size="20"
+                              x="55"
+                              y="75"
+                              th:text="${average.fat}"> 37.2
+                        </text>
+                    </svg>
+                    <span class="pfcc-value__text"
+                          th:text="${#strings.capitalize(#messages.msg('common.fat'))}">Жири</span>
+                    <span class="pfcc-value__text"
+                          th:text="${aim.fat} ? ${average.fat} + ' / ' + ${aim.fat} : ${average.fat}">
+                        627.35 / 720
+                    </span>
+                </div>
+
+                <div class="totals-charts__pfcc-value pfcc-value">
+                    <svg class="pfcc-value__gauge"
+                         viewBox="0 0 110 110">
+                        <circle fill="transparent"
+                                cx="55"
+                                cy="55"
+                                r="47.5"
+                                stroke-width="15"
+                                stroke="#bf3060"></circle>
+                        <circle fill="transparent"
+                                stroke-linecap="round"
+                                class="foreground-circle"
+                                cx="55"
+                                cy="55"
+                                r="47.5"
+                                stroke-width="15"
+                                stroke="#ff4081"
+                                th:attr="stroke-dasharray=${aim.carbohydrates} ? ${util.strokeDasharray('47.5', average.carbohydrates, aim.carbohydrates)} : null"
+                                stroke-dasharray="240.04128296983245 58.410019121197905"
+                                transform="rotate(-90, 55, 55)"></circle>
+                        <text font-weight="bold"
+                              text-anchor="middle"
+                              class="title"
+                              font-size="35"
+                              x="55"
+                              y="55"
+                              th:text="#{common.carbohydrates.sign}"> В
+                        </text>
+                        <text text-anchor="middle"
+                              class="subtitle ng-star-inserted"
+                              font-size="20"
+                              x="55"
+                              y="75"
+                              th:text="${average.carbohydrates}"> 132,7
+                        </text>
+                    </svg>
+                    <span class="pfcc-value__text" th:text="${#strings.capitalize(#messages.msg('common.carbohydrates'))}">Вуглеводи</span>
+                    <span class="pfcc-value__text"
+                          th:text="${aim.carbohydrates} ? ${average.carbohydrates} + ' / ' + ${aim.carbohydrates} : ${average.carbohydrates}">
+                        627.35 / 720
+                    </span>
+                </div>
+
+                <div class="totals-charts__pfcc-value pfcc-value">
+                    <svg class="pfcc-value__gauge"
+                         viewBox="0 0 110 110">
+                        <circle fill="transparent"
+                                cx="55"
+                                cy="55"
+                                r="47.5"
+                                stroke-width="15"
+                                stroke="#bf3060"></circle>
+                        <circle fill="transparent"
+                                stroke-linecap="round"
+                                class="foreground-circle"
+                                cx="55"
+                                cy="55"
+                                r="47.5"
+                                stroke-width="15"
+                                stroke="#ff4081"
+                                th:attr="stroke-dasharray=${aim.calories} ? ${util.strokeDasharray('47.5', average.calories, aim.calories)} : null"
+                                transform="rotate(-90, 55, 55)"></circle>
+                        <text font-weight="bold"
+                              text-anchor="middle"
+                              class="title"
+                              font-size="35"
+                              x="55"
+                              y="55"
+                              th:text="#{common.calories.sign}"> К
+                        </text>
+                        <text text-anchor="middle"
+                              class="subtitle ng-star-inserted"
+                              font-size="20"
+                              x="55"
+                              y="75"
+                              th:text="${average.calories}"> 1203
+                        </text>
+                    </svg>
+                    <span class="pfcc-value__text" th:text="${#strings.capitalize(#messages.msg('common.calories'))}">Калорії</span>
+                    <span class="pfcc-value__text"
+                          th:text="${aim.calories} ? ${average.calories} + ' / ' + ${aim.calories} : ${average.calories}">
+                        1520
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="totals-table">
+        <tr>
+            <td></td>
+            <td th:text="#{totals.column-header.average}">Середній</td>
+            <td th:text="#{totals.column-header.aim}">Ціль</td>
+            <td th:text="#{totals.column-header.max}">Макс.</td>
+            <td th:text="#{totals.column-header.min}">Мін.</td>
+            <td>%</td>
+        </tr>
+        <tr>
+            <td th:text="${#strings.capitalize(#messages.msg('common.protein'))}">Білки</td>
+            <td th:text="${average.protein} ? ${average.protein} + #{common.sign.gramm} : '-'">120</td>
+            <td th:text="${aim.protein} ? ${aim.protein} + #{common.sign.gramm} : '-'">130</td>
+            <td th:text="${max.protein} ? ${max.protein} + #{common.sign.gramm} : '-'">120</td>
+            <td th:text="${min.protein} ? ${min.protein} + #{common.sign.gramm} : '-'">120</td>
+            <td th:text="${percent.protein} ? (${percent.protein} + '%') : '-'">92%</td>
+        </tr>
+        <tr>
+            <td th:text="${#strings.capitalize(#messages.msg('common.fat'))}">Жири</td>
+            <td th:text="${average.fat} ? ${average.fat} + #{common.sign.gramm} : '-'">37</td>
+            <td th:text="${aim.fat} ? ${aim.fat} + #{common.sign.gramm} : '-'">50</td>
+            <td th:text="${max.fat} ? ${max.fat} + #{common.sign.gramm} : '-'">37</td>
+            <td th:text="${min.fat} ? ${min.fat} + #{common.sign.gramm} : '-'">37</td>
+            <td th:text="${percent.fat} ? (${percent.fat} + '%') : '-'">74%</td>
+        </tr>
+        <tr>
+            <td th:text="${#strings.capitalize(#messages.msg('common.carbohydrates'))}">Вуглеводи</td>
+            <td th:text="${average.carbohydrates} ? ${average.carbohydrates} + #{common.sign.gramm} : '-'">134</td>
+            <td th:text="${aim.carbohydrates} ? ${aim.carbohydrates} + #{common.sign.gramm} : '-'">160</td>
+            <td th:text="${max.carbohydrates} ? ${max.carbohydrates} + #{common.sign.gramm} : '-'">134</td>
+            <td th:text="${min.carbohydrates} ? ${min.carbohydrates} + #{common.sign.gramm} : '-'">134</td>
+            <td th:text="${percent.carbohydrates} ? (${percent.carbohydrates} + '%') : '-'">83,75%</td>
+        </tr>
+        <tr>
+            <td th:text="${#strings.capitalize(#messages.msg('common.calories'))}">Калорії</td>
+            <td th:text="${average.calories} ? ${average.calories} + #{common.sign.kcal} : '-'">1123</td>
+            <td th:text="${aim.calories} ? ${aim.calories} + #{common.sign.kcal} : '-'">–</td>
+            <td th:text="${max.calories} ? ${max.calories} + #{common.sign.kcal} : '-'">1123</td>
+            <td th:text="${min.calories} ? ${min.calories} + #{common.sign.kcal} : '-'">1123</td>
+            <td th:text="${percent.calories} ? (${percent.calories} + '%') : '-'">–</td>
+        </tr>
+    </table>
+</div>
+
+<h1 th:text="#{title.meals}">Прийоми їжі</h1>
+
+<div class="meals-general">
+    <table>
+        <tr class="meals-general__common-row meals-general__headings-row">
+            <th th:text="#{meals.column-header.name}">Назва</th>
+            <th th:text="${#strings.capitalize(#messages.msg('common.protein'))}">Білки</th>
+            <th th:text="${#strings.capitalize(#messages.msg('common.fat'))}">Жири</th>
+            <th th:text="${#strings.capitalize(#messages.msg('common.carbohydrates'))}">Вуглеводи</th>
+            <th th:text="${#strings.capitalize(#messages.msg('common.calories'))}">Калорії</th>
+        </tr>
+        <th:block th:each="day : ${days}">
+            <tr class="meals-general__date-row">
+                <td colspan="5"
+                    th:text="${#temporals.format(day.key, 'dd-MM-yyyy')} + ' ('+ ${#strings.capitalize(#temporals.format(day.key, 'EEEE'))} + ')'">
+                    19-03-2024 (Понеділок)
+                </td>
+            </tr>
+
+            <tr class="meals-general__common-row"
+                th:each="meal: ${day.value.meals}">
+                <td th:text="${meal.name} + ' - ' + ${meal.weight} + #{common.sign.gramm}">Олія - 5г</td>
+                <td th:text="${meal.pfcc.protein} + #{common.sign.gramm}">0г</td>
+                <td th:text="${meal.pfcc.fat} + #{common.sign.gramm}">5г</td>
+                <td th:text="${meal.pfcc.carbohydrates} + #{common.sign.gramm}">0г</td>
+                <td th:text="${meal.pfcc.calories} + #{common.sign.kcal}">45кКал</td>
+            </tr>
+
+            <tr class="meals-general__day-summary-row">
+                <td th:text="#{meals.total} + ' (' + ${#strings.capitalize(#temporals.format(day.key, 'EEEE'))} +'):'">
+                    Всього (Понеділок):
+                </td>
+                <td th:text="${day.value.total.protein} + #{common.sign.gramm} + (${day.value.percent.protein} ? ' (' + ${day.value.percent.protein} + '%)' : '')">
+                    130.94г (101%)
+                </td>
+                <td th:text="${day.value.total.fat} + #{common.sign.gramm} + (${day.value.percent.fat} ? ' (' + ${day.value.percent.fat} + '%)' : '')">
+                    35.81г (74%)
+                </td>
+                <td th:text="${day.value.total.carbohydrates} + #{common.sign.gramm} + (${day.value.percent.carbohydrates} ? ' (' + ${day.value.percent.carbohydrates} + '%)' : '')">
+                    122.99г (81%)
+                </td>
+                <td th:text="${day.value.total.calories} + #{common.sign.kcal} + (${day.value.percent.calories} ? ' (' + ${day.value.percent.calories} + '%)' : '')">
+                    1281.35кКал (135%)
+                </td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+
+<div class="page-break"></div>
+
+<h1 th:text="#{title.deconstructed-meals}">Прийоми їжі (деконструйовані)</h1>
+
+<div class="meals-general">
+    <table>
+        <tr class="meals-general__common-row meals-general__headings-row">
+            <th th:text="#{meals.column-header.name}">Назва</th>
+            <th th:text="${#strings.capitalize(#messages.msg('common.protein'))}">Білки</th>
+            <th th:text="${#strings.capitalize(#messages.msg('common.fat'))}">Жири</th>
+            <th th:text="${#strings.capitalize(#messages.msg('common.carbohydrates'))}">Вуглеводи</th>
+            <th th:text="${#strings.capitalize(#messages.msg('common.calories'))}">Калорії</th>
+        </tr>
+
+        <th:block th:each="day : ${days}">
+            <tr class="meals-general__date-row">
+                <td colspan="5"
+                    th:text="${#temporals.format(day.key, 'dd-MM-yyyy')} + ' ('+ ${#strings.capitalize(#temporals.format(day.key, 'EEEE'))} + ')'">
+                    19-03-2024 (Понеділок)
+                </td>
+            </tr>
+
+            <tr class="meals-general__common-row"
+                th:each="meal: ${day.value.deconstructedMeals}">
+                <td th:text="${meal.name} + ' - ' + ${meal.weight} + 'г'">Олія - 5г</td>
+                <td th:text="${meal.pfcc.protein} + #{common.sign.gramm}">0г</td>
+                <td th:text="${meal.pfcc.fat} + #{common.sign.gramm}">5г</td>
+                <td th:text="${meal.pfcc.carbohydrates} + #{common.sign.gramm}">0г</td>
+                <td th:text="${meal.pfcc.calories} + #{common.sign.kcal}">45кКал</td>
+            </tr>
+
+            <tr class="meals-general__day-summary-row">
+                <td th:text="#{meals.total} + ' (' + ${#strings.capitalize(#temporals.format(day.key, 'EEEE'))} +'):'">
+                    Всього (Понеділок):
+                </td>
+                <td
+                        th:text="${day.value.total.protein} + #{common.sign.gramm} + (${day.value.percent.protein} ? ' (' + ${day.value.percent.protein} + '%)' : '')">
+                    130.94г (101%)
+                </td>
+                <td th:text="${day.value.total.fat} + #{common.sign.gramm} + (${day.value.percent.fat} ? ' (' + ${day.value.percent.fat} + '%)' : '')">
+                    35.81г (74%)
+                </td>
+                <td
+                        th:text="${day.value.total.carbohydrates} + #{common.sign.gramm} + (${day.value.percent.carbohydrates} ? ' (' + ${day.value.percent.carbohydrates} + '%)' : '')">
+                    122.99г (81%)
+                </td>
+                <td th:text="${day.value.total.calories} + #{common.sign.kcal} + (${day.value.percent.calories} ? ' (' + ${day.value.percent.calories} + '%)' : '')">
+                    1281.35кКал (135%)
+                </td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+</body>
+</html>

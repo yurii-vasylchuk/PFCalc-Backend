@@ -34,13 +34,13 @@ class SecurityTokenServiceTest {
     void generateSecurityToken() {
         when(repository.save(tokenCaptor.capture())).thenAnswer(invocation -> invocation.getArgument(0));
         UserEntity userEntity = new UserEntity(1L,
-                                               "email@email.com",
-                                               "password",
-                                               "name",
-                                               Language.UA,
-                                               null,
-                                               true,
-                                               Collections.emptyList());
+                "email@email.com",
+                "password",
+                "name",
+                Language.UA,
+                null,
+                true,
+                Collections.emptyList());
         String code = underTest.generateSecurityToken(userEntity, EMAIL_VERIFICATION);
 
         List<SecurityTokenEntity> captured = tokenCaptor.getAllValues();
@@ -58,13 +58,13 @@ class SecurityTokenServiceTest {
     @Test
     void validate() {
         UserEntity userEntity = new UserEntity(1L,
-                                               "email@email.com",
-                                               "password",
-                                               "name",
-                                               Language.UA,
-                                               null,
-                                               true,
-                                               Collections.emptyList());
+                "email@email.com",
+                "password",
+                "name",
+                Language.UA,
+                null,
+                true,
+                Collections.emptyList());
         String code = "TEST_CODE";
 
         when(repository.findValid(code, EMAIL_VERIFICATION))
