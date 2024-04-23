@@ -129,6 +129,10 @@ body > * {
     font-weight: bold;
 }
 
+.meals-general__no-data-row {
+    text-align: center;
+}
+
 .meals-general__day-summary-row {
     background-color: rgba(255, 64, 129, 0.3);
     font-style: italic;

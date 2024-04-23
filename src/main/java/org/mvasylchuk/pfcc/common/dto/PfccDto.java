@@ -43,7 +43,7 @@ public class PfccDto {
         );
     }
 
-    public PfccDto divide(int divisor) {
+    public PfccDto divide(long divisor) {
         return new PfccDto(
                 this.protein == null ? null : this.protein.divide(BigDecimal.valueOf(divisor), this.protein.scale(), RoundingMode.HALF_UP),
                 this.fat == null ? null : this.fat.divide(BigDecimal.valueOf(divisor), this.fat.scale(), RoundingMode.HALF_UP),

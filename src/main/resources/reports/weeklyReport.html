@@ -262,37 +262,45 @@
                 </td>
             </tr>
 
-            <tr class="meals-general__common-row"
-                th:each="meal: ${day.value.meals}">
-                <td th:text="${meal.name} + ' - ' + ${meal.weight} + #{common.sign.gramm}">Олія - 5г</td>
-                <td th:text="${meal.pfcc.protein} + #{common.sign.gramm}">0г</td>
-                <td th:text="${meal.pfcc.fat} + #{common.sign.gramm}">5г</td>
-                <td th:text="${meal.pfcc.carbohydrates} + #{common.sign.gramm}">0г</td>
-                <td th:text="${meal.pfcc.calories} + #{common.sign.kcal}">45кКал</td>
-            </tr>
+            <th:block th:if="${day.value.isEmpty()}">
+                <tr class="meals-general__no-data-row">
+                    <td colspan="5" th:text="#{meals.no-data}">Немає даних</td>
+                </tr>
+            </th:block>
 
-            <tr class="meals-general__day-summary-row">
-                <td th:text="#{meals.total} + ' (' + ${#strings.capitalize(#temporals.format(day.key, 'EEEE'))} +'):'">
-                    Всього (Понеділок):
-                </td>
-                <td th:text="${day.value.total.protein} + #{common.sign.gramm} + (${day.value.percent.protein} ? ' (' + ${day.value.percent.protein} + '%)' : '')">
-                    130.94г (101%)
-                </td>
-                <td th:text="${day.value.total.fat} + #{common.sign.gramm} + (${day.value.percent.fat} ? ' (' + ${day.value.percent.fat} + '%)' : '')">
-                    35.81г (74%)
-                </td>
-                <td th:text="${day.value.total.carbohydrates} + #{common.sign.gramm} + (${day.value.percent.carbohydrates} ? ' (' + ${day.value.percent.carbohydrates} + '%)' : '')">
-                    122.99г (81%)
-                </td>
-                <td th:text="${day.value.total.calories} + #{common.sign.kcal} + (${day.value.percent.calories} ? ' (' + ${day.value.percent.calories} + '%)' : '')">
-                    1281.35кКал (135%)
-                </td>
-            </tr>
+            <th:block th:unless="${day.value.isEmpty()}">
+
+
+                <tr class="meals-general__common-row"
+                    th:each="meal: ${day.value.meals}">
+                    <td th:text="${meal.name} + ' - ' + ${meal.weight} + #{common.sign.gramm}">Олія - 5г</td>
+                    <td th:text="${meal.pfcc.protein} + #{common.sign.gramm}">0г</td>
+                    <td th:text="${meal.pfcc.fat} + #{common.sign.gramm}">5г</td>
+                    <td th:text="${meal.pfcc.carbohydrates} + #{common.sign.gramm}">0г</td>
+                    <td th:text="${meal.pfcc.calories} + #{common.sign.kcal}">45кКал</td>
+                </tr>
+
+                <tr class="meals-general__day-summary-row">
+                    <td th:text="#{meals.total} + ' (' + ${#strings.capitalize(#temporals.format(day.key, 'EEEE'))} +'):'">
+                        Всього (Понеділок):
+                    </td>
+                    <td th:text="${day.value.total.protein} + #{common.sign.gramm} + (${day.value.percent.protein} ? ' (' + ${day.value.percent.protein} + '%)' : '')">
+                        130.94г (101%)
+                    </td>
+                    <td th:text="${day.value.total.fat} + #{common.sign.gramm} + (${day.value.percent.fat} ? ' (' + ${day.value.percent.fat} + '%)' : '')">
+                        35.81г (74%)
+                    </td>
+                    <td th:text="${day.value.total.carbohydrates} + #{common.sign.gramm} + (${day.value.percent.carbohydrates} ? ' (' + ${day.value.percent.carbohydrates} + '%)' : '')">
+                        122.99г (81%)
+                    </td>
+                    <td th:text="${day.value.total.calories} + #{common.sign.kcal} + (${day.value.percent.calories} ? ' (' + ${day.value.percent.calories} + '%)' : '')">
+                        1281.35кКал (135%)
+                    </td>
+                </tr>
+            </th:block>
         </th:block>
     </table>
 </div>
-
-<div class="page-break"></div>
 
 <h1 th:text="#{title.deconstructed-meals}">Прийоми їжі (деконструйовані)</h1>
 
@@ -314,34 +322,43 @@
                 </td>
             </tr>
 
-            <tr class="meals-general__common-row"
-                th:each="meal: ${day.value.deconstructedMeals}">
-                <td th:text="${meal.name} + ' - ' + ${meal.weight} + 'г'">Олія - 5г</td>
-                <td th:text="${meal.pfcc.protein} + #{common.sign.gramm}">0г</td>
-                <td th:text="${meal.pfcc.fat} + #{common.sign.gramm}">5г</td>
-                <td th:text="${meal.pfcc.carbohydrates} + #{common.sign.gramm}">0г</td>
-                <td th:text="${meal.pfcc.calories} + #{common.sign.kcal}">45кКал</td>
-            </tr>
+            <th:block th:if="${day.value.isEmpty()}">
+                <tr class="meals-general__no-data-row">
+                    <td colspan="5" th:text="#{meals.no-data}">Немає даних</td>
+                </tr>
+            </th:block>
 
-            <tr class="meals-general__day-summary-row">
-                <td th:text="#{meals.total} + ' (' + ${#strings.capitalize(#temporals.format(day.key, 'EEEE'))} +'):'">
-                    Всього (Понеділок):
-                </td>
-                <td
-                        th:text="${day.value.total.protein} + #{common.sign.gramm} + (${day.value.percent.protein} ? ' (' + ${day.value.percent.protein} + '%)' : '')">
-                    130.94г (101%)
-                </td>
-                <td th:text="${day.value.total.fat} + #{common.sign.gramm} + (${day.value.percent.fat} ? ' (' + ${day.value.percent.fat} + '%)' : '')">
-                    35.81г (74%)
-                </td>
-                <td
-                        th:text="${day.value.total.carbohydrates} + #{common.sign.gramm} + (${day.value.percent.carbohydrates} ? ' (' + ${day.value.percent.carbohydrates} + '%)' : '')">
-                    122.99г (81%)
-                </td>
-                <td th:text="${day.value.total.calories} + #{common.sign.kcal} + (${day.value.percent.calories} ? ' (' + ${day.value.percent.calories} + '%)' : '')">
-                    1281.35кКал (135%)
-                </td>
-            </tr>
+
+            <th:block th:unless="${day.value.isEmpty()}">
+                <tr class="meals-general__common-row"
+                    th:each="meal: ${day.value.deconstructedMeals}">
+                    <td th:text="${meal.name} + ' - ' + ${meal.weight} + 'г'">Олія - 5г</td>
+                    <td th:text="${meal.pfcc.protein} + #{common.sign.gramm}">0г</td>
+                    <td th:text="${meal.pfcc.fat} + #{common.sign.gramm}">5г</td>
+                    <td th:text="${meal.pfcc.carbohydrates} + #{common.sign.gramm}">0г</td>
+                    <td th:text="${meal.pfcc.calories} + #{common.sign.kcal}">45кКал</td>
+                </tr>
+
+                <tr class="meals-general__day-summary-row">
+                    <td th:text="#{meals.total} + ' (' + ${#strings.capitalize(#temporals.format(day.key, 'EEEE'))} +'):'">
+                        Всього (Понеділок):
+                    </td>
+                    <td
+                            th:text="${day.value.total.protein} + #{common.sign.gramm} + (${day.value.percent.protein} ? ' (' + ${day.value.percent.protein} + '%)' : '')">
+                        130.94г (101%)
+                    </td>
+                    <td th:text="${day.value.total.fat} + #{common.sign.gramm} + (${day.value.percent.fat} ? ' (' + ${day.value.percent.fat} + '%)' : '')">
+                        35.81г (74%)
+                    </td>
+                    <td
+                            th:text="${day.value.total.carbohydrates} + #{common.sign.gramm} + (${day.value.percent.carbohydrates} ? ' (' + ${day.value.percent.carbohydrates} + '%)' : '')">
+                        122.99г (81%)
+                    </td>
+                    <td th:text="${day.value.total.calories} + #{common.sign.kcal} + (${day.value.percent.calories} ? ' (' + ${day.value.percent.calories} + '%)' : '')">
+                        1281.35кКал (135%)
+                    </td>
+                </tr>
+            </th:block>
         </th:block>
     </table>
 </div>

@@ -54,7 +54,7 @@ public class PeriodReportData {
                 .map(DailyReportData::getTotal)
                 .peek(this::adjustMinAndMaxPfcc)
                 .reduce(PfccDto.zero(), PfccDto::add);
-        this.dailyAverage = totalPfcc.divide(days.size());
+        this.dailyAverage = totalPfcc.divide(days.values().stream().filter(d -> !d.meals.isEmpty()).count());
         this.percentOfAim = dailyAverage.multiply(100).divide(dailyAim);
     }
 
@@ -88,6 +88,10 @@ public class PeriodReportData {
                     .toList();
             this.total = meals.stream().map(MealForDailyReport::pfcc).reduce(PfccDto.zero(), PfccDto::add);
             this.percent = this.total.multiply(100).divide(aim).scale(0);
+        }
+
+        public boolean isEmpty() {
+            return this.meals.isEmpty();
         }
     }
 
