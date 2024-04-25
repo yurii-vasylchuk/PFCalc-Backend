@@ -26,7 +26,9 @@ import java.time.LocalDate;
 public class ReportController {
     private final ReportFacade reportFacade;
 
-    @GetMapping(produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(
+            value = "/period",
+            produces = MediaType.APPLICATION_PDF_VALUE)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<FileSystemResource> generateReport(@RequestParam("from") LocalDate from,
                                                              @RequestParam("to") LocalDate to,
