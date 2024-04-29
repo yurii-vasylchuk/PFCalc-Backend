@@ -6,6 +6,7 @@ pfcc:
   reports:
     store-path: /Users/yurii/workspace/projects/personal/pfcalc/backend/src/test/reports
     chrome-executable: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    render-timeout: PT10S
   auth:
     issuer: 'http://localhost:8080'
     key-algorithm: RSA

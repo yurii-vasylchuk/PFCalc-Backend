@@ -1,6 +1,8 @@
 package org.mvasylchuk.pfcc.securitytoken;
 
 import lombok.RequiredArgsConstructor;
+import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
+import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.user.UserEntity;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +36,8 @@ public class SecurityTokenService {
     }
 
     public UserEntity validate(String code, SecurityTokenType type) {
-        //TODO: Exception - switch to PfccException
         SecurityTokenEntity token = repository.findValid(code, type)
-                                              .orElseThrow(() -> new IllegalArgumentException("Invalid security token code: token doesn't exists"));
+                                              .orElseThrow(() -> new PfccException("Invalid security token code: token doesn't exists", ApiErrorCode.SECURITY));
 
         token.setIsActive(false);
         repository.save(token);

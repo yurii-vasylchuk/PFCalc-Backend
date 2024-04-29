@@ -7,5 +7,6 @@ public enum ApiErrorCode {
     DISH_IS_NOT_FOUND,
     SECURITY,
     INVALID_CSV_FILE,
+    USER_IS_NOT_FOUND,
     FOOD_IS_NOT_FOUND
 }

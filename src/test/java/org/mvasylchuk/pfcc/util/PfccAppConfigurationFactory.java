@@ -68,7 +68,8 @@ public class PfccAppConfigurationFactory {
     public static PfccAppConfigurationProperties.ReportingConfiguration reporting(String storePathPrefix) {
         return new PfccAppConfigurationProperties.ReportingConfiguration(
                 Files.createTempDirectory(storePathPrefix),
-                "chrome"
+                "chrome",
+                Duration.ofSeconds(20)
         );
     }
 }

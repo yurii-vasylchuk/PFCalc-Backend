@@ -27,3 +27,4 @@ pfcc:
   reports:
     store-path: "/Users/yurii/workspace/projects/personal/pfcalc/backend/reports"
     chrome-executable: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    render-timeout: PT10S

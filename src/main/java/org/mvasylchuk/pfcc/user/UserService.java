@@ -9,7 +9,13 @@ import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenType;
-import org.mvasylchuk.pfcc.user.dto.*;
+import org.mvasylchuk.pfcc.user.dto.AuthTokensDto;
+import org.mvasylchuk.pfcc.user.dto.LoginRequestDto;
+import org.mvasylchuk.pfcc.user.dto.ProfileDto;
+import org.mvasylchuk.pfcc.user.dto.RefreshAuthTokenRequestDto;
+import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
+import org.mvasylchuk.pfcc.user.dto.SaveProfileRequestDto;
+import org.mvasylchuk.pfcc.user.dto.VerifyAccountRequestDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -98,7 +104,7 @@ public class UserService {
         return generateAuthTokens(user);
     }
 
-    public ProfileDto getUserProfile() {
+    public ProfileDto getCurrentUserProfile() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {
             return null;

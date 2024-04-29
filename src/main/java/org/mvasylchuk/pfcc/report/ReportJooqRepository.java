@@ -2,14 +2,20 @@ package org.mvasylchuk.pfcc.report;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
 import org.mvasylchuk.pfcc.domain.entity.FoodType;
+import org.mvasylchuk.pfcc.jooq.tables.records.ReportsRecord;
 import org.mvasylchuk.pfcc.jooq.tables.records.UsersRecord;
 import org.mvasylchuk.pfcc.report.dto.PeriodReportData;
 import org.mvasylchuk.pfcc.report.dto.PeriodReportData.DailyReportData;
 import org.mvasylchuk.pfcc.report.dto.PeriodReportData.MealForDailyReport;
+import org.mvasylchuk.pfcc.report.dto.ReportDto;
+import org.mvasylchuk.pfcc.report.dto.ReportStatus;
+import org.mvasylchuk.pfcc.report.dto.ReportType;
 import org.mvasylchuk.pfcc.user.Language;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.util.Pair;
@@ -30,6 +36,7 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.if_;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.sum;
+import static org.mvasylchuk.pfcc.jooq.Tables.REPORTS;
 import static org.mvasylchuk.pfcc.jooq.tables.Dish.DISH;
 import static org.mvasylchuk.pfcc.jooq.tables.DishIngredients.DISH_INGREDIENTS;
 import static org.mvasylchuk.pfcc.jooq.tables.Food.FOOD;
@@ -41,13 +48,12 @@ import static org.mvasylchuk.pfcc.jooq.tables.Users.USERS;
 @Primary
 @Component
 @RequiredArgsConstructor
-public class ReportJooqRepository implements ReportRepository {
+public class ReportJooqRepository {
     private static final int DEFAULT_SCALE = 0;
     public static final Language DEFAULT_LANGUAGE = Language.EN;
 
     private final DSLContext ctx;
 
-    @Override
     public PeriodReportData getPeriodReport(Long userId, LocalDate from, LocalDate to) {
         PeriodReportData.PeriodReportDataBuilder builder = PeriodReportData.builder()
                 .startDate(from)
@@ -194,6 +200,39 @@ public class ReportJooqRepository implements ReportRepository {
                         .weight(task.weight.setScale(DEFAULT_SCALE, RoundingMode.HALF_UP))
                         .build());
         return List.of(result);
+    }
+
+    private static ReportDto recordToDto(ReportsRecord r) {
+        return new ReportDto(r.getId(), r.getName(), ReportStatus.valueOf(r.getStatus()), ReportType.valueOf(r.getType()), r.getUserId(), r.getFilePath());
+    }
+
+    public List<Long> getAllUsersIdsForPeriodReportGeneration() {
+        return ctx.select(USERS.ID)
+                .from(USERS)
+                .where(USERS.EMAIL_CONFIRMED.isTrue())
+                .fetchInto(Long.class);
+    }
+
+    public Page<ReportDto> getReadyReportsPage(Long userId, Integer page, Integer pageSize) {
+        Condition condition = REPORTS.USER_ID.eq(userId)
+                .and(REPORTS.STATUS.in(ReportStatus.READY_STATUSES.stream().map(Enum::name).toList()));
+
+        List<ReportDto> reports = ctx.selectFrom(REPORTS)
+                .where(condition)
+                .limit(pageSize)
+                .offset(page * pageSize)
+                .fetch(ReportJooqRepository::recordToDto);
+
+        int totalElements = ctx.fetchCount(REPORTS, condition);
+
+
+        return new Page<>(page, pageSize, totalElements / pageSize, totalElements, reports);
+    }
+
+    public ReportDto getReport(Long id) {
+        return ctx.selectFrom(REPORTS)
+                .where(REPORTS.ID.eq(id))
+                .fetchOne(ReportJooqRepository::recordToDto);
     }
 
     private record MealDeconstructTask(BigDecimal weight, Long foodId, Long dishId, LocalDate eatenOn) {

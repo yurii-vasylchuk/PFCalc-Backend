@@ -79,5 +79,7 @@ public class PfccAppConfigurationProperties {
         public final Path storePath;
         @NonNull
         public final String chromeExecutable;
+        @NonNull
+        public final Duration renderTimeout;
     }
 }

@@ -6,11 +6,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.mvasylchuk.pfcc.common.dto.BaseResponse;
 import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
-import org.mvasylchuk.pfcc.user.dto.*;
+import org.mvasylchuk.pfcc.user.dto.AuthTokenResponseDto;
+import org.mvasylchuk.pfcc.user.dto.AuthTokensDto;
+import org.mvasylchuk.pfcc.user.dto.LoginRequestDto;
+import org.mvasylchuk.pfcc.user.dto.ProfileDto;
+import org.mvasylchuk.pfcc.user.dto.RefreshAuthTokenRequestDto;
+import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
+import org.mvasylchuk.pfcc.user.dto.SaveProfileRequestDto;
+import org.mvasylchuk.pfcc.user.dto.VerifyAccountRequestDto;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,8 +35,6 @@ import static org.springframework.http.HttpHeaders.SET_COOKIE;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
-    private static final Duration LOCAL_OFFSET = Duration.ofMillis(TimeZone.getDefault().getRawOffset());
-
     private final UserService userService;
     private final PfccAppConfigurationProperties conf;
 
@@ -54,7 +63,7 @@ public class UserController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public BaseResponse<ProfileDto> getProfile() {
-        return BaseResponse.success(userService.getUserProfile());
+        return BaseResponse.success(userService.getCurrentUserProfile());
     }
 
     @PostMapping("/verify")

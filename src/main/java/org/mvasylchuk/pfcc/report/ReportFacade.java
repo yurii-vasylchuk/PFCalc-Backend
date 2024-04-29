@@ -3,8 +3,13 @@ package org.mvasylchuk.pfcc.report;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mvasylchuk.pfcc.common.ThymeleafPfcalcUtil;
+import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
+import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
+import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.report.dto.PeriodReportData;
+import org.mvasylchuk.pfcc.report.dto.ReportDto;
+import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -16,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Map.entry;
@@ -25,12 +31,13 @@ import static java.util.Map.entry;
 @RequiredArgsConstructor
 public class ReportFacade {
     private static final String PERIOD_REPORT_TEMPLATE = "weeklyReport.html";
-    private final ReportRepository reportRepository;
+    private final ReportJooqRepository reportJooqRepository;
     private final TemplateEngine templateEngine;
     private final PfccAppConfigurationProperties conf;
+    private final UserService userService;
 
     public Path generatePeriodReport(Long userId, LocalDate from, LocalDate to) throws IOException {
-        PeriodReportData reportData = reportRepository.getPeriodReport(userId, from, to);
+        PeriodReportData reportData = reportJooqRepository.getPeriodReport(userId, from, to);
 
         Context context = getContext(reportData);
 
@@ -64,7 +71,7 @@ public class ReportFacade {
                         "--no-pdf-header-footer"
                 });
         try {
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(conf.reports.renderTimeout.getSeconds(), TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             String msg = "Unable to convert report to PDF: Timeout exception";
             log.error(msg);
@@ -99,5 +106,23 @@ public class ReportFacade {
                         entry("percent", reportData.getPercentOfAim()),
                         entry("util", new ThymeleafPfcalcUtil())
                 ));
+    }
+
+    public Page<ReportDto> getReadyReports(Long userId, Integer page, Integer pageSize) {
+        return reportJooqRepository.getReadyReportsPage(userId, page, pageSize);
+    }
+
+    public ReportDto getReport(Long reportId) {
+        ReportDto report = reportJooqRepository.getReport(reportId);
+
+        Long currentUserId = userService.currentUser().getId();
+
+        if (!Objects.equals(currentUserId, report.userId())) {
+            throw new PfccException(
+                    "Requested report #%d does not belong to authenticated user #%d".formatted(reportId, currentUserId),
+                    ApiErrorCode.SECURITY);
+        }
+
+        return report;
     }
 }
