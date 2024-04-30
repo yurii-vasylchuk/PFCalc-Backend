@@ -213,9 +213,8 @@ public class ReportJooqRepository {
                 .fetchInto(Long.class);
     }
 
-    public Page<ReportDto> getReadyReportsPage(Long userId, Integer page, Integer pageSize) {
-        Condition condition = REPORTS.USER_ID.eq(userId)
-                .and(REPORTS.STATUS.in(ReportStatus.READY_STATUSES.stream().map(Enum::name).toList()));
+    public Page<ReportDto> getUserReportsPage(Long userId, Integer page, Integer pageSize) {
+        Condition condition = REPORTS.USER_ID.eq(userId);
 
         List<ReportDto> reports = ctx.selectFrom(REPORTS)
                 .where(condition)

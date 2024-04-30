@@ -108,8 +108,8 @@ public class ReportFacade {
                 ));
     }
 
-    public Page<ReportDto> getReadyReports(Long userId, Integer page, Integer pageSize) {
-        return reportJooqRepository.getReadyReportsPage(userId, page, pageSize);
+    public Page<ReportDto> getUserReports(Long userId, Integer page, Integer pageSize) {
+        return reportJooqRepository.getUserReportsPage(userId, page, pageSize);
     }
 
     public ReportDto getReport(Long reportId) {

@@ -72,7 +72,7 @@ public class ReportController {
                                                     @RequestParam(name = "pageSize", required = false) Integer pageSize,
                                                     @AuthenticationPrincipal(errorOnInvalidType = true) PfccAuthToken user) {
         Long id = user.id();
-        return BaseResponse.success(reportFacade.getReadyReports(id, page, pageSize));
+        return BaseResponse.success(reportFacade.getUserReports(id, page, pageSize));
     }
 
     @GetMapping(value = "/{id}/file",

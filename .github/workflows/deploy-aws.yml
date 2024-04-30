@@ -28,4 +28,4 @@ jobs:
           ssh-keyscan ${{ secrets.AWS_HOST }} >> ~/.ssh/known_hosts
           scp -i key.pem target/pfcc-*.jar ec2-user@${{ secrets.AWS_HOST }}:/home/ec2-user/pfcc.jar
           ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} fuser -k 8080/tcp | true
-          ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} java -javaagent:/opt/newrelic/newrelic.jar -jar pfcc.jar & disown
+          ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} java -javaagent:/opt/newrelic/newrelic.jar -jar pfcc.jar -Xms512m -Xmx512m & disown
