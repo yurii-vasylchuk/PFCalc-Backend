@@ -9,6 +9,7 @@ import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
 import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.report.dto.PeriodReportData;
 import org.mvasylchuk.pfcc.report.dto.ReportDto;
+import org.mvasylchuk.pfcc.user.UserEntity;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -31,13 +32,14 @@ import static java.util.Map.entry;
 @RequiredArgsConstructor
 public class ReportFacade {
     private static final String PERIOD_REPORT_TEMPLATE = "weeklyReport.html";
-    private final ReportJooqRepository reportJooqRepository;
+    private final ReportJooqRepository queryRepository;
+    private final ReportRepository commandRepository;
     private final TemplateEngine templateEngine;
     private final PfccAppConfigurationProperties conf;
     private final UserService userService;
 
     public Path generatePeriodReport(Long userId, LocalDate from, LocalDate to) throws IOException {
-        PeriodReportData reportData = reportJooqRepository.getPeriodReport(userId, from, to);
+        PeriodReportData reportData = queryRepository.getPeriodReport(userId, from, to);
 
         Context context = getContext(reportData);
 
@@ -109,11 +111,11 @@ public class ReportFacade {
     }
 
     public Page<ReportDto> getUserReports(Long userId, Integer page, Integer pageSize) {
-        return reportJooqRepository.getUserReportsPage(userId, page, pageSize);
+        return queryRepository.getUserReportsPage(userId, page, pageSize);
     }
 
     public ReportDto getReport(Long reportId) {
-        ReportDto report = reportJooqRepository.getReport(reportId);
+        ReportDto report = queryRepository.getReport(reportId);
 
         Long currentUserId = userService.currentUser().getId();
 
@@ -124,5 +126,24 @@ public class ReportFacade {
         }
 
         return report;
+    }
+
+    public void deleteReport(Long reportId) {
+        ReportEntity report = commandRepository.findById(reportId)
+                .orElseThrow(() -> new PfccException(ApiErrorCode.REPORT_IS_NOT_FOUND));
+
+        UserEntity loggedInUser = userService.currentUser();
+        UserEntity reportOwner = report.getUser();
+
+        if (Objects.equals(reportOwner.getId(), loggedInUser.getId())) {
+            throw new PfccException(ApiErrorCode.SECURITY);
+        }
+
+        try {
+            Files.delete(report.getPath());
+            commandRepository.delete(report);
+        } catch (Exception e) {
+            log.error("Unable to delete report id=%d".formatted(reportId), e);
+        }
     }
 }

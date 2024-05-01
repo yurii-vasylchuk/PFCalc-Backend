@@ -8,5 +8,6 @@ public enum ApiErrorCode {
     SECURITY,
     INVALID_CSV_FILE,
     USER_IS_NOT_FOUND,
+    REPORT_IS_NOT_FOUND,
     FOOD_IS_NOT_FOUND
 }
