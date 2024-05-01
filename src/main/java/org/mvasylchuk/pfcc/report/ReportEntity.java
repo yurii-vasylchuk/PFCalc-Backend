@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +20,7 @@ import org.mvasylchuk.pfcc.report.dto.ReportType;
 import org.mvasylchuk.pfcc.user.UserEntity;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 
 @Getter
@@ -50,9 +50,6 @@ public class ReportEntity {
     @Getter(AccessLevel.PROTECTED)
     private String filePath;
 
-    @Transient
-    private Path path;
-
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ReportStatus status;
@@ -67,14 +64,12 @@ public class ReportEntity {
                 user,
                 "Period report %s - %tF-%tF".formatted(user.getName(), from, to),
                 null,
-                null,
                 ReportStatus.INITIALIZED,
                 ReportType.PERIOD
         );
     }
 
     public void setPath(Path path) {
-        this.path = path;
         if (path != null) {
             this.filePath = path.toAbsolutePath().toString();
         } else {
@@ -82,12 +77,11 @@ public class ReportEntity {
         }
     }
 
-    protected void setFilePath(String filePath) {
-        this.filePath = filePath;
-        if (filePath != null) {
-            this.path = Path.of(filePath);
-        } else {
-            this.path = null;
+    public Path getPath() {
+        if (this.filePath == null) {
+            return null;
         }
+
+        return Paths.get(this.filePath);
     }
 }

@@ -144,6 +144,7 @@ public class ReportFacade {
             commandRepository.delete(report);
         } catch (Exception e) {
             log.error("Unable to delete report id=%d".formatted(reportId), e);
+            throw new RuntimeException("Unable to delete report", e);
         }
     }
 }
