@@ -41,7 +41,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(PfccException.class)
     protected ResponseEntity<BaseResponse<Void>> handle(PfccException e) {
-        log.info("Invalid request", e);
+        log.warn("Invalid request", e);
         BaseResponse<Void> body = BaseResponse.fail("Invalid request", e.getErrorCode());
         return ResponseEntity.status(this.translateToStatus(e))
                 .body(body);

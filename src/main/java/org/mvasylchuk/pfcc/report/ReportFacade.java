@@ -135,8 +135,8 @@ public class ReportFacade {
         UserEntity loggedInUser = userService.currentUser();
         UserEntity reportOwner = report.getUser();
 
-        if (Objects.equals(reportOwner.getId(), loggedInUser.getId())) {
-            throw new PfccException(ApiErrorCode.SECURITY);
+        if (!Objects.equals(reportOwner.getId(), loggedInUser.getId())) {
+            throw new PfccException("Can't authorize report deletion: User is not owner of report", ApiErrorCode.SECURITY);
         }
 
         try {
