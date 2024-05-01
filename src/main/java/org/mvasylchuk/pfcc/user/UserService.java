@@ -72,13 +72,13 @@ public class UserService {
             user.setName(request.getName());
         }
 
-        if (request.getLanguage() != null) {
+        if (request.getPreferredLanguage() != null) {
             if (Arrays.stream(Language.values())
-                    .noneMatch(lang -> lang.name().equals(request.getLanguage()))) {
+                    .noneMatch(lang -> lang.name().equals(request.getPreferredLanguage()))) {
                 throw new PfccException("Provided language is unsupported", ApiErrorCode.LANGUAGE_IS_UNSUPPORTED);
             }
 
-            user.setPreferredLanguage(Language.valueOf(request.getLanguage()));
+            user.setPreferredLanguage(Language.valueOf(request.getPreferredLanguage()));
         }
 
         userRepository.save(user);
