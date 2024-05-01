@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -70,6 +71,16 @@ public class UserService {
         if (request.getName() != null) {
             user.setName(request.getName());
         }
+
+        if (request.getLanguage() != null) {
+            if (Arrays.stream(Language.values())
+                    .noneMatch(lang -> lang.name().equals(request.getLanguage()))) {
+                throw new PfccException("Provided language is unsupported", ApiErrorCode.LANGUAGE_IS_UNSUPPORTED);
+            }
+
+            user.setPreferredLanguage(Language.valueOf(request.getLanguage()));
+        }
+
         userRepository.save(user);
     }
 

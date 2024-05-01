@@ -44,6 +44,7 @@ class UserServiceIntegrationTest {
                                                                     new BigDecimal(50),
                                                                     new BigDecimal(30),
                                                                     new BigDecimal(550)),
+                                                        null,
                                                         null));
         UserEntity user = userRepository.getByEmail("email");
         org.assertj.core.api.Assertions.assertThat(user.getAims().getProtein()).isEqualByComparingTo("10");

@@ -13,4 +13,5 @@ import org.mvasylchuk.pfcc.common.dto.PfccDto;
 public class SaveProfileRequestDto {
     private PfccDto aims;
     private String name;
+    private String language;
 }
