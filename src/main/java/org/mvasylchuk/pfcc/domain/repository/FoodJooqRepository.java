@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
+import static org.mvasylchuk.pfcc.jooq.Tables.MEAL;
 import static org.mvasylchuk.pfcc.jooq.tables.Food.FOOD;
 import static org.mvasylchuk.pfcc.jooq.tables.Ingredients.INGREDIENTS;
 
@@ -42,8 +43,11 @@ public class FoodJooqRepository {
         result.setTotalPages((totalElements / size) + (totalElements % size > 0 ? 1 : 0));
         result.setTotalElements(totalElements);
 
-        List<FoodDto> foods = ctx.selectFrom(FOOD)
+        List<FoodDto> foods = ctx.select(FOOD.asterisk())
+                .from(FOOD)
+                .leftJoin(MEAL).on(MEAL.FOOD_ID.eq(FOOD.ID))
                 .where(condition)
+                .orderBy(DSL.max(MEAL.EATEN_ON))
                 .limit(DSL.inline(size))
                 .offset(DSL.inline(size * page))
 
