@@ -214,7 +214,8 @@ public class ReportJooqRepository {
     }
 
     public Page<ReportDto> getUserReportsPage(Long userId, Integer page, Integer pageSize) {
-        Condition condition = REPORTS.USER_ID.eq(userId);
+        Condition condition = REPORTS.USER_ID.eq(userId)
+                .and(REPORTS.STATUS.notIn(ReportStatus.CORRUPTED.name()));
 
         List<ReportDto> reports = ctx.selectFrom(REPORTS)
                 .where(condition)

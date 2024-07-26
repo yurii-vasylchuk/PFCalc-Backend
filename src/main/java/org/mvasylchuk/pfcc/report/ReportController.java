@@ -5,6 +5,7 @@ import org.mvasylchuk.pfcc.common.dto.BaseResponse;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.platform.jwt.PfccAuthToken;
 import org.mvasylchuk.pfcc.report.dto.ReportDto;
+import org.mvasylchuk.pfcc.report.dto.ReportStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,7 +44,7 @@ public class ReportController {
     private final ReportFacade reportFacade;
 
     public ReportController(JobLauncher jobLauncher,
-                            @Qualifier(PeriodReportJobConfiguration.JOB_NAME) Job periodReportJob, ReportFacade reportFacade) {
+                            @Qualifier(GeneratePeriodReportJob.JOB_NAME) Job periodReportJob, ReportFacade reportFacade) {
         this.jobLauncher = jobLauncher;
         this.periodReportJob = periodReportJob;
         this.reportFacade = reportFacade;
@@ -57,9 +59,9 @@ public class ReportController {
 
         jobLauncher.run(periodReportJob, new JobParametersBuilder()
                 .addLocalDateTime("now", LocalDateTime.now())
-                .addLocalDate(PeriodReportJobConfiguration.FROM_DATE_PARAM, from)
-                .addLocalDate(PeriodReportJobConfiguration.TO_DATE_PARAM, to)
-                .addString(PeriodReportJobConfiguration.USERS_IDS_PARAM, String.valueOf(userId))
+                .addLocalDate(GeneratePeriodReportJob.FROM_DATE_PARAM, from)
+                .addLocalDate(GeneratePeriodReportJob.TO_DATE_PARAM, to)
+                .addString(GeneratePeriodReportJob.USERS_IDS_PARAM, String.valueOf(userId))
                 .toJobParameters());
 
         return BaseResponse.success(null);
@@ -81,6 +83,9 @@ public class ReportController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<FileSystemResource> getReportFile(@PathVariable("id") Long reportId) {
         ReportDto report = reportFacade.getReport(reportId);
+        if (report.status() == ReportStatus.CORRUPTED) {
+            return ResponseEntity.status(HttpStatus.GONE).build();
+        }
 
         ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
                 .filename(report.name() + ".pdf", UTF_8)

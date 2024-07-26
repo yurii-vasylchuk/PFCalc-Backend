@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +24,7 @@ import org.mvasylchuk.pfcc.user.UserEntity;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -58,6 +61,10 @@ public class ReportEntity {
     @Enumerated(EnumType.STRING)
     private ReportType type;
 
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
+
     public static ReportEntity periodReport(UserEntity user, LocalDate from, LocalDate to) {
         return new ReportEntity(
                 null,
@@ -65,7 +72,8 @@ public class ReportEntity {
                 "Period report %s - %tF-%tF".formatted(user.getName(), from, to),
                 null,
                 ReportStatus.INITIALIZED,
-                ReportType.PERIOD
+                ReportType.PERIOD,
+                LocalDateTime.now()
         );
     }
 

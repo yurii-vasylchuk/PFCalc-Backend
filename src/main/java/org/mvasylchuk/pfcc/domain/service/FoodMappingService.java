@@ -16,6 +16,7 @@ import org.mvasylchuk.pfcc.user.UserEntity;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,14 +76,22 @@ public class FoodMappingService {
                     }).toList();
 
             pfcc = Pfcc.combine(ingredientList.stream()
-                    .map(ingredientEntity -> ingredientEntity.getIngredient().getPfcc())
-                    .toList());
+                    .map(ingredientEntity -> ingredientEntity.getIngredient().getPfcc()
+                            .multiply(ingredientEntity.getIngredientWeight())
+                            .divide(new BigDecimal("100")))
+                    .toList())
+                    .multiply(new BigDecimal("100"))
+                    .divide(
+                            ingredientList.stream()
+                                    .map(IngredientEntity::getIngredientWeight)
+                                    .reduce(BigDecimal.ZERO, BigDecimal::add));
 
             result.setIngredients(ingredientList);
             result.setPfcc(pfcc);
 
-        } else result.setPfcc(pfccMappingService.toPfcc(foodDto.getPfcc()));
-
+        } else {
+            result.setPfcc(pfccMappingService.toPfcc(foodDto.getPfcc()));
+        }
 
         return result;
     }

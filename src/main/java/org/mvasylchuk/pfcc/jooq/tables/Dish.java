@@ -102,7 +102,7 @@ public class Dish extends TableImpl<DishRecord> {
     /**
      * The column <code>pfcc.dish.cooked_on</code>.
      */
-    public final TableField<DishRecord, LocalDateTime> COOKED_ON = createField(DSL.name("cooked_on"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DishRecord, LocalDateTime> COOKED_ON = createField(DSL.name("cooked_on"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>pfcc.dish.deleted</code>.

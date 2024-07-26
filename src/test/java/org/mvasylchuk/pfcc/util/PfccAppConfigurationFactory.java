@@ -50,15 +50,25 @@ public class PfccAppConfigurationFactory {
         );
     }
 
-    public static PfccAppConfigurationProperties.JobConfiguration jobs(PfccAppConfigurationProperties.JobConfiguration.@NonNull DropOutdatedSecurityTokensConfiguration dropOutdatedSecTokensConf) {
+    public static PfccAppConfigurationProperties.JobConfiguration jobs(PfccAppConfigurationProperties.JobConfiguration.@NonNull DropOutdatedSecurityTokensConfiguration dropOutdatedSecTokensConf,
+                                                                       PfccAppConfigurationProperties.JobConfiguration.@NonNull DropOutdatedReportsConfiguration dropOutdatedReportsConf) {
         return new PfccAppConfigurationProperties.JobConfiguration(
-                dropOutdatedSecTokensConf
+                dropOutdatedSecTokensConf,
+                dropOutdatedReportsConf
         );
     }
 
-    public static PfccAppConfigurationProperties.JobConfiguration.DropOutdatedSecurityTokensConfiguration dropOutdatedSecTokensConf(Boolean enabled, String cron, String ttl) {
+    public static PfccAppConfigurationProperties.JobConfiguration.DropOutdatedReportsConfiguration dropOutdatedReportsConf(
+            String cron, String ttl) {
+        return new PfccAppConfigurationProperties.JobConfiguration.DropOutdatedReportsConfiguration(
+                cron,
+                ttl == null ? null : Duration.parse(ttl)
+        );
+    }
+
+    public static PfccAppConfigurationProperties.JobConfiguration.DropOutdatedSecurityTokensConfiguration dropOutdatedSecTokensConf(
+            String cron, String ttl) {
         return new PfccAppConfigurationProperties.JobConfiguration.DropOutdatedSecurityTokensConfiguration(
-                enabled,
                 cron,
                 ttl == null ? null : Duration.parse(ttl)
         );

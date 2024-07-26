@@ -97,7 +97,7 @@ public class Meal extends TableImpl<MealRecord> {
     /**
      * The column <code>pfcc.meal.eaten_on</code>.
      */
-    public final TableField<MealRecord, LocalDateTime> EATEN_ON = createField(DSL.name("eaten_on"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<MealRecord, LocalDateTime> EATEN_ON = createField(DSL.name("eaten_on"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>pfcc.meal.owner_id</code>.

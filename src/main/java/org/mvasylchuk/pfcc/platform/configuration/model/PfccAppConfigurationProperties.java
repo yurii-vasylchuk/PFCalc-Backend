@@ -64,12 +64,19 @@ public class PfccAppConfigurationProperties {
     public static class JobConfiguration {
         @NonNull
         public final DropOutdatedSecurityTokensConfiguration dropOutdatedSecurityTokens;
+        @NonNull
+        public final DropOutdatedReportsConfiguration dropOutdatedReports;
 
         @RequiredArgsConstructor
         public static class DropOutdatedSecurityTokensConfiguration {
-            public final Boolean enabled;
             public final String cron;
-            public final Duration outdatedSecurityTokenTtl;
+            public final Duration ttl;
+        }
+
+        @RequiredArgsConstructor
+        public static class DropOutdatedReportsConfiguration {
+            public final String cron;
+            public final Duration ttl;
         }
     }
 

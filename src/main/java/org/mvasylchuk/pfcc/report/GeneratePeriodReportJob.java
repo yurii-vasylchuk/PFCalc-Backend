@@ -33,13 +33,16 @@ import java.util.List;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class PeriodReportJobConfiguration {
+public class GeneratePeriodReportJob {
     public static final String JOB_NAME = "generate-period-report";
     public static final String USERS_IDS_PARAM = "USERS_IDS";
     public static final String FROM_DATE_PARAM = "FROM";
     public static final String TO_DATE_PARAM = "TO";
     public static final String USERS_IDS_PARAM_SEPARATOR = ",";
     private static final String STEP_NAME = JOB_NAME + "_step";
+
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager ptm;
 
     private static <T> Iterator<T> emptyIterator() {
         return new Iterator<>() {
@@ -64,9 +67,7 @@ public class PeriodReportJobConfiguration {
     }
 
     @Bean(STEP_NAME)
-    protected Step generatePeriodReportStep(JobRepository jobRepository,
-                                            PlatformTransactionManager ptm,
-                                            GeneratePeriodReportTaskGenerator reader,
+    protected Step generatePeriodReportStep(GeneratePeriodReportTaskGenerator reader,
                                             PeriodReportGenerator processor,
                                             PeriodReportWriter writer) {
         return new StepBuilder(STEP_NAME, jobRepository)

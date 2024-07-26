@@ -18,8 +18,12 @@ pfcc:
   mail:
     enabled: false
   jobs:
+    drop-outdated-reports:
+      cron: '0 0 0 * * *'
+      ttl: P14D
     drop-outdated-security-tokens:
-      enabled: false
+      cron: '0 0 0 * * *'
+      ttl: P20D
 logging:
   level:
     org:

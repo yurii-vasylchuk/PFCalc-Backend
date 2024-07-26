@@ -7,13 +7,15 @@ spring:
 pfcc:
   jobs:
     drop-outdated-security-tokens:
-      outdated-security-token-ttl: 10d
-      enabled: true
+      ttl: P10D
+      cron: '0 0 0 * * *'
+    drop-outdated-reports:
+      ttl: P14D
       cron: '0 0 0 * * *'
   mail:
     do-not-reply-address: 'dont-reply@pfcalc.org.ua'
   auth:
     key-algorithm: RSA
-    auth-token-expiration: 10m
-    refresh-token-expiration: 10d
+    auth-token-expiration: PT10M
+    refresh-token-expiration: P10D
     same-site: lax

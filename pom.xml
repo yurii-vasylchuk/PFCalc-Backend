@@ -223,7 +223,7 @@
                             <source>
                                 import org.testcontainers.containers.MariaDBContainer
 
-                                db = new MariaDBContainer("mariadb:10.7.8")
+                                db = new MariaDBContainer("mariadb:10.11.7")
                                         .withUsername("${jooq.generator.db.user}")
                                         .withDatabaseName("pfcc")
                                         .withPassword("${jooq.generator.db.password}")

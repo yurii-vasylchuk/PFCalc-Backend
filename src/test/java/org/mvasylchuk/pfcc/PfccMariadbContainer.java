@@ -3,7 +3,7 @@ package org.mvasylchuk.pfcc;
 import org.testcontainers.containers.MariaDBContainer;
 
 public class PfccMariadbContainer extends MariaDBContainer<PfccMariadbContainer> {
-    public static final String IMAGE_VERSION = "mariadb:10.7.8";
+    public static final String IMAGE_VERSION = "mariadb:10.11.7";
     public static final String USERNAME = "root";
     public static final String PASSWORD = "";
     public static final String DATABASE_NAME = "pfcc";

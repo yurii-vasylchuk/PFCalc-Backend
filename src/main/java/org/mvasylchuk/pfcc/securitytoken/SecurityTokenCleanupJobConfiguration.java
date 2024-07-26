@@ -85,7 +85,7 @@ public class SecurityTokenCleanupJobConfiguration {
         @Override
         @Transactional
         public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-            LocalDateTime bound = LocalDateTime.now().minus(conf.outdatedSecurityTokenTtl);
+            LocalDateTime bound = LocalDateTime.now().minus(conf.ttl);
 
             this.deletedCount = repository.deleteOutdated(bound);
 

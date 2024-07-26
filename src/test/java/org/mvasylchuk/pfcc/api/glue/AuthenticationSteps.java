@@ -132,6 +132,8 @@ public class AuthenticationSteps {
                 .set(SECURITY_TOKENS.IS_ACTIVE, TRUE)
                 .set(SECURITY_TOKENS.CODE, code)
                 .set(SECURITY_TOKENS.USER_ID, db.select(USERS.ID).from(USERS).where(USERS.EMAIL.eq(user.getEmail())))
+                .set(SECURITY_TOKENS.CREATED_AT, LocalDateTime.now())
+                .set(SECURITY_TOKENS.MODIFIED_AT, LocalDateTime.now())
                 .execute();
 
         ctx.setVerifyEmailToken(code);

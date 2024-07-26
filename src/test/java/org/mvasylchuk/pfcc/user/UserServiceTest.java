@@ -24,6 +24,7 @@ import static org.mockito.Mockito.when;
 import static org.mvasylchuk.pfcc.securitytoken.SecurityTokenType.EMAIL_VERIFICATION;
 import static org.mvasylchuk.pfcc.securitytoken.SecurityTokenType.REFRESH_TOKEN;
 import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.auth;
+import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.dropOutdatedReportsConf;
 import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.dropOutdatedSecTokensConf;
 import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.jobs;
 import static org.mvasylchuk.pfcc.util.PfccAppConfigurationFactory.pfccConf;
@@ -57,9 +58,12 @@ class UserServiceTest {
             null,
             jobs(
                     dropOutdatedSecTokensConf(
-                            false,
-                            null,
-                            null
+                            "0 0 0 * * *",
+                            "P30D"
+                    ),
+                    dropOutdatedReportsConf(
+                            "0 0 0 * * *",
+                            "P30D"
                     )
             ),
             emptyList(),

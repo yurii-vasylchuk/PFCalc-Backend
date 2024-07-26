@@ -2,7 +2,7 @@ version: '3.7'
 services:
   mysqldb:
     restart: always
-    image: 'mariadb:10.7.8'
+    image: 'mariadb:10.11.7'
     container_name: mysqldb
     ports:
       - 3306:3306

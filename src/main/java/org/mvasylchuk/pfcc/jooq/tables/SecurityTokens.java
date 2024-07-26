@@ -86,12 +86,12 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     /**
      * The column <code>pfcc.security_tokens.created_at</code>.
      */
-    public final TableField<SecurityTokensRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("'0000-00-00 00:00:00'"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<SecurityTokensRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
     /**
      * The column <code>pfcc.security_tokens.modified_at</code>.
      */
-    public final TableField<SecurityTokensRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("'0000-00-00 00:00:00'"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<SecurityTokensRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
     private SecurityTokens(Name alias, Table<SecurityTokensRecord> aliased) {
         this(alias, aliased, null);
