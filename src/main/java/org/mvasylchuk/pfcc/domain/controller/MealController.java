@@ -65,7 +65,8 @@ public class MealController {
                                                                       required = false,
                                                                       defaultValue = "0") Integer page,
                                                         @RequestParam(name = "pageSize",
-                                                                      required = false) Integer pageSize) {
+                                                                      required = false,
+                                                                      defaultValue = "10") Integer pageSize) {
         return BaseResponse.success(this.mealService.getMealOptions(filter, page, pageSize));
     }
 }

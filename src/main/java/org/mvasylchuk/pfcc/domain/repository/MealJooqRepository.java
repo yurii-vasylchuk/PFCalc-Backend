@@ -112,8 +112,7 @@ public class MealJooqRepository {
             dishCondition = dishCondition.and(DISH.NAME.likeIgnoreCase("%" + filter + "%"));
         }
 
-        var selectFoods = ctx.select(
-                                     FOOD.ID.as("foodId"),
+        var selectFoods = ctx.select(FOOD.ID.as("foodId"),
                                      DSL.field("NULL", Long.class).as("dishId"),
                                      FOOD.NAME.as("name"),
                                      FOOD.PROTEIN.as("protein"),
@@ -121,10 +120,12 @@ public class MealJooqRepository {
                                      FOOD.CARBOHYDRATES.as("carbohydrates"),
                                      FOOD.CALORIES.as("calories"),
                                      FOOD.TYPE.as("type"),
-                                     FOOD.OWNER_ID.as("ownerId")
-                             )
-                             .from(FOOD)
-                             .where(foodCondition);
+                                     FOOD.OWNER_ID.as("ownerId"),
+                                     DSL.max(MEAL.EATEN_ON).as("eatenOn"))
+                .from(FOOD)
+                .leftJoin(MEAL).on(MEAL.FOOD_ID.eq(FOOD.ID).and(MEAL.DISH_ID.isNull()))
+                .where(foodCondition)
+                .groupBy(FOOD.ID);
 
         var selectDishes = ctx.select(DISH.FOOD_ID.as("foodId"),
                                       DISH.ID.as("dishId"),
@@ -134,11 +135,15 @@ public class MealJooqRepository {
                                       DISH.CARBOHYDRATES.as("carbohydrates"),
                                       DISH.CALORIES.as("calories"),
                                       DSL.field("'%s'".formatted(MealOptionType.DISH.name()), String.class).as("type"),
-                                      DISH.OWNER_ID.as("ownerId"))
-                              .from(DISH)
-                              .where(dishCondition);
+                                      DISH.OWNER_ID.as("ownerId"),
+                                      DSL.max(MEAL.EATEN_ON).as("eatenOn"))
+                .from(DISH)
+                .leftJoin(MEAL).on(MEAL.DISH_ID.eq(DISH.ID))
+                .where(dishCondition)
+                .groupBy(DISH.ID);
 
-        var completeSelect = selectDishes.unionAll(selectFoods);
+        var completeSelect = selectDishes.unionAll(selectFoods)
+                .orderBy(DSL.field("eatenOn").desc());
 
         int count = ctx.fetchCount(completeSelect);
 
