@@ -19,7 +19,7 @@ pfcc:
     auth-token-expiration: P10D
     refresh-token-expiration: P30D
   mail:
-    enabled: true
+    enabled: false
   expose-exception: true
   jobs:
     drop-outdated-security-tokens:
@@ -32,3 +32,6 @@ pfcc:
     store-path: "/Users/yurii/workspace/projects/personal/pfcalc/backend/reports"
     chrome-executable: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     render-timeout: PT10S
+logging:
+  level:
+    org.jooq: DEBUG

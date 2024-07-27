@@ -47,6 +47,7 @@ public class FoodJooqRepository {
                 .from(FOOD)
                 .leftJoin(MEAL).on(MEAL.FOOD_ID.eq(FOOD.ID))
                 .where(condition)
+                .groupBy(FOOD.ID)
                 .orderBy(DSL.max(MEAL.EATEN_ON))
                 .limit(DSL.inline(size))
                 .offset(DSL.inline(size * page))
