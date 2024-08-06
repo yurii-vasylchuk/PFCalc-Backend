@@ -47,6 +47,7 @@ class UserServiceIntegrationTest {
                                                                     new BigDecimal(550)),
                                                         null,
                                                         null,
+                                                        null,
                                                         null));
         UserEntity user = userRepository.getByEmail("email");
         assertThat(user.getAims().getProtein()).isEqualByComparingTo("10");

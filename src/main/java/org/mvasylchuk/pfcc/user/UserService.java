@@ -1,5 +1,6 @@
 package org.mvasylchuk.pfcc.user;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
@@ -58,6 +59,7 @@ public class UserService {
         return generateAuthTokens(user);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void saveProfile(SaveProfileRequestDto request) {
         UserEntity user = currentUser();
         if (request.getAims() != null) {
@@ -81,8 +83,16 @@ public class UserService {
             user.setPreferredLanguage(Language.valueOf(request.getPreferredLanguage()));
         }
 
-        if (request.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getNewPassword() != null) {
+            if (request.getCurrentPassword() == null) {
+                throw new PfccException("'currentPassword' is required when updating password", ApiErrorCode.SECURITY);
+            }
+
+            if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+                throw new PfccException("Provided password doesn't match existent one", ApiErrorCode.SECURITY);
+            }
+
+            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         }
 
         userRepository.save(user);
