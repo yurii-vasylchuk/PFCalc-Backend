@@ -40,7 +40,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class DeleteOutdatedReportsJob {
-    public static final String JOB_NAME = "delete-outdated-reports-job";
+    public static final String JOB_NAME = "drop-outdated-reports";
     private static final String STEP_NAME = JOB_NAME + "_step";
 
     private final JobRepository jobRepository;

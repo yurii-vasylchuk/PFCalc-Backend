@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 @Configuration
 @RequiredArgsConstructor
 @ConditionalOnProperty(name = "pfcc.jobs.drop-outdated-security-tokens.enabled", havingValue = "true")
+//TODO: Refactor - declare everything as a bean
 public class SecurityTokenCleanupJobConfiguration {
     public static final String JOB_NAME = "drop-outdated-security-tokens";
     public static final String DROP_OUTDATED_SECURITY_TOKENS_STEP_NAME = "drop-outdated-security-tokens_step";
@@ -84,7 +85,7 @@ public class SecurityTokenCleanupJobConfiguration {
 
         @Override
         @Transactional
-        public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+        public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
             LocalDateTime bound = LocalDateTime.now().minus(conf.ttl);
 
             this.deletedCount = repository.deleteOutdated(bound);

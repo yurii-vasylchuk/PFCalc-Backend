@@ -4,6 +4,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    open-in-view: off
+
 pfcc:
   jobs:
     drop-outdated-security-tokens:

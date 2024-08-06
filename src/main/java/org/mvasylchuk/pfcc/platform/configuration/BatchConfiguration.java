@@ -1,6 +1,8 @@
 package org.mvasylchuk.pfcc.platform.configuration;
 
+import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
@@ -18,5 +20,12 @@ public class BatchConfiguration {
         jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor("batch_"));
         jobLauncher.afterPropertiesSet();
         return jobLauncher;
+    }
+
+    @Bean
+    public JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor(JobRegistry jobRegistry) {
+        JobRegistryBeanPostProcessor postProcessor = new JobRegistryBeanPostProcessor();
+        postProcessor.setJobRegistry(jobRegistry);
+        return postProcessor;
     }
 }
