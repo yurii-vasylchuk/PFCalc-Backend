@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
@@ -45,11 +46,12 @@ class UserServiceIntegrationTest {
                                                                     new BigDecimal(30),
                                                                     new BigDecimal(550)),
                                                         null,
+                                                        null,
                                                         null));
         UserEntity user = userRepository.getByEmail("email");
-        org.assertj.core.api.Assertions.assertThat(user.getAims().getProtein()).isEqualByComparingTo("10");
-        org.assertj.core.api.Assertions.assertThat(user.getAims().getCarbohydrates()).isEqualByComparingTo("30");
-        org.assertj.core.api.Assertions.assertThat(user.getAims().getFat()).isEqualByComparingTo("50");
-        org.assertj.core.api.Assertions.assertThat(user.getAims().getCalories()).isEqualByComparingTo("550");
+        assertThat(user.getAims().getProtein()).isEqualByComparingTo("10");
+        assertThat(user.getAims().getCarbohydrates()).isEqualByComparingTo("30");
+        assertThat(user.getAims().getFat()).isEqualByComparingTo("50");
+        assertThat(user.getAims().getCalories()).isEqualByComparingTo("550");
     }
 }

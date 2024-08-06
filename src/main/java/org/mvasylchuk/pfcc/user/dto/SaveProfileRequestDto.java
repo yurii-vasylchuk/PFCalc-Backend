@@ -14,4 +14,5 @@ public class SaveProfileRequestDto {
     private PfccDto aims;
     private String name;
     private String preferredLanguage;
+    private String password;
 }

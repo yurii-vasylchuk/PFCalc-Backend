@@ -81,6 +81,10 @@ public class UserService {
             user.setPreferredLanguage(Language.valueOf(request.getPreferredLanguage()));
         }
 
+        if (request.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
         userRepository.save(user);
     }
 
