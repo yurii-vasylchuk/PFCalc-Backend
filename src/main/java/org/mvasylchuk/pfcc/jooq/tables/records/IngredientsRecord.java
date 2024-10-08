@@ -23,56 +23,56 @@ public class IngredientsRecord extends UpdatableRecordImpl<IngredientsRecord> im
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>pfcc.ingredients.recipe_id</code>.
+     * Setter for <code>public.ingredients.recipe_id</code>.
      */
     public void setRecipeId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>pfcc.ingredients.recipe_id</code>.
+     * Getter for <code>public.ingredients.recipe_id</code>.
      */
     public Long getRecipeId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>pfcc.ingredients.ingredient_id</code>.
+     * Setter for <code>public.ingredients.ingredient_id</code>.
      */
     public void setIngredientId(Long value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>pfcc.ingredients.ingredient_id</code>.
+     * Getter for <code>public.ingredients.ingredient_id</code>.
      */
     public Long getIngredientId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>pfcc.ingredients.ingredient_weight</code>.
+     * Setter for <code>public.ingredients.ingredient_weight</code>.
      */
     public void setIngredientWeight(BigDecimal value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>pfcc.ingredients.ingredient_weight</code>.
+     * Getter for <code>public.ingredients.ingredient_weight</code>.
      */
     public BigDecimal getIngredientWeight() {
         return (BigDecimal) get(2);
     }
 
     /**
-     * Setter for <code>pfcc.ingredients.ingredient_index</code>.
+     * Setter for <code>public.ingredients.ingredient_index</code>.
      */
     public void setIngredientIndex(Long value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>pfcc.ingredients.ingredient_index</code>.
+     * Getter for <code>public.ingredients.ingredient_index</code>.
      */
     public Long getIngredientIndex() {
         return (Long) get(3);

@@ -1,6 +1,14 @@
 spring:
   flyway:
     clean-disabled: false
+    default-schema: 'public'
+  datasource:
+    hikari:
+      schema: 'public'
+  jpa:
+    properties:
+      hibernate:
+        default_schema: 'public'
 
 pfcc:
   reports:

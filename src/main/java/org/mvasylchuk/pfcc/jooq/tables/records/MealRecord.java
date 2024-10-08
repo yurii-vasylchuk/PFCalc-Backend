@@ -24,140 +24,140 @@ public class MealRecord extends UpdatableRecordImpl<MealRecord> implements Recor
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>pfcc.meal.id</code>.
+     * Setter for <code>public.meal.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.id</code>.
+     * Getter for <code>public.meal.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>pfcc.meal.weight</code>.
+     * Setter for <code>public.meal.weight</code>.
      */
     public void setWeight(BigDecimal value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.weight</code>.
+     * Getter for <code>public.meal.weight</code>.
      */
     public BigDecimal getWeight() {
         return (BigDecimal) get(1);
     }
 
     /**
-     * Setter for <code>pfcc.meal.protein</code>.
+     * Setter for <code>public.meal.protein</code>.
      */
     public void setProtein(BigDecimal value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.protein</code>.
+     * Getter for <code>public.meal.protein</code>.
      */
     public BigDecimal getProtein() {
         return (BigDecimal) get(2);
     }
 
     /**
-     * Setter for <code>pfcc.meal.fat</code>.
+     * Setter for <code>public.meal.fat</code>.
      */
     public void setFat(BigDecimal value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.fat</code>.
+     * Getter for <code>public.meal.fat</code>.
      */
     public BigDecimal getFat() {
         return (BigDecimal) get(3);
     }
 
     /**
-     * Setter for <code>pfcc.meal.carbohydrates</code>.
+     * Setter for <code>public.meal.carbohydrates</code>.
      */
     public void setCarbohydrates(BigDecimal value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.carbohydrates</code>.
+     * Getter for <code>public.meal.carbohydrates</code>.
      */
     public BigDecimal getCarbohydrates() {
         return (BigDecimal) get(4);
     }
 
     /**
-     * Setter for <code>pfcc.meal.calories</code>.
+     * Setter for <code>public.meal.calories</code>.
      */
     public void setCalories(BigDecimal value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.calories</code>.
+     * Getter for <code>public.meal.calories</code>.
      */
     public BigDecimal getCalories() {
         return (BigDecimal) get(5);
     }
 
     /**
-     * Setter for <code>pfcc.meal.food_id</code>.
+     * Setter for <code>public.meal.food_id</code>.
      */
     public void setFoodId(Long value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.food_id</code>.
+     * Getter for <code>public.meal.food_id</code>.
      */
     public Long getFoodId() {
         return (Long) get(6);
     }
 
     /**
-     * Setter for <code>pfcc.meal.dish_id</code>.
+     * Setter for <code>public.meal.dish_id</code>.
      */
     public void setDishId(Long value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.dish_id</code>.
+     * Getter for <code>public.meal.dish_id</code>.
      */
     public Long getDishId() {
         return (Long) get(7);
     }
 
     /**
-     * Setter for <code>pfcc.meal.eaten_on</code>.
+     * Setter for <code>public.meal.eaten_on</code>.
      */
     public void setEatenOn(LocalDateTime value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.eaten_on</code>.
+     * Getter for <code>public.meal.eaten_on</code>.
      */
     public LocalDateTime getEatenOn() {
         return (LocalDateTime) get(8);
     }
 
     /**
-     * Setter for <code>pfcc.meal.owner_id</code>.
+     * Setter for <code>public.meal.owner_id</code>.
      */
     public void setOwnerId(Long value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>pfcc.meal.owner_id</code>.
+     * Getter for <code>public.meal.owner_id</code>.
      */
     public Long getOwnerId() {
         return (Long) get(9);

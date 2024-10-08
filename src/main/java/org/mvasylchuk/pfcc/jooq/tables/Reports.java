@@ -12,7 +12,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function7;
-import org.jooq.Index;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -26,9 +26,8 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.mvasylchuk.pfcc.jooq.Indexes;
 import org.mvasylchuk.pfcc.jooq.Keys;
-import org.mvasylchuk.pfcc.jooq.Pfcc;
+import org.mvasylchuk.pfcc.jooq.Public;
 import org.mvasylchuk.pfcc.jooq.tables.records.ReportsRecord;
 
 
@@ -41,7 +40,7 @@ public class Reports extends TableImpl<ReportsRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>pfcc.reports</code>
+     * The reference instance of <code>public.reports</code>
      */
     public static final Reports REPORTS = new Reports();
 
@@ -54,39 +53,39 @@ public class Reports extends TableImpl<ReportsRecord> {
     }
 
     /**
-     * The column <code>pfcc.reports.id</code>.
+     * The column <code>public.reports.id</code>.
      */
-    public final TableField<ReportsRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("nextval(`pfcc`.`report_id_seq`)"), SQLDataType.BIGINT)), this, "");
+    public final TableField<ReportsRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>pfcc.reports.user_id</code>.
+     * The column <code>public.reports.user_id</code>.
      */
     public final TableField<ReportsRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.reports.name</code>.
+     * The column <code>public.reports.name</code>.
      */
     public final TableField<ReportsRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.reports.file_path</code>.
+     * The column <code>public.reports.file_path</code>.
      */
-    public final TableField<ReportsRecord, String> FILE_PATH = createField(DSL.name("file_path"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<ReportsRecord, String> FILE_PATH = createField(DSL.name("file_path"), SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>pfcc.reports.status</code>.
+     * The column <code>public.reports.status</code>.
      */
     public final TableField<ReportsRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.reports.type</code>.
+     * The column <code>public.reports.type</code>.
      */
     public final TableField<ReportsRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.reports.created_at</code>.
+     * The column <code>public.reports.created_at</code>.
      */
-    public final TableField<ReportsRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<ReportsRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
 
     private Reports(Name alias, Table<ReportsRecord> aliased) {
         this(alias, aliased, null);
@@ -97,21 +96,21 @@ public class Reports extends TableImpl<ReportsRecord> {
     }
 
     /**
-     * Create an aliased <code>pfcc.reports</code> table reference
+     * Create an aliased <code>public.reports</code> table reference
      */
     public Reports(String alias) {
         this(DSL.name(alias), REPORTS);
     }
 
     /**
-     * Create an aliased <code>pfcc.reports</code> table reference
+     * Create an aliased <code>public.reports</code> table reference
      */
     public Reports(Name alias) {
         this(alias, REPORTS);
     }
 
     /**
-     * Create a <code>pfcc.reports</code> table reference
+     * Create a <code>public.reports</code> table reference
      */
     public Reports() {
         this(DSL.name("reports"), null);
@@ -123,37 +122,37 @@ public class Reports extends TableImpl<ReportsRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Pfcc.PFCC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.REPORTS_USER_ID);
+    public Identity<ReportsRecord, Long> getIdentity() {
+        return (Identity<ReportsRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<ReportsRecord> getPrimaryKey() {
-        return Keys.KEY_REPORTS_PRIMARY;
+        return Keys.REPORTS_PKEY;
     }
 
     @Override
     public List<UniqueKey<ReportsRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_REPORTS_NAME, Keys.KEY_REPORTS_FILE_PATH);
+        return Arrays.asList(Keys.REPORTS_NAME_KEY, Keys.REPORTS_FILE_PATH_KEY);
     }
 
     @Override
     public List<ForeignKey<ReportsRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.REPORTS_IBFK_1);
+        return Arrays.asList(Keys.REPORTS__REPORTS_USER_ID_FKEY);
     }
 
     private transient Users _users;
 
     /**
-     * Get the implicit join path to the <code>pfcc.users</code> table.
+     * Get the implicit join path to the <code>public.users</code> table.
      */
     public Users users() {
         if (_users == null)
-            _users = new Users(this, Keys.REPORTS_IBFK_1);
+            _users = new Users(this, Keys.REPORTS__REPORTS_USER_ID_FKEY);
 
         return _users;
     }

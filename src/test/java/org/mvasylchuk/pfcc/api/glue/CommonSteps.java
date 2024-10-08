@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mvasylchuk.pfcc.api.constants.Constants.Db.FALSE;
-import static org.mvasylchuk.pfcc.api.constants.Constants.Db.TRUE;
 import static org.mvasylchuk.pfcc.jooq.Tables.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -42,7 +40,7 @@ public class CommonSteps {
 
     @Before
     public void cleanUpDb() {
-        List<Table<?>> tables = List.of(DISH_INGREDIENTS, INGREDIENTS, MEAL, DISH, FOOD, SECURITY_TOKENS, USERS);
+        List<Table<?>> tables = List.of(DISH_INGREDIENTS, INGREDIENTS, MEAL, DISH, FOOD, SECURITY_TOKENS, USERS, REPORTS);
         for (Table<?> table : tables) {
             db.delete(table)
               .execute();
@@ -82,7 +80,7 @@ public class CommonSteps {
           .set(USERS.NAME, user.getName())
           .set(USERS.PASSWORD, user.getPassword())
           .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-          .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed() ? TRUE : FALSE)
+          .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed())
           .set(USERS.PROTEIN_AIM, user.getProteinAim())
           .set(USERS.FAT_AIM, user.getFatAim())
           .set(USERS.CARBOHYDRATES_AIM, user.getCarbohydratesAim())

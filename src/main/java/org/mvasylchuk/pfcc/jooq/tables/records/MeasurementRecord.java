@@ -23,70 +23,70 @@ public class MeasurementRecord extends UpdatableRecordImpl<MeasurementRecord> im
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>pfcc.measurement.id</code>.
+     * Setter for <code>public.measurement.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>pfcc.measurement.id</code>.
+     * Getter for <code>public.measurement.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>pfcc.measurement.food_id</code>.
+     * Setter for <code>public.measurement.food_id</code>.
      */
     public void setFoodId(Long value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>pfcc.measurement.food_id</code>.
+     * Getter for <code>public.measurement.food_id</code>.
      */
     public Long getFoodId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>pfcc.measurement.to_gram_multiplier</code>.
+     * Setter for <code>public.measurement.to_gram_multiplier</code>.
      */
     public void setToGramMultiplier(BigDecimal value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>pfcc.measurement.to_gram_multiplier</code>.
+     * Getter for <code>public.measurement.to_gram_multiplier</code>.
      */
     public BigDecimal getToGramMultiplier() {
         return (BigDecimal) get(2);
     }
 
     /**
-     * Setter for <code>pfcc.measurement.name</code>.
+     * Setter for <code>public.measurement.name</code>.
      */
     public void setName(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>pfcc.measurement.name</code>.
+     * Getter for <code>public.measurement.name</code>.
      */
     public String getName() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>pfcc.measurement.default_value</code>.
+     * Setter for <code>public.measurement.default_value</code>.
      */
     public void setDefaultValue(BigDecimal value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>pfcc.measurement.default_value</code>.
+     * Getter for <code>public.measurement.default_value</code>.
      */
     public BigDecimal getDefaultValue() {
         return (BigDecimal) get(4);

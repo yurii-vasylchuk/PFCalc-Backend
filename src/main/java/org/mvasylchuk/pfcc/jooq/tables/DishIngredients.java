@@ -26,7 +26,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 import org.mvasylchuk.pfcc.jooq.Keys;
-import org.mvasylchuk.pfcc.jooq.Pfcc;
+import org.mvasylchuk.pfcc.jooq.Public;
 import org.mvasylchuk.pfcc.jooq.tables.records.DishIngredientsRecord;
 
 
@@ -39,7 +39,7 @@ public class DishIngredients extends TableImpl<DishIngredientsRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>pfcc.dish_ingredients</code>
+     * The reference instance of <code>public.dish_ingredients</code>
      */
     public static final DishIngredients DISH_INGREDIENTS = new DishIngredients();
 
@@ -52,22 +52,22 @@ public class DishIngredients extends TableImpl<DishIngredientsRecord> {
     }
 
     /**
-     * The column <code>pfcc.dish_ingredients.dish_id</code>.
+     * The column <code>public.dish_ingredients.dish_id</code>.
      */
     public final TableField<DishIngredientsRecord, Long> DISH_ID = createField(DSL.name("dish_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish_ingredients.ingredient_id</code>.
+     * The column <code>public.dish_ingredients.ingredient_id</code>.
      */
     public final TableField<DishIngredientsRecord, Long> INGREDIENT_ID = createField(DSL.name("ingredient_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish_ingredients.ingredient_weight</code>.
+     * The column <code>public.dish_ingredients.ingredient_weight</code>.
      */
-    public final TableField<DishIngredientsRecord, BigDecimal> INGREDIENT_WEIGHT = createField(DSL.name("ingredient_weight"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<DishIngredientsRecord, BigDecimal> INGREDIENT_WEIGHT = createField(DSL.name("ingredient_weight"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish_ingredients.ingredient_index</code>.
+     * The column <code>public.dish_ingredients.ingredient_index</code>.
      */
     public final TableField<DishIngredientsRecord, Long> INGREDIENT_INDEX = createField(DSL.name("ingredient_index"), SQLDataType.BIGINT.nullable(false), this, "");
 
@@ -80,21 +80,21 @@ public class DishIngredients extends TableImpl<DishIngredientsRecord> {
     }
 
     /**
-     * Create an aliased <code>pfcc.dish_ingredients</code> table reference
+     * Create an aliased <code>public.dish_ingredients</code> table reference
      */
     public DishIngredients(String alias) {
         this(DSL.name(alias), DISH_INGREDIENTS);
     }
 
     /**
-     * Create an aliased <code>pfcc.dish_ingredients</code> table reference
+     * Create an aliased <code>public.dish_ingredients</code> table reference
      */
     public DishIngredients(Name alias) {
         this(alias, DISH_INGREDIENTS);
     }
 
     /**
-     * Create a <code>pfcc.dish_ingredients</code> table reference
+     * Create a <code>public.dish_ingredients</code> table reference
      */
     public DishIngredients() {
         this(DSL.name("dish_ingredients"), null);
@@ -106,42 +106,40 @@ public class DishIngredients extends TableImpl<DishIngredientsRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Pfcc.PFCC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
     public UniqueKey<DishIngredientsRecord> getPrimaryKey() {
-        return Keys.KEY_DISH_INGREDIENTS_PRIMARY;
+        return Keys.DISH_INGREDIENTS_PKEY;
     }
 
     @Override
     public List<ForeignKey<DishIngredientsRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.DISH_INGREDIENTS_IBFK_1, Keys.DISH_INGREDIENTS_IBFK_2);
+        return Arrays.asList(Keys.DISH_INGREDIENTS__DISH_INGREDIENTS_DISH_ID_FKEY, Keys.DISH_INGREDIENTS__DISH_INGREDIENTS_INGREDIENT_ID_FKEY);
     }
 
-    private transient Dish _dishIngredientsIbfk_1;
-    private transient Dish _dishIngredientsIbfk_2;
+    private transient Dish _dish;
+    private transient Food _food;
 
     /**
-     * Get the implicit join path to the <code>pfcc.dish</code> table, via the
-     * <code>dish_ingredients_ibfk_1</code> key.
+     * Get the implicit join path to the <code>public.dish</code> table.
      */
-    public Dish dishIngredientsIbfk_1() {
-        if (_dishIngredientsIbfk_1 == null)
-            _dishIngredientsIbfk_1 = new Dish(this, Keys.DISH_INGREDIENTS_IBFK_1);
+    public Dish dish() {
+        if (_dish == null)
+            _dish = new Dish(this, Keys.DISH_INGREDIENTS__DISH_INGREDIENTS_DISH_ID_FKEY);
 
-        return _dishIngredientsIbfk_1;
+        return _dish;
     }
 
     /**
-     * Get the implicit join path to the <code>pfcc.dish</code> table, via the
-     * <code>dish_ingredients_ibfk_2</code> key.
+     * Get the implicit join path to the <code>public.food</code> table.
      */
-    public Dish dishIngredientsIbfk_2() {
-        if (_dishIngredientsIbfk_2 == null)
-            _dishIngredientsIbfk_2 = new Dish(this, Keys.DISH_INGREDIENTS_IBFK_2);
+    public Food food() {
+        if (_food == null)
+            _food = new Food(this, Keys.DISH_INGREDIENTS__DISH_INGREDIENTS_INGREDIENT_ID_FKEY);
 
-        return _dishIngredientsIbfk_2;
+        return _food;
     }
 
     @Override

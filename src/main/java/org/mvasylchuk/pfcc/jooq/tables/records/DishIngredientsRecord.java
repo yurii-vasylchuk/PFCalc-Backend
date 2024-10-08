@@ -23,56 +23,56 @@ public class DishIngredientsRecord extends UpdatableRecordImpl<DishIngredientsRe
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>pfcc.dish_ingredients.dish_id</code>.
+     * Setter for <code>public.dish_ingredients.dish_id</code>.
      */
     public void setDishId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>pfcc.dish_ingredients.dish_id</code>.
+     * Getter for <code>public.dish_ingredients.dish_id</code>.
      */
     public Long getDishId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>pfcc.dish_ingredients.ingredient_id</code>.
+     * Setter for <code>public.dish_ingredients.ingredient_id</code>.
      */
     public void setIngredientId(Long value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>pfcc.dish_ingredients.ingredient_id</code>.
+     * Getter for <code>public.dish_ingredients.ingredient_id</code>.
      */
     public Long getIngredientId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>pfcc.dish_ingredients.ingredient_weight</code>.
+     * Setter for <code>public.dish_ingredients.ingredient_weight</code>.
      */
     public void setIngredientWeight(BigDecimal value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>pfcc.dish_ingredients.ingredient_weight</code>.
+     * Getter for <code>public.dish_ingredients.ingredient_weight</code>.
      */
     public BigDecimal getIngredientWeight() {
         return (BigDecimal) get(2);
     }
 
     /**
-     * Setter for <code>pfcc.dish_ingredients.ingredient_index</code>.
+     * Setter for <code>public.dish_ingredients.ingredient_index</code>.
      */
     public void setIngredientIndex(Long value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>pfcc.dish_ingredients.ingredient_index</code>.
+     * Getter for <code>public.dish_ingredients.ingredient_index</code>.
      */
     public Long getIngredientIndex() {
         return (Long) get(3);

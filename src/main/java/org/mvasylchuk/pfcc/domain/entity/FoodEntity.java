@@ -17,11 +17,8 @@ import java.util.List;
 @Entity
 @Table(name = "food")
 public class FoodEntity {
-    private static final String ID_GENERATOR_NAME = "food_id_gen";
-    private static final String ID_SEQ_NAME = "food_id_seq";
     @Id
-    @GeneratedValue(generator = ID_GENERATOR_NAME)
-    @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     @Column(name = "name")

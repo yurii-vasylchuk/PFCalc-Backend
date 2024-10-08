@@ -12,7 +12,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function5;
-import org.jooq.Index;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -26,9 +26,8 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.mvasylchuk.pfcc.jooq.Indexes;
 import org.mvasylchuk.pfcc.jooq.Keys;
-import org.mvasylchuk.pfcc.jooq.Pfcc;
+import org.mvasylchuk.pfcc.jooq.Public;
 import org.mvasylchuk.pfcc.jooq.tables.records.MeasurementRecord;
 
 
@@ -41,7 +40,7 @@ public class Measurement extends TableImpl<MeasurementRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>pfcc.measurement</code>
+     * The reference instance of <code>public.measurement</code>
      */
     public static final Measurement MEASUREMENT = new Measurement();
 
@@ -54,29 +53,29 @@ public class Measurement extends TableImpl<MeasurementRecord> {
     }
 
     /**
-     * The column <code>pfcc.measurement.id</code>.
+     * The column <code>public.measurement.id</code>.
      */
-    public final TableField<MeasurementRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("nextval(`pfcc`.`measurement_id_seq`)"), SQLDataType.BIGINT)), this, "");
+    public final TableField<MeasurementRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>pfcc.measurement.food_id</code>.
+     * The column <code>public.measurement.food_id</code>.
      */
-    public final TableField<MeasurementRecord, Long> FOOD_ID = createField(DSL.name("food_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+    public final TableField<MeasurementRecord, Long> FOOD_ID = createField(DSL.name("food_id"), SQLDataType.BIGINT, this, "");
 
     /**
-     * The column <code>pfcc.measurement.to_gram_multiplier</code>.
+     * The column <code>public.measurement.to_gram_multiplier</code>.
      */
-    public final TableField<MeasurementRecord, BigDecimal> TO_GRAM_MULTIPLIER = createField(DSL.name("to_gram_multiplier"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<MeasurementRecord, BigDecimal> TO_GRAM_MULTIPLIER = createField(DSL.name("to_gram_multiplier"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.measurement.name</code>.
+     * The column <code>public.measurement.name</code>.
      */
     public final TableField<MeasurementRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.measurement.default_value</code>.
+     * The column <code>public.measurement.default_value</code>.
      */
-    public final TableField<MeasurementRecord, BigDecimal> DEFAULT_VALUE = createField(DSL.name("default_value"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<MeasurementRecord, BigDecimal> DEFAULT_VALUE = createField(DSL.name("default_value"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     private Measurement(Name alias, Table<MeasurementRecord> aliased) {
         this(alias, aliased, null);
@@ -87,21 +86,21 @@ public class Measurement extends TableImpl<MeasurementRecord> {
     }
 
     /**
-     * Create an aliased <code>pfcc.measurement</code> table reference
+     * Create an aliased <code>public.measurement</code> table reference
      */
     public Measurement(String alias) {
         this(DSL.name(alias), MEASUREMENT);
     }
 
     /**
-     * Create an aliased <code>pfcc.measurement</code> table reference
+     * Create an aliased <code>public.measurement</code> table reference
      */
     public Measurement(Name alias) {
         this(alias, MEASUREMENT);
     }
 
     /**
-     * Create a <code>pfcc.measurement</code> table reference
+     * Create a <code>public.measurement</code> table reference
      */
     public Measurement() {
         this(DSL.name("measurement"), null);
@@ -113,32 +112,32 @@ public class Measurement extends TableImpl<MeasurementRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Pfcc.PFCC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.MEASUREMENT_FOOD_ID);
+    public Identity<MeasurementRecord, Long> getIdentity() {
+        return (Identity<MeasurementRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<MeasurementRecord> getPrimaryKey() {
-        return Keys.KEY_MEASUREMENT_PRIMARY;
+        return Keys.MEASUREMENT_PKEY;
     }
 
     @Override
     public List<ForeignKey<MeasurementRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.MEASUREMENT_IBFK_1);
+        return Arrays.asList(Keys.MEASUREMENT__MEASUREMENT_FOOD_ID_FKEY);
     }
 
     private transient Food _food;
 
     /**
-     * Get the implicit join path to the <code>pfcc.food</code> table.
+     * Get the implicit join path to the <code>public.food</code> table.
      */
     public Food food() {
         if (_food == null)
-            _food = new Food(this, Keys.MEASUREMENT_IBFK_1);
+            _food = new Food(this, Keys.MEASUREMENT__MEASUREMENT_FOOD_ID_FKEY);
 
         return _food;
     }

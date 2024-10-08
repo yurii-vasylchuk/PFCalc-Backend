@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.mvasylchuk.pfcc.user.Language;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public interface Constants {
     @Getter
@@ -36,22 +35,5 @@ public interface Constants {
             this.caloriesAim = caloriesAim != null ? new BigDecimal(caloriesAim) : null;
             this.roles = roles;
         }
-    }
-
-    interface Db {
-        static byte dbBool(boolean val){
-            return val ? TRUE : FALSE;
-        }
-        static byte dbBool(String val){
-            if (List.of("yes", "on", "true", "1").contains(val)) {
-                return TRUE;
-            } else if(List.of("no", "off", "false", "0").contains(val)) {
-                return FALSE;
-            } else {
-                throw new IllegalArgumentException("Invalid bool-like string: %s".formatted(val));
-            }
-        }
-        byte TRUE = 1;
-        byte FALSE = 0;
     }
 }

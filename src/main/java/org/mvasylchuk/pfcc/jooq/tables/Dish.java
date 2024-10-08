@@ -13,7 +13,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function12;
-import org.jooq.Index;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -27,9 +27,8 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.mvasylchuk.pfcc.jooq.Indexes;
 import org.mvasylchuk.pfcc.jooq.Keys;
-import org.mvasylchuk.pfcc.jooq.Pfcc;
+import org.mvasylchuk.pfcc.jooq.Public;
 import org.mvasylchuk.pfcc.jooq.tables.records.DishRecord;
 
 
@@ -42,7 +41,7 @@ public class Dish extends TableImpl<DishRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>pfcc.dish</code>
+     * The reference instance of <code>public.dish</code>
      */
     public static final Dish DISH = new Dish();
 
@@ -55,64 +54,64 @@ public class Dish extends TableImpl<DishRecord> {
     }
 
     /**
-     * The column <code>pfcc.dish.id</code>.
+     * The column <code>public.dish.id</code>.
      */
-    public final TableField<DishRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("nextval(`pfcc`.`dish_id_seq`)"), SQLDataType.BIGINT)), this, "");
+    public final TableField<DishRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>pfcc.dish.name</code>.
+     * The column <code>public.dish.name</code>.
      */
     public final TableField<DishRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish.food_id</code>.
+     * The column <code>public.dish.food_id</code>.
      */
     public final TableField<DishRecord, Long> FOOD_ID = createField(DSL.name("food_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish.recipe_weight</code>.
+     * The column <code>public.dish.recipe_weight</code>.
      */
-    public final TableField<DishRecord, BigDecimal> RECIPE_WEIGHT = createField(DSL.name("recipe_weight"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<DishRecord, BigDecimal> RECIPE_WEIGHT = createField(DSL.name("recipe_weight"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish.cooked_weight</code>.
+     * The column <code>public.dish.cooked_weight</code>.
      */
-    public final TableField<DishRecord, BigDecimal> COOKED_WEIGHT = createField(DSL.name("cooked_weight"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<DishRecord, BigDecimal> COOKED_WEIGHT = createField(DSL.name("cooked_weight"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish.protein</code>.
+     * The column <code>public.dish.protein</code>.
      */
-    public final TableField<DishRecord, BigDecimal> PROTEIN = createField(DSL.name("protein"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<DishRecord, BigDecimal> PROTEIN = createField(DSL.name("protein"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish.fat</code>.
+     * The column <code>public.dish.fat</code>.
      */
-    public final TableField<DishRecord, BigDecimal> FAT = createField(DSL.name("fat"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<DishRecord, BigDecimal> FAT = createField(DSL.name("fat"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish.carbohydrates</code>.
+     * The column <code>public.dish.carbohydrates</code>.
      */
-    public final TableField<DishRecord, BigDecimal> CARBOHYDRATES = createField(DSL.name("carbohydrates"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<DishRecord, BigDecimal> CARBOHYDRATES = createField(DSL.name("carbohydrates"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish.calories</code>.
+     * The column <code>public.dish.calories</code>.
      */
-    public final TableField<DishRecord, BigDecimal> CALORIES = createField(DSL.name("calories"), SQLDataType.DECIMAL(9, 4).nullable(false), this, "");
+    public final TableField<DishRecord, BigDecimal> CALORIES = createField(DSL.name("calories"), SQLDataType.NUMERIC(9, 4).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.dish.cooked_on</code>.
+     * The column <code>public.dish.cooked_on</code>.
      */
-    public final TableField<DishRecord, LocalDateTime> COOKED_ON = createField(DSL.name("cooked_on"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DishRecord, LocalDateTime> COOKED_ON = createField(DSL.name("cooked_on"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>pfcc.dish.deleted</code>.
+     * The column <code>public.dish.deleted</code>.
      */
-    public final TableField<DishRecord, Byte> DELETED = createField(DSL.name("deleted"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<DishRecord, Boolean> DELETED = createField(DSL.name("deleted"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>pfcc.dish.owner_id</code>.
+     * The column <code>public.dish.owner_id</code>.
      */
-    public final TableField<DishRecord, Long> OWNER_ID = createField(DSL.name("owner_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+    public final TableField<DishRecord, Long> OWNER_ID = createField(DSL.name("owner_id"), SQLDataType.BIGINT, this, "");
 
     private Dish(Name alias, Table<DishRecord> aliased) {
         this(alias, aliased, null);
@@ -123,21 +122,21 @@ public class Dish extends TableImpl<DishRecord> {
     }
 
     /**
-     * Create an aliased <code>pfcc.dish</code> table reference
+     * Create an aliased <code>public.dish</code> table reference
      */
     public Dish(String alias) {
         this(DSL.name(alias), DISH);
     }
 
     /**
-     * Create an aliased <code>pfcc.dish</code> table reference
+     * Create an aliased <code>public.dish</code> table reference
      */
     public Dish(Name alias) {
         this(alias, DISH);
     }
 
     /**
-     * Create a <code>pfcc.dish</code> table reference
+     * Create a <code>public.dish</code> table reference
      */
     public Dish() {
         this(DSL.name("dish"), null);
@@ -149,43 +148,43 @@ public class Dish extends TableImpl<DishRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Pfcc.PFCC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.DISH_FOOD_ID, Indexes.DISH_OWNER_ID);
+    public Identity<DishRecord, Long> getIdentity() {
+        return (Identity<DishRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<DishRecord> getPrimaryKey() {
-        return Keys.KEY_DISH_PRIMARY;
+        return Keys.DISH_PKEY;
     }
 
     @Override
     public List<ForeignKey<DishRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.DISH_IBFK_1, Keys.DISH_IBFK_2);
+        return Arrays.asList(Keys.DISH__DISH_FOOD_ID_FKEY, Keys.DISH__DISH_OWNER_ID_FKEY);
     }
 
     private transient Food _food;
     private transient Users _users;
 
     /**
-     * Get the implicit join path to the <code>pfcc.food</code> table.
+     * Get the implicit join path to the <code>public.food</code> table.
      */
     public Food food() {
         if (_food == null)
-            _food = new Food(this, Keys.DISH_IBFK_1);
+            _food = new Food(this, Keys.DISH__DISH_FOOD_ID_FKEY);
 
         return _food;
     }
 
     /**
-     * Get the implicit join path to the <code>pfcc.users</code> table.
+     * Get the implicit join path to the <code>public.users</code> table.
      */
     public Users users() {
         if (_users == null)
-            _users = new Users(this, Keys.DISH_IBFK_2);
+            _users = new Users(this, Keys.DISH__DISH_OWNER_ID_FKEY);
 
         return _users;
     }
@@ -234,14 +233,14 @@ public class Dish extends TableImpl<DishRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row12<Long, String, Long, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, Byte, Long> fieldsRow() {
+    public Row12<Long, String, Long, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, Boolean, Long> fieldsRow() {
         return (Row12) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function12<? super Long, ? super String, ? super Long, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super LocalDateTime, ? super Byte, ? super Long, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function12<? super Long, ? super String, ? super Long, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super LocalDateTime, ? super Boolean, ? super Long, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -249,7 +248,7 @@ public class Dish extends TableImpl<DishRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function12<? super Long, ? super String, ? super Long, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super LocalDateTime, ? super Byte, ? super Long, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function12<? super Long, ? super String, ? super Long, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super LocalDateTime, ? super Boolean, ? super Long, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

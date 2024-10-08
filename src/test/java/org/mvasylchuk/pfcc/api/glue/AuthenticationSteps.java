@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mvasylchuk.pfcc.api.constants.Constants.Db.FALSE;
-import static org.mvasylchuk.pfcc.api.constants.Constants.Db.TRUE;
 import static org.mvasylchuk.pfcc.jooq.Tables.SECURITY_TOKENS;
 import static org.mvasylchuk.pfcc.jooq.Tables.USERS;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -86,7 +84,7 @@ public class AuthenticationSteps {
                 .set(USERS.NAME, user.getName())
                 .set(USERS.PASSWORD, user.getPassword())
                 .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-                .set(USERS.EMAIL_CONFIRMED, FALSE)
+                .set(USERS.EMAIL_CONFIRMED, false)
                 .set(USERS.PROTEIN_AIM, user.getProteinAim())
                 .set(USERS.FAT_AIM, user.getFatAim())
                 .set(USERS.CARBOHYDRATES_AIM, user.getCarbohydratesAim())
@@ -105,7 +103,7 @@ public class AuthenticationSteps {
         assertThat(tokens)
                 .hasSize(1)
                 .allSatisfy(token -> {
-                    assertThat(token.getIsActive()).isEqualTo(TRUE);
+                    assertThat(token.getIsActive()).isTrue();
                     assertThat(token.getType()).isEqualTo("EMAIL_VERIFICATION");
                 });
     }
@@ -129,7 +127,7 @@ public class AuthenticationSteps {
 
         db.insertInto(SECURITY_TOKENS)
                 .set(SECURITY_TOKENS.TYPE, "EMAIL_VERIFICATION")
-                .set(SECURITY_TOKENS.IS_ACTIVE, TRUE)
+                .set(SECURITY_TOKENS.IS_ACTIVE, true)
                 .set(SECURITY_TOKENS.CODE, code)
                 .set(SECURITY_TOKENS.USER_ID, db.select(USERS.ID).from(USERS).where(USERS.EMAIL.eq(user.getEmail())))
                 .set(SECURITY_TOKENS.CREATED_AT, LocalDateTime.now())
@@ -159,7 +157,7 @@ public class AuthenticationSteps {
                 .set(USERS.NAME, user.getName())
                 .set(USERS.PASSWORD, user.getPassword())
                 .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-                .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed() ? TRUE : FALSE)
+                .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed())
                 .set(USERS.ROLES, user.getRoles())
                 .execute();
     }

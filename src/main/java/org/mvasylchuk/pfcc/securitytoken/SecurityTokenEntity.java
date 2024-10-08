@@ -14,16 +14,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class SecurityTokenEntity {
-    private static final String ID_GENERATOR_NAME = "security_token_id_gen";
-    private static final String ID_SEQ_NAME = "security_token_id_seq";
-
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt;
 
     @Id
-    @GeneratedValue(generator = ID_GENERATOR_NAME)
-    @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -44,6 +37,11 @@ public class SecurityTokenEntity {
     @Column(name = "valid_until")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime validUntil;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
+
     @Column(name = "modified_at")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedAt;

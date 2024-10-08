@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (authCookie == null) {
                 log.debug("Can't found Authentication cookie");
+                SecurityContextHolder.getContext().setAuthentication(null);
                 filterChain.doFilter(request, response);
                 return;
             }

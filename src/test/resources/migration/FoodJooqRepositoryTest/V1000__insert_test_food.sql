@@ -43,9 +43,9 @@ VALUES (1, 'dish1', 1, 200, 100, 30, 40, 50, 100, '2023-08-14', FALSE, 1),
 
 INSERT INTO meal
 (id, weight, protein, fat, carbohydrates, calories, food_id, dish_id, eaten_on, owner_id)
-VALUES (1, 51, 21, 31, 41, 150, 1, 1, DATE_ADD(now(), INTERVAL (-WEEKDAY(now())) DAY), 1),
+VALUES (1, 51, 21, 31, 41, 150, 1, 1, now() + (1 - extract(dow from now())) * interval '1 day', 1),
        (2, 52, 22, 32, 42, 150, 2, 3, '2023-08-11', 2),
        (3, 53, 23, 33, 43, 150, 1, 5, '2023-08-09', 1),
-       (4, 54, 24, 34, 44, 150, 3, 6, DATE_ADD(now(), INTERVAL (-WEEKDAY(now())) DAY), 2),
-       (5, 55, 25, 35, 45, 150, 2, 5, DATE_ADD(now(), INTERVAL (-WEEKDAY(now())) DAY), 1),
-       (6, 56, 26, 36, 46, 150, 2, 5, DATE_ADD(now(), INTERVAL (-WEEKDAY(now())) DAY), 2);
+       (4, 54, 24, 34, 44, 150, 3, 6, now() + (1 - extract(dow from now())) * interval '1 day', 2),
+       (5, 55, 25, 35, 45, 150, 2, 5, now() + (1 - extract(dow from now())) * interval '1 day', 1),
+       (6, 56, 26, 36, 46, 150, 2, 5, now() + (1 - extract(dow from now())) * interval '1 day', 2);

@@ -31,7 +31,7 @@ import org.mvasylchuk.pfcc.jooq.tables.records.UsersRecord;
 
 /**
  * A class modelling foreign key relationships and constraints of tables in
- * pfcc.
+ * public.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Keys {
@@ -40,35 +40,35 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<DishRecord> KEY_DISH_PRIMARY = Internal.createUniqueKey(Dish.DISH, DSL.name("KEY_dish_PRIMARY"), new TableField[] { Dish.DISH.ID }, true);
-    public static final UniqueKey<DishIngredientsRecord> KEY_DISH_INGREDIENTS_PRIMARY = Internal.createUniqueKey(DishIngredients.DISH_INGREDIENTS, DSL.name("KEY_dish_ingredients_PRIMARY"), new TableField[] { DishIngredients.DISH_INGREDIENTS.DISH_ID, DishIngredients.DISH_INGREDIENTS.INGREDIENT_ID }, true);
-    public static final UniqueKey<FoodRecord> KEY_FOOD_PRIMARY = Internal.createUniqueKey(Food.FOOD, DSL.name("KEY_food_PRIMARY"), new TableField[] { Food.FOOD.ID }, true);
-    public static final UniqueKey<IngredientsRecord> KEY_INGREDIENTS_PRIMARY = Internal.createUniqueKey(Ingredients.INGREDIENTS, DSL.name("KEY_ingredients_PRIMARY"), new TableField[] { Ingredients.INGREDIENTS.RECIPE_ID, Ingredients.INGREDIENTS.INGREDIENT_ID }, true);
-    public static final UniqueKey<MealRecord> KEY_MEAL_PRIMARY = Internal.createUniqueKey(Meal.MEAL, DSL.name("KEY_meal_PRIMARY"), new TableField[] { Meal.MEAL.ID }, true);
-    public static final UniqueKey<MeasurementRecord> KEY_MEASUREMENT_PRIMARY = Internal.createUniqueKey(Measurement.MEASUREMENT, DSL.name("KEY_measurement_PRIMARY"), new TableField[] { Measurement.MEASUREMENT.ID }, true);
-    public static final UniqueKey<ReportsRecord> KEY_REPORTS_FILE_PATH = Internal.createUniqueKey(Reports.REPORTS, DSL.name("KEY_reports_file_path"), new TableField[] { Reports.REPORTS.FILE_PATH }, true);
-    public static final UniqueKey<ReportsRecord> KEY_REPORTS_NAME = Internal.createUniqueKey(Reports.REPORTS, DSL.name("KEY_reports_name"), new TableField[] { Reports.REPORTS.NAME }, true);
-    public static final UniqueKey<ReportsRecord> KEY_REPORTS_PRIMARY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("KEY_reports_PRIMARY"), new TableField[] { Reports.REPORTS.ID }, true);
-    public static final UniqueKey<SecurityTokensRecord> KEY_SECURITY_TOKENS_CODE = Internal.createUniqueKey(SecurityTokens.SECURITY_TOKENS, DSL.name("KEY_security_tokens_code"), new TableField[] { SecurityTokens.SECURITY_TOKENS.CODE }, true);
-    public static final UniqueKey<SecurityTokensRecord> KEY_SECURITY_TOKENS_PRIMARY = Internal.createUniqueKey(SecurityTokens.SECURITY_TOKENS, DSL.name("KEY_security_tokens_PRIMARY"), new TableField[] { SecurityTokens.SECURITY_TOKENS.ID }, true);
-    public static final UniqueKey<UsersRecord> KEY_USERS_EMAIL = Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_email"), new TableField[] { Users.USERS.EMAIL }, true);
-    public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_PRIMARY"), new TableField[] { Users.USERS.ID }, true);
+    public static final UniqueKey<DishRecord> DISH_PKEY = Internal.createUniqueKey(Dish.DISH, DSL.name("dish_pkey"), new TableField[] { Dish.DISH.ID }, true);
+    public static final UniqueKey<DishIngredientsRecord> DISH_INGREDIENTS_PKEY = Internal.createUniqueKey(DishIngredients.DISH_INGREDIENTS, DSL.name("dish_ingredients_pkey"), new TableField[] { DishIngredients.DISH_INGREDIENTS.DISH_ID, DishIngredients.DISH_INGREDIENTS.INGREDIENT_ID }, true);
+    public static final UniqueKey<FoodRecord> FOOD_PKEY = Internal.createUniqueKey(Food.FOOD, DSL.name("food_pkey"), new TableField[] { Food.FOOD.ID }, true);
+    public static final UniqueKey<IngredientsRecord> INGREDIENTS_PKEY = Internal.createUniqueKey(Ingredients.INGREDIENTS, DSL.name("ingredients_pkey"), new TableField[] { Ingredients.INGREDIENTS.RECIPE_ID, Ingredients.INGREDIENTS.INGREDIENT_ID }, true);
+    public static final UniqueKey<MealRecord> MEAL_PKEY = Internal.createUniqueKey(Meal.MEAL, DSL.name("meal_pkey"), new TableField[] { Meal.MEAL.ID }, true);
+    public static final UniqueKey<MeasurementRecord> MEASUREMENT_PKEY = Internal.createUniqueKey(Measurement.MEASUREMENT, DSL.name("measurement_pkey"), new TableField[] { Measurement.MEASUREMENT.ID }, true);
+    public static final UniqueKey<ReportsRecord> REPORTS_FILE_PATH_KEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_file_path_key"), new TableField[] { Reports.REPORTS.FILE_PATH }, true);
+    public static final UniqueKey<ReportsRecord> REPORTS_NAME_KEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_name_key"), new TableField[] { Reports.REPORTS.NAME }, true);
+    public static final UniqueKey<ReportsRecord> REPORTS_PKEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_pkey"), new TableField[] { Reports.REPORTS.ID }, true);
+    public static final UniqueKey<SecurityTokensRecord> SECURITY_TOKENS_CODE_KEY = Internal.createUniqueKey(SecurityTokens.SECURITY_TOKENS, DSL.name("security_tokens_code_key"), new TableField[] { SecurityTokens.SECURITY_TOKENS.CODE }, true);
+    public static final UniqueKey<SecurityTokensRecord> SECURITY_TOKENS_PKEY = Internal.createUniqueKey(SecurityTokens.SECURITY_TOKENS, DSL.name("security_tokens_pkey"), new TableField[] { SecurityTokens.SECURITY_TOKENS.ID }, true);
+    public static final UniqueKey<UsersRecord> USERS_EMAIL_KEY = Internal.createUniqueKey(Users.USERS, DSL.name("users_email_key"), new TableField[] { Users.USERS.EMAIL }, true);
+    public static final UniqueKey<UsersRecord> USERS_PKEY = Internal.createUniqueKey(Users.USERS, DSL.name("users_pkey"), new TableField[] { Users.USERS.ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<DishRecord, FoodRecord> DISH_IBFK_1 = Internal.createForeignKey(Dish.DISH, DSL.name("dish_ibfk_1"), new TableField[] { Dish.DISH.FOOD_ID }, Keys.KEY_FOOD_PRIMARY, new TableField[] { Food.FOOD.ID }, true);
-    public static final ForeignKey<DishRecord, UsersRecord> DISH_IBFK_2 = Internal.createForeignKey(Dish.DISH, DSL.name("dish_ibfk_2"), new TableField[] { Dish.DISH.OWNER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.ID }, true);
-    public static final ForeignKey<DishIngredientsRecord, DishRecord> DISH_INGREDIENTS_IBFK_1 = Internal.createForeignKey(DishIngredients.DISH_INGREDIENTS, DSL.name("dish_ingredients_ibfk_1"), new TableField[] { DishIngredients.DISH_INGREDIENTS.DISH_ID }, Keys.KEY_DISH_PRIMARY, new TableField[] { Dish.DISH.ID }, true);
-    public static final ForeignKey<DishIngredientsRecord, DishRecord> DISH_INGREDIENTS_IBFK_2 = Internal.createForeignKey(DishIngredients.DISH_INGREDIENTS, DSL.name("dish_ingredients_ibfk_2"), new TableField[] { DishIngredients.DISH_INGREDIENTS.DISH_ID }, Keys.KEY_DISH_PRIMARY, new TableField[] { Dish.DISH.ID }, true);
-    public static final ForeignKey<FoodRecord, UsersRecord> FOOD_IBFK_1 = Internal.createForeignKey(Food.FOOD, DSL.name("food_ibfk_1"), new TableField[] { Food.FOOD.OWNER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.ID }, true);
-    public static final ForeignKey<IngredientsRecord, FoodRecord> INGREDIENTS_IBFK_1 = Internal.createForeignKey(Ingredients.INGREDIENTS, DSL.name("ingredients_ibfk_1"), new TableField[] { Ingredients.INGREDIENTS.RECIPE_ID }, Keys.KEY_FOOD_PRIMARY, new TableField[] { Food.FOOD.ID }, true);
-    public static final ForeignKey<IngredientsRecord, FoodRecord> INGREDIENTS_IBFK_2 = Internal.createForeignKey(Ingredients.INGREDIENTS, DSL.name("ingredients_ibfk_2"), new TableField[] { Ingredients.INGREDIENTS.INGREDIENT_ID }, Keys.KEY_FOOD_PRIMARY, new TableField[] { Food.FOOD.ID }, true);
-    public static final ForeignKey<MealRecord, FoodRecord> MEAL_IBFK_1 = Internal.createForeignKey(Meal.MEAL, DSL.name("meal_ibfk_1"), new TableField[] { Meal.MEAL.FOOD_ID }, Keys.KEY_FOOD_PRIMARY, new TableField[] { Food.FOOD.ID }, true);
-    public static final ForeignKey<MealRecord, DishRecord> MEAL_IBFK_2 = Internal.createForeignKey(Meal.MEAL, DSL.name("meal_ibfk_2"), new TableField[] { Meal.MEAL.DISH_ID }, Keys.KEY_DISH_PRIMARY, new TableField[] { Dish.DISH.ID }, true);
-    public static final ForeignKey<MealRecord, UsersRecord> MEAL_IBFK_3 = Internal.createForeignKey(Meal.MEAL, DSL.name("meal_ibfk_3"), new TableField[] { Meal.MEAL.OWNER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.ID }, true);
-    public static final ForeignKey<MeasurementRecord, FoodRecord> MEASUREMENT_IBFK_1 = Internal.createForeignKey(Measurement.MEASUREMENT, DSL.name("measurement_ibfk_1"), new TableField[] { Measurement.MEASUREMENT.FOOD_ID }, Keys.KEY_FOOD_PRIMARY, new TableField[] { Food.FOOD.ID }, true);
-    public static final ForeignKey<ReportsRecord, UsersRecord> REPORTS_IBFK_1 = Internal.createForeignKey(Reports.REPORTS, DSL.name("reports_ibfk_1"), new TableField[] { Reports.REPORTS.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.ID }, true);
-    public static final ForeignKey<SecurityTokensRecord, UsersRecord> SECURITY_TOKENS_IBFK_1 = Internal.createForeignKey(SecurityTokens.SECURITY_TOKENS, DSL.name("security_tokens_ibfk_1"), new TableField[] { SecurityTokens.SECURITY_TOKENS.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<DishRecord, FoodRecord> DISH__DISH_FOOD_ID_FKEY = Internal.createForeignKey(Dish.DISH, DSL.name("dish_food_id_fkey"), new TableField[] { Dish.DISH.FOOD_ID }, Keys.FOOD_PKEY, new TableField[] { Food.FOOD.ID }, true);
+    public static final ForeignKey<DishRecord, UsersRecord> DISH__DISH_OWNER_ID_FKEY = Internal.createForeignKey(Dish.DISH, DSL.name("dish_owner_id_fkey"), new TableField[] { Dish.DISH.OWNER_ID }, Keys.USERS_PKEY, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<DishIngredientsRecord, DishRecord> DISH_INGREDIENTS__DISH_INGREDIENTS_DISH_ID_FKEY = Internal.createForeignKey(DishIngredients.DISH_INGREDIENTS, DSL.name("dish_ingredients_dish_id_fkey"), new TableField[] { DishIngredients.DISH_INGREDIENTS.DISH_ID }, Keys.DISH_PKEY, new TableField[] { Dish.DISH.ID }, true);
+    public static final ForeignKey<DishIngredientsRecord, FoodRecord> DISH_INGREDIENTS__DISH_INGREDIENTS_INGREDIENT_ID_FKEY = Internal.createForeignKey(DishIngredients.DISH_INGREDIENTS, DSL.name("dish_ingredients_ingredient_id_fkey"), new TableField[] { DishIngredients.DISH_INGREDIENTS.INGREDIENT_ID }, Keys.FOOD_PKEY, new TableField[] { Food.FOOD.ID }, true);
+    public static final ForeignKey<FoodRecord, UsersRecord> FOOD__FOOD_OWNER_ID_FKEY = Internal.createForeignKey(Food.FOOD, DSL.name("food_owner_id_fkey"), new TableField[] { Food.FOOD.OWNER_ID }, Keys.USERS_PKEY, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<IngredientsRecord, FoodRecord> INGREDIENTS__INGREDIENTS_INGREDIENT_ID_FKEY = Internal.createForeignKey(Ingredients.INGREDIENTS, DSL.name("ingredients_ingredient_id_fkey"), new TableField[] { Ingredients.INGREDIENTS.INGREDIENT_ID }, Keys.FOOD_PKEY, new TableField[] { Food.FOOD.ID }, true);
+    public static final ForeignKey<IngredientsRecord, FoodRecord> INGREDIENTS__INGREDIENTS_RECIPE_ID_FKEY = Internal.createForeignKey(Ingredients.INGREDIENTS, DSL.name("ingredients_recipe_id_fkey"), new TableField[] { Ingredients.INGREDIENTS.RECIPE_ID }, Keys.FOOD_PKEY, new TableField[] { Food.FOOD.ID }, true);
+    public static final ForeignKey<MealRecord, DishRecord> MEAL__MEAL_DISH_ID_FKEY = Internal.createForeignKey(Meal.MEAL, DSL.name("meal_dish_id_fkey"), new TableField[] { Meal.MEAL.DISH_ID }, Keys.DISH_PKEY, new TableField[] { Dish.DISH.ID }, true);
+    public static final ForeignKey<MealRecord, FoodRecord> MEAL__MEAL_FOOD_ID_FKEY = Internal.createForeignKey(Meal.MEAL, DSL.name("meal_food_id_fkey"), new TableField[] { Meal.MEAL.FOOD_ID }, Keys.FOOD_PKEY, new TableField[] { Food.FOOD.ID }, true);
+    public static final ForeignKey<MealRecord, UsersRecord> MEAL__MEAL_OWNER_ID_FKEY = Internal.createForeignKey(Meal.MEAL, DSL.name("meal_owner_id_fkey"), new TableField[] { Meal.MEAL.OWNER_ID }, Keys.USERS_PKEY, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<MeasurementRecord, FoodRecord> MEASUREMENT__MEASUREMENT_FOOD_ID_FKEY = Internal.createForeignKey(Measurement.MEASUREMENT, DSL.name("measurement_food_id_fkey"), new TableField[] { Measurement.MEASUREMENT.FOOD_ID }, Keys.FOOD_PKEY, new TableField[] { Food.FOOD.ID }, true);
+    public static final ForeignKey<ReportsRecord, UsersRecord> REPORTS__REPORTS_USER_ID_FKEY = Internal.createForeignKey(Reports.REPORTS, DSL.name("reports_user_id_fkey"), new TableField[] { Reports.REPORTS.USER_ID }, Keys.USERS_PKEY, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<SecurityTokensRecord, UsersRecord> SECURITY_TOKENS__SECURITY_TOKENS_USER_ID_FKEY = Internal.createForeignKey(SecurityTokens.SECURITY_TOKENS, DSL.name("security_tokens_user_id_fkey"), new TableField[] { SecurityTokens.SECURITY_TOKENS.USER_ID }, Keys.USERS_PKEY, new TableField[] { Users.USERS.ID }, true);
 }

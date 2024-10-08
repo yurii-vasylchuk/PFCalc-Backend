@@ -1,6 +1,6 @@
 INSERT INTO users (id, email, preferred_language, protein_aim, fat_aim, carbohydrates_aim, calories_aim,
                    email_confirmed, password, roles, name)
-VALUES (1, 'test1@mail.com', 'UA', 120, 50, 180, 1300, 1, 'test', 'USER', 'test1');
+VALUES (1, 'test1@mail.com', 'UA', 120, 50, 180, 1300, TRUE, 'test', 'USER', 'test1');
 
 INSERT INTO food (id, name, type, protein, fat, carbohydrates, calories, is_hidden, owner_id, description, deleted)
 VALUES (1, 'Recipe 1',  'RECIPE',     18, 11, 15, 293, FALSE, 1, NULL, FALSE),

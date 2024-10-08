@@ -1,11 +1,12 @@
 version: '3.7'
 services:
-  mysqldb:
+  postgresql:
     restart: always
-    image: 'mariadb:10.11.7'
-    container_name: mysqldb
+    image: 'postgres:16.0-alpine'
+    container_name: postgresql
     ports:
-      - 3306:3306
+      - 5432:5432
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: pfcc
+      POSTGRES_USER: root
+      POSTGRES_DB: pfcc
+      POSTGRES_PASSWORD: root

@@ -12,6 +12,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function11;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -26,7 +27,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 import org.mvasylchuk.pfcc.jooq.Keys;
-import org.mvasylchuk.pfcc.jooq.Pfcc;
+import org.mvasylchuk.pfcc.jooq.Public;
 import org.mvasylchuk.pfcc.jooq.tables.records.UsersRecord;
 
 
@@ -39,7 +40,7 @@ public class Users extends TableImpl<UsersRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>pfcc.users</code>
+     * The reference instance of <code>public.users</code>
      */
     public static final Users USERS = new Users();
 
@@ -52,57 +53,57 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     /**
-     * The column <code>pfcc.users.id</code>.
+     * The column <code>public.users.id</code>.
      */
-    public final TableField<UsersRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("nextval(`pfcc`.`user_id_seq`)"), SQLDataType.BIGINT)), this, "");
+    public final TableField<UsersRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>pfcc.users.email</code>.
+     * The column <code>public.users.email</code>.
      */
     public final TableField<UsersRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.users.preferred_language</code>.
+     * The column <code>public.users.preferred_language</code>.
      */
     public final TableField<UsersRecord, String> PREFERRED_LANGUAGE = createField(DSL.name("preferred_language"), SQLDataType.VARCHAR(3).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.users.protein_aim</code>.
+     * The column <code>public.users.protein_aim</code>.
      */
-    public final TableField<UsersRecord, BigDecimal> PROTEIN_AIM = createField(DSL.name("protein_aim"), SQLDataType.DECIMAL(9, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
+    public final TableField<UsersRecord, BigDecimal> PROTEIN_AIM = createField(DSL.name("protein_aim"), SQLDataType.NUMERIC(9, 4), this, "");
 
     /**
-     * The column <code>pfcc.users.fat_aim</code>.
+     * The column <code>public.users.fat_aim</code>.
      */
-    public final TableField<UsersRecord, BigDecimal> FAT_AIM = createField(DSL.name("fat_aim"), SQLDataType.DECIMAL(9, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
+    public final TableField<UsersRecord, BigDecimal> FAT_AIM = createField(DSL.name("fat_aim"), SQLDataType.NUMERIC(9, 4), this, "");
 
     /**
-     * The column <code>pfcc.users.carbohydrates_aim</code>.
+     * The column <code>public.users.carbohydrates_aim</code>.
      */
-    public final TableField<UsersRecord, BigDecimal> CARBOHYDRATES_AIM = createField(DSL.name("carbohydrates_aim"), SQLDataType.DECIMAL(9, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
+    public final TableField<UsersRecord, BigDecimal> CARBOHYDRATES_AIM = createField(DSL.name("carbohydrates_aim"), SQLDataType.NUMERIC(9, 4), this, "");
 
     /**
-     * The column <code>pfcc.users.calories_aim</code>.
+     * The column <code>public.users.calories_aim</code>.
      */
-    public final TableField<UsersRecord, BigDecimal> CALORIES_AIM = createField(DSL.name("calories_aim"), SQLDataType.DECIMAL(9, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
+    public final TableField<UsersRecord, BigDecimal> CALORIES_AIM = createField(DSL.name("calories_aim"), SQLDataType.NUMERIC(9, 4), this, "");
 
     /**
-     * The column <code>pfcc.users.email_confirmed</code>.
+     * The column <code>public.users.email_confirmed</code>.
      */
-    public final TableField<UsersRecord, Byte> EMAIL_CONFIRMED = createField(DSL.name("email_confirmed"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Boolean> EMAIL_CONFIRMED = createField(DSL.name("email_confirmed"), SQLDataType.BOOLEAN, this, "");
 
     /**
-     * The column <code>pfcc.users.password</code>.
+     * The column <code>public.users.password</code>.
      */
     public final TableField<UsersRecord, String> PASSWORD = createField(DSL.name("password"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.users.roles</code>.
+     * The column <code>public.users.roles</code>.
      */
     public final TableField<UsersRecord, String> ROLES = createField(DSL.name("roles"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.users.name</code>.
+     * The column <code>public.users.name</code>.
      */
     public final TableField<UsersRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
@@ -115,21 +116,21 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     /**
-     * Create an aliased <code>pfcc.users</code> table reference
+     * Create an aliased <code>public.users</code> table reference
      */
     public Users(String alias) {
         this(DSL.name(alias), USERS);
     }
 
     /**
-     * Create an aliased <code>pfcc.users</code> table reference
+     * Create an aliased <code>public.users</code> table reference
      */
     public Users(Name alias) {
         this(alias, USERS);
     }
 
     /**
-     * Create a <code>pfcc.users</code> table reference
+     * Create a <code>public.users</code> table reference
      */
     public Users() {
         this(DSL.name("users"), null);
@@ -141,17 +142,22 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Pfcc.PFCC;
+        return aliased() ? null : Public.PUBLIC;
+    }
+
+    @Override
+    public Identity<UsersRecord, Long> getIdentity() {
+        return (Identity<UsersRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<UsersRecord> getPrimaryKey() {
-        return Keys.KEY_USERS_PRIMARY;
+        return Keys.USERS_PKEY;
     }
 
     @Override
     public List<UniqueKey<UsersRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_USERS_EMAIL);
+        return Arrays.asList(Keys.USERS_EMAIL_KEY);
     }
 
     @Override
@@ -198,14 +204,14 @@ public class Users extends TableImpl<UsersRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Byte, String, String, String> fieldsRow() {
+    public Row11<Long, String, String, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Boolean, String, String, String> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Boolean, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -213,7 +219,7 @@ public class Users extends TableImpl<UsersRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Byte, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Boolean, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

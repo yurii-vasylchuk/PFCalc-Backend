@@ -16,11 +16,8 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "measurement")
 public class MeasurementEntity {
-    private static final String ID_GENERATOR_NAME = "measurement_id_gen";
-    private static final String ID_SEQ_NAME = "measurement_id_seq";
     @Id
-    @GeneratedValue(generator = ID_GENERATOR_NAME)
-    @SequenceGenerator(name = ID_GENERATOR_NAME, sequenceName = ID_SEQ_NAME, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     @ManyToOne(optional = false)

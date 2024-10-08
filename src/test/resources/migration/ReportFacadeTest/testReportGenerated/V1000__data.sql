@@ -1,6 +1,6 @@
 INSERT INTO pfcc.users (id, email, preferred_language, protein_aim, fat_aim, carbohydrates_aim, calories_aim,
                         email_confirmed, password, roles, name)
-VALUES (50001, 'yriy.vasilchuk@gmail.com', 'UA', 130.0000, 50.0000, 160.0000, NULL, 1,
+VALUES (50001, 'yriy.vasilchuk@gmail.com', 'UA', 130.0000, 50.0000, 160.0000, NULL, TRUE,
         '$2a$10$cu8AyzJ7kkLecns3MAnFYeakQDzGfPSXbCo7kbWgZVWfT6wh.N93O', 'USER,ADMIN', 'Юрій -_.Vasylchuk');
 
 INSERT INTO pfcc.food (id, name, type, protein, fat, carbohydrates, calories, is_hidden, owner_id, description, deleted)

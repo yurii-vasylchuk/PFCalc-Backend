@@ -15,7 +15,6 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mvasylchuk.pfcc.api.constants.Constants.Db.dbBool;
 import static org.mvasylchuk.pfcc.jooq.Tables.FOOD;
 import static org.mvasylchuk.pfcc.jooq.Tables.USERS;
 
@@ -56,10 +55,10 @@ public class FoodSteps {
                     assertThat(food.getCalories()).isEqualByComparingTo(valueStr);
                     break;
                 case "is_hidden":
-                    assertEquals(dbBool(valueStr), food.getIsHidden());
+                    assertEquals(Boolean.valueOf(valueStr), food.getIsHidden());
                     break;
                 case "is_deleted":
-                    assertEquals(dbBool(valueStr), food.getDeleted());
+                    assertEquals(Boolean.valueOf(valueStr), food.getDeleted());
                     break;
                 case "type":
                     assertDoesNotThrow(() -> FoodType.valueOf(valueStr));

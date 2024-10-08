@@ -12,7 +12,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function8;
-import org.jooq.Index;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -26,9 +26,8 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.mvasylchuk.pfcc.jooq.Indexes;
 import org.mvasylchuk.pfcc.jooq.Keys;
-import org.mvasylchuk.pfcc.jooq.Pfcc;
+import org.mvasylchuk.pfcc.jooq.Public;
 import org.mvasylchuk.pfcc.jooq.tables.records.SecurityTokensRecord;
 
 
@@ -41,7 +40,7 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>pfcc.security_tokens</code>
+     * The reference instance of <code>public.security_tokens</code>
      */
     public static final SecurityTokens SECURITY_TOKENS = new SecurityTokens();
 
@@ -54,44 +53,44 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     }
 
     /**
-     * The column <code>pfcc.security_tokens.id</code>.
+     * The column <code>public.security_tokens.id</code>.
      */
-    public final TableField<SecurityTokensRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("nextval(`pfcc`.`security_token_id_seq`)"), SQLDataType.BIGINT)), this, "");
+    public final TableField<SecurityTokensRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>pfcc.security_tokens.code</code>.
+     * The column <code>public.security_tokens.code</code>.
      */
     public final TableField<SecurityTokensRecord, String> CODE = createField(DSL.name("code"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.security_tokens.user_id</code>.
+     * The column <code>public.security_tokens.user_id</code>.
      */
-    public final TableField<SecurityTokensRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+    public final TableField<SecurityTokensRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT, this, "");
 
     /**
-     * The column <code>pfcc.security_tokens.type</code>.
+     * The column <code>public.security_tokens.type</code>.
      */
     public final TableField<SecurityTokensRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.security_tokens.is_active</code>.
+     * The column <code>public.security_tokens.is_active</code>.
      */
-    public final TableField<SecurityTokensRecord, Byte> IS_ACTIVE = createField(DSL.name("is_active"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
+    public final TableField<SecurityTokensRecord, Boolean> IS_ACTIVE = createField(DSL.name("is_active"), SQLDataType.BOOLEAN, this, "");
 
     /**
-     * The column <code>pfcc.security_tokens.valid_until</code>.
+     * The column <code>public.security_tokens.valid_until</code>.
      */
-    public final TableField<SecurityTokensRecord, LocalDateTime> VALID_UNTIL = createField(DSL.name("valid_until"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<SecurityTokensRecord, LocalDateTime> VALID_UNTIL = createField(DSL.name("valid_until"), SQLDataType.LOCALDATETIME(6), this, "");
 
     /**
-     * The column <code>pfcc.security_tokens.created_at</code>.
+     * The column <code>public.security_tokens.created_at</code>.
      */
-    public final TableField<SecurityTokensRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<SecurityTokensRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
-     * The column <code>pfcc.security_tokens.modified_at</code>.
+     * The column <code>public.security_tokens.modified_at</code>.
      */
-    public final TableField<SecurityTokensRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<SecurityTokensRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     private SecurityTokens(Name alias, Table<SecurityTokensRecord> aliased) {
         this(alias, aliased, null);
@@ -102,21 +101,21 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     }
 
     /**
-     * Create an aliased <code>pfcc.security_tokens</code> table reference
+     * Create an aliased <code>public.security_tokens</code> table reference
      */
     public SecurityTokens(String alias) {
         this(DSL.name(alias), SECURITY_TOKENS);
     }
 
     /**
-     * Create an aliased <code>pfcc.security_tokens</code> table reference
+     * Create an aliased <code>public.security_tokens</code> table reference
      */
     public SecurityTokens(Name alias) {
         this(alias, SECURITY_TOKENS);
     }
 
     /**
-     * Create a <code>pfcc.security_tokens</code> table reference
+     * Create a <code>public.security_tokens</code> table reference
      */
     public SecurityTokens() {
         this(DSL.name("security_tokens"), null);
@@ -128,37 +127,37 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Pfcc.PFCC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.SECURITY_TOKENS_USER_ID);
+    public Identity<SecurityTokensRecord, Long> getIdentity() {
+        return (Identity<SecurityTokensRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<SecurityTokensRecord> getPrimaryKey() {
-        return Keys.KEY_SECURITY_TOKENS_PRIMARY;
+        return Keys.SECURITY_TOKENS_PKEY;
     }
 
     @Override
     public List<UniqueKey<SecurityTokensRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_SECURITY_TOKENS_CODE);
+        return Arrays.asList(Keys.SECURITY_TOKENS_CODE_KEY);
     }
 
     @Override
     public List<ForeignKey<SecurityTokensRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.SECURITY_TOKENS_IBFK_1);
+        return Arrays.asList(Keys.SECURITY_TOKENS__SECURITY_TOKENS_USER_ID_FKEY);
     }
 
     private transient Users _users;
 
     /**
-     * Get the implicit join path to the <code>pfcc.users</code> table.
+     * Get the implicit join path to the <code>public.users</code> table.
      */
     public Users users() {
         if (_users == null)
-            _users = new Users(this, Keys.SECURITY_TOKENS_IBFK_1);
+            _users = new Users(this, Keys.SECURITY_TOKENS__SECURITY_TOKENS_USER_ID_FKEY);
 
         return _users;
     }
@@ -207,14 +206,14 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, String, Long, String, Byte, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+    public Row8<Long, String, Long, String, Boolean, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
         return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function8<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super Long, ? super String, ? super Long, ? super String, ? super Boolean, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -222,7 +221,7 @@ public class SecurityTokens extends TableImpl<SecurityTokensRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super String, ? super Long, ? super String, ? super Byte, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super String, ? super Long, ? super String, ? super Boolean, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

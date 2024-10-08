@@ -16,53 +16,53 @@ import org.mvasylchuk.pfcc.jooq.tables.Users;
 
 
 /**
- * Convenience access to all tables in pfcc.
+ * Convenience access to all tables in public.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
     /**
-     * The table <code>pfcc.dish</code>.
+     * The table <code>public.dish</code>.
      */
     public static final Dish DISH = Dish.DISH;
 
     /**
-     * The table <code>pfcc.dish_ingredients</code>.
+     * The table <code>public.dish_ingredients</code>.
      */
     public static final DishIngredients DISH_INGREDIENTS = DishIngredients.DISH_INGREDIENTS;
 
     /**
-     * The table <code>pfcc.food</code>.
+     * The table <code>public.food</code>.
      */
     public static final Food FOOD = Food.FOOD;
 
     /**
-     * The table <code>pfcc.ingredients</code>.
+     * The table <code>public.ingredients</code>.
      */
     public static final Ingredients INGREDIENTS = Ingredients.INGREDIENTS;
 
     /**
-     * The table <code>pfcc.meal</code>.
+     * The table <code>public.meal</code>.
      */
     public static final Meal MEAL = Meal.MEAL;
 
     /**
-     * The table <code>pfcc.measurement</code>.
+     * The table <code>public.measurement</code>.
      */
     public static final Measurement MEASUREMENT = Measurement.MEASUREMENT;
 
     /**
-     * The table <code>pfcc.reports</code>.
+     * The table <code>public.reports</code>.
      */
     public static final Reports REPORTS = Reports.REPORTS;
 
     /**
-     * The table <code>pfcc.security_tokens</code>.
+     * The table <code>public.security_tokens</code>.
      */
     public static final SecurityTokens SECURITY_TOKENS = SecurityTokens.SECURITY_TOKENS;
 
     /**
-     * The table <code>pfcc.users</code>.
+     * The table <code>public.users</code>.
      */
     public static final Users USERS = Users.USERS;
 }

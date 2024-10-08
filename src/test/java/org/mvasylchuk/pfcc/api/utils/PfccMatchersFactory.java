@@ -153,7 +153,7 @@ public class PfccMatchersFactory {
                     .fetchAny();
 
             return token != null &&
-                    token.getIsActive().equals((byte) 1) &&
+                    token.getIsActive() &&
                     token.getUserId().equals(expectedId);
 
         }

@@ -23,98 +23,98 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>pfcc.reports.id</code>.
+     * Setter for <code>public.reports.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>pfcc.reports.id</code>.
+     * Getter for <code>public.reports.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>pfcc.reports.user_id</code>.
+     * Setter for <code>public.reports.user_id</code>.
      */
     public void setUserId(Long value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>pfcc.reports.user_id</code>.
+     * Getter for <code>public.reports.user_id</code>.
      */
     public Long getUserId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>pfcc.reports.name</code>.
+     * Setter for <code>public.reports.name</code>.
      */
     public void setName(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>pfcc.reports.name</code>.
+     * Getter for <code>public.reports.name</code>.
      */
     public String getName() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>pfcc.reports.file_path</code>.
+     * Setter for <code>public.reports.file_path</code>.
      */
     public void setFilePath(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>pfcc.reports.file_path</code>.
+     * Getter for <code>public.reports.file_path</code>.
      */
     public String getFilePath() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>pfcc.reports.status</code>.
+     * Setter for <code>public.reports.status</code>.
      */
     public void setStatus(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>pfcc.reports.status</code>.
+     * Getter for <code>public.reports.status</code>.
      */
     public String getStatus() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>pfcc.reports.type</code>.
+     * Setter for <code>public.reports.type</code>.
      */
     public void setType(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>pfcc.reports.type</code>.
+     * Getter for <code>public.reports.type</code>.
      */
     public String getType() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>pfcc.reports.created_at</code>.
+     * Setter for <code>public.reports.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>pfcc.reports.created_at</code>.
+     * Getter for <code>public.reports.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(6);
