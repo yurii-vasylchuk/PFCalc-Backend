@@ -287,10 +287,6 @@
                             <url>${jooq.generator.db.url}</url>
                             <user>${jooq.generator.db.user}</user>
                             <password>${jooq.generator.db.password}</password>
-                            <schemas>
-                                <schema>public</schema>
-                            </schemas>
-                            <defaultSchema>public</defaultSchema>
                             <locations>
                                 <location>filesystem:src/main/resources/db/migration</location>
                             </locations>
