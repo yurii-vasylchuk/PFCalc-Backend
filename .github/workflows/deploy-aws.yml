@@ -26,6 +26,6 @@ jobs:
           chmod 400 key.pem
           mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
           ssh-keyscan ${{ secrets.AWS_HOST }} >> ~/.ssh/known_hosts
-          scp -i key.pem target/pfcc-*.jar ubuntu@${{ secrets.AWS_HOST }}:/home/ubuntu/pfcc.jar
+          scp -i key.pem target/pfcc-*.jar ubuntu@${{ secrets.AWS_HOST }}:/home/ubuntu/pfcalc/pfcc.jar
           ssh -i key.pem ubuntu@${{ secrets.AWS_HOST }} fuser -k 8080/tcp | true
-          ssh -i key.pem ubuntu@${{ secrets.AWS_HOST }} java -javaagent:/opt/newrelic/newrelic.jar -jar pfcc.jar -Xms512m -Xmx512m & disown
+          ssh -i key.pem ubuntu@${{ secrets.AWS_HOST }} cd /home/ubuntu/pfcalc && java -javaagent:/opt/newrelic/newrelic.jar -jar pfcc.jar -Xms512m -Xmx512m & disown
