@@ -143,7 +143,7 @@ public class MealJooqRepository {
                 .groupBy(DISH.ID);
 
         var completeSelect = selectDishes.unionAll(selectFoods)
-                .orderBy(DSL.field("eaten_on").desc(), DSL.field("food_id"), DSL.field("dish_id"));
+                .orderBy(DSL.field("eaten_on").desc().nullsLast(), DSL.field("food_id"), DSL.field("dish_id"));
 
         int count = ctx.fetchCount(completeSelect);
 
