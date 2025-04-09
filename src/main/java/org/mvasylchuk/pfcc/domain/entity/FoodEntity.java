@@ -43,6 +43,6 @@ public class FoodEntity {
     private String description;
     @Column(name = "deleted")
     private Boolean isDeleted;
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     List<IngredientEntity> ingredients;
 }

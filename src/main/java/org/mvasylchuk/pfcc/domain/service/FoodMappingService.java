@@ -88,7 +88,6 @@ public class FoodMappingService {
 
             result.setIngredients(ingredientList);
             result.setPfcc(pfcc);
-
         } else {
             result.setPfcc(pfccMappingService.toPfcc(foodDto.getPfcc()));
         }
