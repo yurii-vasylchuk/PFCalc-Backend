@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 import org.mvasylchuk.pfcc.domain.dto.CommandMealDto;
+import org.mvasylchuk.pfcc.domain.dto.QueryMealDto;
 import org.mvasylchuk.pfcc.domain.entity.DishEntity;
 import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
 import org.mvasylchuk.pfcc.domain.entity.MealEntity;
@@ -34,10 +35,10 @@ public class MealMappingService {
         Pfcc pfcc;
 
         if (mealDto.getDishId() != null) {
-            DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow(()->new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
+            DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow(() -> new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
             pfcc = dish.getPfcc();
         } else {
-            FoodEntity food = foodRepository.findById(mealDto.getFoodId()).orElseThrow(()->new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
+            FoodEntity food = foodRepository.findById(mealDto.getFoodId()).orElseThrow(() -> new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
             pfcc = food.getPfcc();
         }
 
@@ -45,11 +46,11 @@ public class MealMappingService {
         result.setWeight(mealDto.getWeight());
         result.setPfcc(pfcc.multiply(coef));
         if (mealDto.getDishId() != null) {
-            DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow(()->new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
+            DishEntity dish = dishRepository.findById(mealDto.getDishId()).orElseThrow(() -> new PfccException(ApiErrorCode.DISH_IS_NOT_FOUND));
             result.setFood(dish.getFood());
             result.setDish(dish);
         } else {
-            result.setFood(foodRepository.findById(mealDto.getFoodId()).orElseThrow(()->new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND)));
+            result.setFood(foodRepository.findById(mealDto.getFoodId()).orElseThrow(() -> new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND)));
         }
         result.setUser(userService.currentUser());
         result.setEatenOn(mealDto.getEatenOn());
@@ -58,8 +59,12 @@ public class MealMappingService {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public CommandMealDto toDto(MealEntity mealEntity) {
-        return new CommandMealDto(mealEntity.getId(),
+    public QueryMealDto toDto(MealEntity mealEntity) {
+        return new QueryMealDto(
+                mealEntity.getDish() != null ?
+                        mealEntity.getDish().getName() :
+                        mealEntity.getFood().getName(),
+                mealEntity.getId(),
                 mealEntity.getEatenOn(),
                 mealEntity.getWeight(),
                 pfccMappingService.toPfccDto(mealEntity.getPfcc()),

@@ -29,7 +29,7 @@ public class MealController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public BaseResponse<CommandMealDto> save(@RequestBody @Valid CommandMealDto request) {
+    public BaseResponse<QueryMealDto> save(@RequestBody @Valid CommandMealDto request) {
         return BaseResponse.success(mealService.save(request));
     }
 
