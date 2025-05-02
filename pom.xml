@@ -6,12 +6,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.6</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
-    <groupId>org.mvasylchuk</groupId>
-    <artifactId>pfcc</artifactId>
+    <groupId>org.yvasylchuk</groupId>
+    <artifactId>pfcalc-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pfcc</name>
+    <name>pfcalc-backend</name>
 
     <properties>
         <java.version>17</java.version>
@@ -193,6 +193,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
