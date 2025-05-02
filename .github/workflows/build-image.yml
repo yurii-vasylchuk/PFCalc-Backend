@@ -43,9 +43,7 @@ jobs:
         with:
           platforms: linux/arm64,linux/amd64
           push: true
-          tags: |
-            ghcr.io/yurii-vasylchuk/pfcalc-backend:${GITHUB_REF##*v}
-            ghcr.io/yurii-vasylchuk/pfcalc-backend:latest
+          tags: "ghcr.io/yurii-vasylchuk/pfcalc-backend:${GITHUB_REF##*v},ghcr.io/yurii-vasylchuk/pfcalc-backend:latest"
           build-args: |
             BUILDKIT_PROGRESS=plain
           secrets: |
