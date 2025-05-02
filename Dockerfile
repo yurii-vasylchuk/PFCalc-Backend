@@ -2,7 +2,6 @@ FROM maven:3.9.9-amazoncorretto-21 AS build
 
 WORKDIR /app
 COPY pom.xml .
-COPY settings.xml .
 
 RUN --mount=type=secret,id=github_user \
     --mount=type=secret,id=github_token \
