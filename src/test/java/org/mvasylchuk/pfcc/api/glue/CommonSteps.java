@@ -40,10 +40,10 @@ public class CommonSteps {
 
     @Before
     public void cleanUpDb() {
-        List<Table<?>> tables = List.of(DISH_INGREDIENTS, INGREDIENTS, MEAL, DISH, FOOD, SECURITY_TOKENS, USERS, REPORTS);
+        List<Table<?>> tables = List.of(FOOD_INGREDIENTS, MEAL, FOOD, SECURITY_TOKENS, USERS, REPORTS);
         for (Table<?> table : tables) {
             db.delete(table)
-              .execute();
+                    .execute();
         }
     }
 
@@ -76,17 +76,17 @@ public class CommonSteps {
     @Given("User '{}' is present")
     public void userIsPresent(TestUser user) {
         db.insertInto(USERS)
-          .set(USERS.EMAIL, user.getEmail())
-          .set(USERS.NAME, user.getName())
-          .set(USERS.PASSWORD, user.getPassword())
-          .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
-          .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed())
-          .set(USERS.PROTEIN_AIM, user.getProteinAim())
-          .set(USERS.FAT_AIM, user.getFatAim())
-          .set(USERS.CARBOHYDRATES_AIM, user.getCarbohydratesAim())
-          .set(USERS.CALORIES_AIM, user.getCaloriesAim())
-          .set(USERS.ROLES, user.getRoles())
-          .execute();
+                .set(USERS.EMAIL, user.getEmail())
+                .set(USERS.NAME, user.getName())
+                .set(USERS.PASSWORD, user.getPassword())
+                .set(USERS.PREFERRED_LANGUAGE, user.getPreferredLanguage().name())
+                .set(USERS.EMAIL_CONFIRMED, user.getEmailConfirmed())
+                .set(USERS.PROTEIN_AIM, user.getProteinAim())
+                .set(USERS.FAT_AIM, user.getFatAim())
+                .set(USERS.CARBOHYDRATES_AIM, user.getCarbohydratesAim())
+                .set(USERS.CALORIES_AIM, user.getCaloriesAim())
+                .set(USERS.ROLES, user.getRoles())
+                .execute();
     }
 
     @And("prepared request with following data:")
@@ -97,27 +97,27 @@ public class CommonSteps {
     @Then("Response should look like:")
     public void iGetResponseLike(String responseStr) throws Exception {
         ctx.getPerformedCalls()
-           .andExpect(content().json(responseStr, false));
+                .andExpect(content().json(responseStr, false));
     }
 
     @And("I'm authenticated as '{}'")
     public void iMAuthenticatedAsAlpha(TestUser user) throws Exception {
         MockHttpServletResponse rsp = this.api.perform(post("/api/user/login")
-                                      .contentType(MediaType.APPLICATION_JSON)
-                                      .content("""
-                                              {
-                                                  "email": "%s",
-                                                  "password": "%s"
-                                              }
-                                              """.formatted(user.getEmail(), user.getPassword())))
-                                              .andExpect(status().is(200))
-                                              .andExpect(jsonPath("$.success").value(true))
-                                              .andExpect(jsonPath("$.error").doesNotExist())
-                                              .andReturn().getResponse();
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "email": "%s",
+                                    "password": "%s"
+                                }
+                                """.formatted(user.getEmail(), user.getPassword())))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.error").doesNotExist())
+                .andReturn().getResponse();
 
         String refreshToken = mapper.readValue(rsp.getContentAsString(), JsonNode.class)
-                                    .at("/data/refreshToken")
-                                    .asText();
+                .at("/data/refreshToken")
+                .asText();
         Cookie accessTokenCookie = rsp.getCookie("access-token");
         assertThat(accessTokenCookie).isNotNull();
         assertThat(refreshToken).isNotBlank();

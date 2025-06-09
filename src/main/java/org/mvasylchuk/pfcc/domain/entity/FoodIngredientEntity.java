@@ -13,15 +13,15 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "dish_ingredients")
-public class DishIngredientEntity {
+@Table(name = "food_ingredients")
+public class FoodIngredientEntity {
     @EmbeddedId
-    private DishIngredientPrimaryKey id = new DishIngredientPrimaryKey();
+    private IngredientPrimaryKey id = new IngredientPrimaryKey();
 
     @ManyToOne
-    @MapsId("dishId")
-    @JoinColumn(name = "dish_id")
-    private DishEntity dish;
+    @MapsId("recipeId")
+    @JoinColumn(name = "recipe_id")
+    private FoodEntity recipe;
 
     @ManyToOne
     @MapsId("ingredientId")
@@ -30,9 +30,7 @@ public class DishIngredientEntity {
 
     @Column(name = "ingredient_weight")
     private BigDecimal ingredientWeight;
-
-    @Column(name = "ingredient_index")
+    @Column(name="ingredient_index")
     private Long ingredientIndex;
-
 
 }

@@ -27,7 +27,7 @@ public class FoodDto {
     @NotNull
     private FoodType type;
     private Boolean ownedByUser;
-    private List<IngredientDto> ingredients;
+    private List<FoodIngredientDto> ingredients;
 
 
 }

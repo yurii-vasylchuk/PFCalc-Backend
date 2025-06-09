@@ -4,10 +4,8 @@
 package org.mvasylchuk.pfcc.jooq;
 
 
-import org.mvasylchuk.pfcc.jooq.tables.Dish;
-import org.mvasylchuk.pfcc.jooq.tables.DishIngredients;
 import org.mvasylchuk.pfcc.jooq.tables.Food;
-import org.mvasylchuk.pfcc.jooq.tables.Ingredients;
+import org.mvasylchuk.pfcc.jooq.tables.FoodIngredients;
 import org.mvasylchuk.pfcc.jooq.tables.Meal;
 import org.mvasylchuk.pfcc.jooq.tables.Measurement;
 import org.mvasylchuk.pfcc.jooq.tables.Reports;
@@ -22,24 +20,14 @@ import org.mvasylchuk.pfcc.jooq.tables.Users;
 public class Tables {
 
     /**
-     * The table <code>public.dish</code>.
-     */
-    public static final Dish DISH = Dish.DISH;
-
-    /**
-     * The table <code>public.dish_ingredients</code>.
-     */
-    public static final DishIngredients DISH_INGREDIENTS = DishIngredients.DISH_INGREDIENTS;
-
-    /**
      * The table <code>public.food</code>.
      */
     public static final Food FOOD = Food.FOOD;
 
     /**
-     * The table <code>public.ingredients</code>.
+     * The table <code>public.food_ingredients</code>.
      */
-    public static final Ingredients INGREDIENTS = Ingredients.INGREDIENTS;
+    public static final FoodIngredients FOOD_INGREDIENTS = FoodIngredients.FOOD_INGREDIENTS;
 
     /**
      * The table <code>public.meal</code>.

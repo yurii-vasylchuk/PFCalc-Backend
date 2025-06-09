@@ -4,7 +4,6 @@ public enum ApiErrorCode {
     USER_IS_NOT_OWNER,
     VALIDATION,
     FOOD_IS_DELETED,
-    DISH_IS_NOT_FOUND,
     SECURITY,
     INVALID_CSV_FILE,
     USER_IS_NOT_FOUND,

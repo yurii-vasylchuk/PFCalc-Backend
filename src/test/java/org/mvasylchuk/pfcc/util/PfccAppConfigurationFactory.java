@@ -11,22 +11,19 @@ import java.util.List;
 
 public class PfccAppConfigurationFactory {
     public static PfccAppConfigurationProperties pfccConf(
-            PfccAppConfigurationProperties.MailConfiguration mailConf, PfccAppConfigurationProperties.PfccAuthConfiguration jwtConf, PfccAppConfigurationProperties.AwsConfiguration awsConf, PfccAppConfigurationProperties.@NonNull JobConfiguration jobsConf, List<String> corsConf, Boolean exposeExceptions, PfccAppConfigurationProperties.ReportingConfiguration reportingConf) {
+            PfccAppConfigurationProperties.MailConfiguration mailConf,
+            PfccAppConfigurationProperties.PfccAuthConfiguration jwtConf,
+            PfccAppConfigurationProperties.@NonNull JobConfiguration jobsConf,
+            List<String> corsConf,
+            Boolean exposeExceptions,
+            PfccAppConfigurationProperties.ReportingConfiguration reportingConf) {
         return new PfccAppConfigurationProperties(
                 mailConf,
                 jwtConf,
-                awsConf,
                 jobsConf,
                 corsConf,
                 exposeExceptions,
                 reportingConf
-        );
-    }
-
-    public static PfccAppConfigurationProperties.MailConfiguration mail(Boolean enabled, String doNotReplyAddress) {
-        return new PfccAppConfigurationProperties.MailConfiguration(
-                enabled,
-                doNotReplyAddress
         );
     }
 
@@ -39,14 +36,6 @@ public class PfccAppConfigurationFactory {
                 Duration.parse(authExp),
                 Duration.parse(refreshExp),
                 sameSite
-        );
-    }
-
-    public static PfccAppConfigurationProperties.AwsConfiguration aws(@NonNull String region, PfccAppConfigurationProperties.AwsConfiguration.@NonNull AwsCredentialsType type, String profile) {
-        return new PfccAppConfigurationProperties.AwsConfiguration(
-                type,
-                profile,
-                region
         );
     }
 

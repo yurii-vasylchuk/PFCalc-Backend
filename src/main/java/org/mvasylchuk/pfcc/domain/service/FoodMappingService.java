@@ -4,10 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
 import org.mvasylchuk.pfcc.domain.dto.FoodDto;
-import org.mvasylchuk.pfcc.domain.dto.IngredientDto;
+import org.mvasylchuk.pfcc.domain.dto.FoodIngredientDto;
 import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
 import org.mvasylchuk.pfcc.domain.entity.FoodType;
-import org.mvasylchuk.pfcc.domain.entity.IngredientEntity;
+import org.mvasylchuk.pfcc.domain.entity.FoodIngredientEntity;
 import org.mvasylchuk.pfcc.domain.entity.IngredientPrimaryKey;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
 import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
@@ -39,7 +39,7 @@ public class FoodMappingService {
             }
         }
         FoodEntity result = new FoodEntity();
-        List<IngredientEntity> ingredientList;
+        List<FoodIngredientEntity> ingredientList;
         Pfcc pfcc;
         result.setId(foodDto.getId());
         result.setName(foodDto.getName());
@@ -57,33 +57,33 @@ public class FoodMappingService {
 
             ingredientList = foodDto.getIngredients()
                     .stream()
-                    .map(ingredientDto -> {
-                        IngredientEntity ingredientEntity = new IngredientEntity();
+                    .map(foodIngredientDto -> {
+                        FoodIngredientEntity foodIngredientEntity = new FoodIngredientEntity();
 
                         if (result.getId() != null) {
-                            ingredientEntity.setId(new IngredientPrimaryKey(result.getId(), ingredientDto.getId()));
+                            foodIngredientEntity.setId(new IngredientPrimaryKey(result.getId(), foodIngredientDto.getId()));
                         }
 
-                        ingredientEntity.setIngredientWeight(ingredientDto.getIngredientWeight());
-                        ingredientEntity.setIngredientIndex(ingredientDto.getIngredientIndex());
+                        foodIngredientEntity.setIngredientWeight(foodIngredientDto.getIngredientWeight());
+                        foodIngredientEntity.setIngredientIndex(foodIngredientDto.getIngredientIndex());
 
-                        ingredientEntity.setIngredient(foodRepository.findById(ingredientDto.getId())
+                        foodIngredientEntity.setIngredient(foodRepository.findById(foodIngredientDto.getId())
                                 .orElseThrow(() -> new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND)));
 
-                        ingredientEntity.setRecipe(result);
+                        foodIngredientEntity.setRecipe(result);
 
-                        return ingredientEntity;
+                        return foodIngredientEntity;
                     }).toList();
 
             pfcc = Pfcc.combine(ingredientList.stream()
-                    .map(ingredientEntity -> ingredientEntity.getIngredient().getPfcc()
-                            .multiply(ingredientEntity.getIngredientWeight())
+                    .map(foodIngredientEntity -> foodIngredientEntity.getIngredient().getPfcc()
+                            .multiply(foodIngredientEntity.getIngredientWeight())
                             .divide(new BigDecimal("100")))
                     .toList())
                     .multiply(new BigDecimal("100"))
                     .divide(
                             ingredientList.stream()
-                                    .map(IngredientEntity::getIngredientWeight)
+                                    .map(FoodIngredientEntity::getIngredientWeight)
                                     .reduce(BigDecimal.ZERO, BigDecimal::add));
 
             result.setIngredients(ingredientList);
@@ -97,17 +97,17 @@ public class FoodMappingService {
 
     @Transactional(rollbackOn = Exception.class)
     public FoodDto toDto(FoodEntity foodEntity) {
-        List<IngredientDto> ingredientList = new ArrayList<>();
+        List<FoodIngredientDto> ingredientList = new ArrayList<>();
         if (foodEntity.getIngredients() != null) {
             ingredientList = foodEntity.getIngredients().stream()
-                    .map(ingredientEntity -> {
-                        FoodEntity ing = ingredientEntity.getIngredient();
+                    .map(foodIngredientEntity -> {
+                        FoodEntity ing = foodIngredientEntity.getIngredient();
                         UserEntity user = userService.currentUser();
                         Boolean ownedByUser = user.getId().equals(ing.getOwner().getId());
 
-                        return new IngredientDto(
+                        return new FoodIngredientDto(
                                 ing.getId(),
-                                ingredientEntity.getIngredientIndex(),
+                                foodIngredientEntity.getIngredientIndex(),
                                 ing.getName(),
                                 ing.getDescription(),
                                 pfccMappingService.toPfccDto(ing.getPfcc()),
@@ -115,7 +115,7 @@ public class FoodMappingService {
                                 ing.getType(),
                                 ownedByUser,
                                 null,
-                                ingredientEntity.getIngredientWeight()
+                                foodIngredientEntity.getIngredientWeight()
                         );
                     }).toList();
         }

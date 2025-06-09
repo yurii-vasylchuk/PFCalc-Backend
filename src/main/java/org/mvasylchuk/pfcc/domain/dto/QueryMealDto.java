@@ -26,6 +26,5 @@ public class QueryMealDto {
     @Valid
     private PfccDto pfcc;
     private Long foodId;
-    private Long dishId;
 
 }

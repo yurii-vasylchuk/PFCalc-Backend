@@ -25,6 +25,7 @@ public class MealEntity {
 
     @Column(name = "weight")
     private BigDecimal weight;
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "protein", column = @Column(name = "protein")),
@@ -37,10 +38,6 @@ public class MealEntity {
     @ManyToOne
     @JoinColumn(name = "food_id")
     private FoodEntity food;
-
-    @ManyToOne
-    @JoinColumn(name = "dish_id")
-    private DishEntity dish;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")

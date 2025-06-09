@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
+import org.mvasylchuk.pfcc.domain.entity.FoodType;
 
 @Getter
 @Setter
@@ -12,9 +13,8 @@ import org.mvasylchuk.pfcc.common.dto.PfccDto;
 @AllArgsConstructor
 public class MealOptionDto {
     private Long foodId;
-    private Long dishId;
     private String name;
     private PfccDto pfcc;
-    private MealOptionType type;
+    private FoodType type;
     private Boolean ownedByUser;
 }

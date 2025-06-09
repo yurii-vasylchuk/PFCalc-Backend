@@ -8,10 +8,10 @@ VALUES (1, 'Recipe 1',  'RECIPE',     18, 11, 15, 293, FALSE, 1, NULL, FALSE),
        (3, 'Product 3', 'INGREDIENT', 18, 9,  6,  189, FALSE, 1, NULL, FALSE),
        (4, 'Product 4', 'INGREDIENT', 10, 14, 22, 300, FALSE, 1, NULL, FALSE);
 
-INSERT INTO ingredients (recipe_id, ingredient_id, ingredient_weight, ingredient_index)
+INSERT INTO food_ingredients (recipe_id, ingredient_id, ingredient_weight, ingredient_index)
 VALUES (1, 2, 100, 1),
        (1, 3, 200, 2),
        (1, 4, 300, 3);
 
-INSERT INTO meal (id, weight, protein, fat, carbohydrates, calories, food_id, dish_id, eaten_on, owner_id)
-VALUES (1, 200, 36, 22, 30, 586, 1, NULL, '2024-01-05 10:15:34', 1);
+INSERT INTO meal (id, weight, protein, fat, carbohydrates, calories, food_id, eaten_on, owner_id)
+VALUES (1, 200, 36, 22, 30, 586, 1, '2024-01-05 10:15:34', 1);
