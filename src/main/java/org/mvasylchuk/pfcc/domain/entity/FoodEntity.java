@@ -21,11 +21,14 @@ public class FoodEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "type")
     @Enumerated(value = EnumType.STRING)
     private FoodType type;
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "protein", column = @Column(name = "protein", nullable = false)),
@@ -34,15 +37,20 @@ public class FoodEntity {
             @AttributeOverride(name = "calories", column = @Column(name = "calories", nullable = false))
     })
     private Pfcc pfcc;
+
     @Column(name = "is_hidden")
     private Boolean isHidden;
+
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private UserEntity owner;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "deleted")
     private Boolean isDeleted;
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<IngredientEntity> ingredients;
+    List<FoodIngredientEntity> ingredients;
 }

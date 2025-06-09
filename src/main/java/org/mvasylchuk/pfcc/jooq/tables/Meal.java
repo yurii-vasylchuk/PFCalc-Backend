@@ -12,12 +12,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function10;
+import org.jooq.Function9;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row10;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -89,11 +89,6 @@ public class Meal extends TableImpl<MealRecord> {
     public final TableField<MealRecord, Long> FOOD_ID = createField(DSL.name("food_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.meal.dish_id</code>.
-     */
-    public final TableField<MealRecord, Long> DISH_ID = createField(DSL.name("dish_id"), SQLDataType.BIGINT, this, "");
-
-    /**
      * The column <code>public.meal.eaten_on</code>.
      */
     public final TableField<MealRecord, LocalDateTime> EATEN_ON = createField(DSL.name("eaten_on"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -153,11 +148,10 @@ public class Meal extends TableImpl<MealRecord> {
 
     @Override
     public List<ForeignKey<MealRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.MEAL__MEAL_FOOD_ID_FKEY, Keys.MEAL__MEAL_DISH_ID_FKEY, Keys.MEAL__MEAL_OWNER_ID_FKEY);
+        return Arrays.asList(Keys.MEAL__MEAL_FOOD_ID_FKEY, Keys.MEAL__MEAL_OWNER_ID_FKEY);
     }
 
     private transient Food _food;
-    private transient Dish _dish;
     private transient Users _users;
 
     /**
@@ -168,16 +162,6 @@ public class Meal extends TableImpl<MealRecord> {
             _food = new Food(this, Keys.MEAL__MEAL_FOOD_ID_FKEY);
 
         return _food;
-    }
-
-    /**
-     * Get the implicit join path to the <code>public.dish</code> table.
-     */
-    public Dish dish() {
-        if (_dish == null)
-            _dish = new Dish(this, Keys.MEAL__MEAL_DISH_ID_FKEY);
-
-        return _dish;
     }
 
     /**
@@ -230,18 +214,18 @@ public class Meal extends TableImpl<MealRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Long, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Long, Long, LocalDateTime, Long> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row9<Long, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, Long, LocalDateTime, Long> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function10<? super Long, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Long, ? super Long, ? super LocalDateTime, ? super Long, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function9<? super Long, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Long, ? super LocalDateTime, ? super Long, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -249,7 +233,7 @@ public class Meal extends TableImpl<MealRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super Long, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Long, ? super Long, ? super LocalDateTime, ? super Long, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Long, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super BigDecimal, ? super Long, ? super LocalDateTime, ? super Long, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

@@ -10,10 +10,8 @@ import java.util.List;
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
-import org.mvasylchuk.pfcc.jooq.tables.Dish;
-import org.mvasylchuk.pfcc.jooq.tables.DishIngredients;
 import org.mvasylchuk.pfcc.jooq.tables.Food;
-import org.mvasylchuk.pfcc.jooq.tables.Ingredients;
+import org.mvasylchuk.pfcc.jooq.tables.FoodIngredients;
 import org.mvasylchuk.pfcc.jooq.tables.Meal;
 import org.mvasylchuk.pfcc.jooq.tables.Measurement;
 import org.mvasylchuk.pfcc.jooq.tables.Reports;
@@ -35,24 +33,14 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
-     * The table <code>public.dish</code>.
-     */
-    public final Dish DISH = Dish.DISH;
-
-    /**
-     * The table <code>public.dish_ingredients</code>.
-     */
-    public final DishIngredients DISH_INGREDIENTS = DishIngredients.DISH_INGREDIENTS;
-
-    /**
      * The table <code>public.food</code>.
      */
     public final Food FOOD = Food.FOOD;
 
     /**
-     * The table <code>public.ingredients</code>.
+     * The table <code>public.food_ingredients</code>.
      */
-    public final Ingredients INGREDIENTS = Ingredients.INGREDIENTS;
+    public final FoodIngredients FOOD_INGREDIENTS = FoodIngredients.FOOD_INGREDIENTS;
 
     /**
      * The table <code>public.meal</code>.
@@ -95,10 +83,8 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            Dish.DISH,
-            DishIngredients.DISH_INGREDIENTS,
             Food.FOOD,
-            Ingredients.INGREDIENTS,
+            FoodIngredients.FOOD_INGREDIENTS,
             Meal.MEAL,
             Measurement.MEASUREMENT,
             Reports.REPORTS,

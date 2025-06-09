@@ -32,15 +32,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.if_;
-import static org.jooq.impl.DSL.name;
-import static org.jooq.impl.DSL.sum;
+import static org.jooq.impl.DSL.*;
 import static org.mvasylchuk.pfcc.jooq.Tables.REPORTS;
-import static org.mvasylchuk.pfcc.jooq.tables.Dish.DISH;
-import static org.mvasylchuk.pfcc.jooq.tables.DishIngredients.DISH_INGREDIENTS;
 import static org.mvasylchuk.pfcc.jooq.tables.Food.FOOD;
-import static org.mvasylchuk.pfcc.jooq.tables.Ingredients.INGREDIENTS;
+import static org.mvasylchuk.pfcc.jooq.tables.FoodIngredients.FOOD_INGREDIENTS;
 import static org.mvasylchuk.pfcc.jooq.tables.Meal.MEAL;
 import static org.mvasylchuk.pfcc.jooq.tables.Users.USERS;
 
@@ -82,15 +77,17 @@ public class ReportJooqRepository {
                 .collect(Collectors.toMap(Function.identity(), ignored -> DailyReportData.builder()));
         List<MealDeconstructTask> tasksForDeconstruction = new ArrayList<>();
 
-        Field<String> asName = field(name("name"), String.class);
-
         ctx.select(
-                if_(MEAL.DISH_ID.isNull(), FOOD.NAME, DISH.NAME).as(asName),
-                MEAL.EATEN_ON, MEAL.PROTEIN, MEAL.FAT, MEAL.CARBOHYDRATES, MEAL.CALORIES,
-                MEAL.WEIGHT, MEAL.FOOD_ID, MEAL.DISH_ID
+                FOOD.NAME,
+                MEAL.EATEN_ON,
+                MEAL.PROTEIN,
+                MEAL.FAT,
+                MEAL.CARBOHYDRATES,
+                MEAL.CALORIES,
+                MEAL.WEIGHT,
+                MEAL.FOOD_ID
         ).from(MEAL
-                .leftJoin(DISH).on(MEAL.DISH_ID.isNotNull().and(MEAL.DISH_ID.eq(DISH.ID)))
-                .leftJoin(FOOD).on(MEAL.DISH_ID.isNull().and(MEAL.FOOD_ID.eq(FOOD.ID)))
+                .leftJoin(FOOD).on(MEAL.FOOD_ID.eq(FOOD.ID))
         ).where(MEAL.EATEN_ON.between(from.atTime(LocalTime.MIN), to.atTime(LocalTime.MAX))
                 .and(MEAL.OWNER_ID.eq(userId))
         ).forEach(rec -> {
@@ -99,7 +96,7 @@ public class ReportJooqRepository {
             days.get(date)
                     .meal(MealForDailyReport.builder()
                             .date(date)
-                            .name(rec.get(asName))
+                            .name(rec.get(FOOD.NAME))
                             .pfcc(new PfccDto(
                                     rec.get(MEAL.PROTEIN),
                                     rec.get(MEAL.FAT),
@@ -112,7 +109,6 @@ public class ReportJooqRepository {
             tasksForDeconstruction.add(new MealDeconstructTask(
                     rec.get(MEAL.WEIGHT),
                     rec.get(MEAL.FOOD_ID),
-                    rec.get(MEAL.DISH_ID),
                     rec.get(MEAL.EATEN_ON).toLocalDate()
             ));
         });
@@ -137,20 +133,6 @@ public class ReportJooqRepository {
         Field<BigDecimal> carbohydrates = field(name("carbohydrates"), BigDecimal.class);
         Field<BigDecimal> calories = field(name("calories"), BigDecimal.class);
 
-        if (task.dishId != null) {
-            return ctx.select(DISH_INGREDIENTS.INGREDIENT_ID,
-                            DISH_INGREDIENTS.INGREDIENT_WEIGHT
-                                    .multiply(task.weight)
-                                    .multiply(DISH.RECIPE_WEIGHT.divide(DISH.COOKED_WEIGHT))
-                                    .divide(sum(DISH_INGREDIENTS.INGREDIENT_WEIGHT)
-                                            .over().partitionBy(DISH_INGREDIENTS.DISH_ID)).as(weight))
-                    .from(DISH.join(DISH_INGREDIENTS).on(DISH.ID.eq(DISH_INGREDIENTS.DISH_ID)))
-                    .where(DISH.ID.eq(task.dishId))
-                    .stream()
-                    .flatMap(rec -> deconstructMeal(new MealDeconstructTask(rec.get(weight), rec.get(DISH_INGREDIENTS.INGREDIENT_ID), null, task.eatenOn)).stream())
-                    .toList();
-        }
-
         List<RecipeIngredientDeconstructed> res = ctx.select(
                         FOOD.TYPE,
                         FOOD.NAME,
@@ -162,12 +144,12 @@ public class ReportJooqRepository {
                                 .as(carbohydrates),
                         FOOD.CALORIES.multiply(task.weight).divide(100)
                                 .as(calories),
-                        INGREDIENTS.INGREDIENT_ID,
-                        INGREDIENTS.INGREDIENT_WEIGHT.multiply(task.weight)
-                                .divide(sum(INGREDIENTS.INGREDIENT_WEIGHT).over().partitionBy(INGREDIENTS.RECIPE_ID))
+                        FOOD_INGREDIENTS.INGREDIENT_ID,
+                        FOOD_INGREDIENTS.INGREDIENT_WEIGHT.multiply(task.weight)
+                                .divide(sum(FOOD_INGREDIENTS.INGREDIENT_WEIGHT).over().partitionBy(FOOD_INGREDIENTS.RECIPE_ID))
                                 .as(weight)
                 )
-                .from(FOOD.leftJoin(INGREDIENTS).on(INGREDIENTS.RECIPE_ID.eq(FOOD.ID)))
+                .from(FOOD.leftJoin(FOOD_INGREDIENTS).on(FOOD_INGREDIENTS.RECIPE_ID.eq(FOOD.ID)))
                 .where(FOOD.ID.eq(task.foodId))
                 .fetch(rec -> new RecipeIngredientDeconstructed(
                         FoodType.valueOf(rec.get(FOOD.TYPE)),
@@ -178,7 +160,7 @@ public class ReportJooqRepository {
                                 rec.get(carbohydrates),
                                 rec.get(calories)
                         ).scale(DEFAULT_SCALE),
-                        rec.get(INGREDIENTS.INGREDIENT_ID),
+                        rec.get(FOOD_INGREDIENTS.INGREDIENT_ID),
                         rec.get(weight)
                 ));
 
@@ -187,7 +169,6 @@ public class ReportJooqRepository {
                     new MealDeconstructTask(
                             ing.weight,
                             ing.id,
-                            null,
                             task.eatenOn)).stream()).toList();
         }
 
@@ -235,7 +216,7 @@ public class ReportJooqRepository {
                 .fetchOne(ReportJooqRepository::recordToDto);
     }
 
-    private record MealDeconstructTask(BigDecimal weight, Long foodId, Long dishId, LocalDate eatenOn) {
+    private record MealDeconstructTask(BigDecimal weight, Long foodId, LocalDate eatenOn) {
     }
 
     private record RecipeIngredientDeconstructed(FoodType type, String name, PfccDto pfcc, Long id, BigDecimal weight) {

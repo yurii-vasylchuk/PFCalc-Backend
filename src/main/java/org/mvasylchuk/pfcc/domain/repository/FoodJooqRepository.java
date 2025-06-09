@@ -7,7 +7,7 @@ import org.jooq.impl.DSL;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
 import org.mvasylchuk.pfcc.domain.dto.FoodDto;
-import org.mvasylchuk.pfcc.domain.dto.IngredientDto;
+import org.mvasylchuk.pfcc.domain.dto.FoodIngredientDto;
 import org.mvasylchuk.pfcc.domain.entity.FoodType;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import static org.mvasylchuk.pfcc.jooq.Tables.MEAL;
 import static org.mvasylchuk.pfcc.jooq.tables.Food.FOOD;
-import static org.mvasylchuk.pfcc.jooq.tables.Ingredients.INGREDIENTS;
+import static org.mvasylchuk.pfcc.jooq.tables.FoodIngredients.FOOD_INGREDIENTS;
 
 @Component
 @RequiredArgsConstructor
@@ -92,14 +92,14 @@ public class FoodJooqRepository {
         }
 
         if (result.getType().equals(FoodType.RECIPE)) {
-            List<IngredientDto> ingredientList = ctx.selectFrom(
-                            INGREDIENTS
+            List<FoodIngredientDto> ingredientList = ctx.selectFrom(
+                            FOOD_INGREDIENTS
                                     .join(FOOD)
-                                    .on(INGREDIENTS.INGREDIENT_ID.equal(FOOD.ID)))
-                    .where(INGREDIENTS.RECIPE_ID.equal(id))
+                                    .on(FOOD_INGREDIENTS.INGREDIENT_ID.equal(FOOD.ID)))
+                    .where(FOOD_INGREDIENTS.RECIPE_ID.equal(id))
                     .fetch(dbIngredient ->
                     {
-                        IngredientDto ingredient = new IngredientDto();
+                        FoodIngredientDto ingredient = new FoodIngredientDto();
                         ingredient.setId(dbIngredient.get(FOOD.ID));
                         ingredient.setName(dbIngredient.get(FOOD.NAME));
                         ingredient.setDescription(dbIngredient.get(FOOD.DESCRIPTION));
@@ -111,8 +111,8 @@ public class FoodJooqRepository {
                         ingredient.setType(FoodType.valueOf(dbIngredient.get(FOOD.TYPE)));
                         ingredient.setOwnedByUser(dbIngredient.get(FOOD.OWNER_ID)
                                 .equals(userId));
-                        ingredient.setIngredientIndex(dbIngredient.get(INGREDIENTS.INGREDIENT_INDEX));
-                        ingredient.setIngredientWeight(dbIngredient.get(INGREDIENTS.INGREDIENT_WEIGHT));
+                        ingredient.setIngredientIndex(dbIngredient.get(FOOD_INGREDIENTS.INGREDIENT_INDEX));
+                        ingredient.setIngredientWeight(dbIngredient.get(FOOD_INGREDIENTS.INGREDIENT_WEIGHT));
 
                         return ingredient;
                     });

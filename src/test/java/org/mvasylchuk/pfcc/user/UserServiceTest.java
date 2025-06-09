@@ -55,7 +55,6 @@ class UserServiceTest {
                     "PT1M",
                     "PT30M",
                     Cookie.SameSite.LAX),
-            null,
             jobs(
                     dropOutdatedSecTokensConf(
                             "0 0 0 * * *",

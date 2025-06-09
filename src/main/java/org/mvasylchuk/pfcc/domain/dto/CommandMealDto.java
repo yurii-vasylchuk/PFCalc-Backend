@@ -23,6 +23,5 @@ public class CommandMealDto {
     @Valid
     private PfccDto pfcc;
     private Long foodId;
-    private Long dishId;
 
 }
