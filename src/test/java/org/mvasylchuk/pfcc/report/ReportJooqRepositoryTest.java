@@ -127,11 +127,6 @@ class ReportJooqRepositoryTest {
     }
 
     @Test
-    void singleDish_shouldBeCalculatedCorrectly() {
-        //TODO: implement
-    }
-
-    @Test
     void whenSameDeconstructedProductRepeats_thenItShouldBeCombined() {
         //TODO: implement
     }
