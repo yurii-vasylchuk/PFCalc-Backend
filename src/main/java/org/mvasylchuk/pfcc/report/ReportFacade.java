@@ -72,6 +72,7 @@ public class ReportFacade {
                         outputHtmlPath.toString(),
                         "--no-pdf-header-footer"
                 });
+        // /usr/bin/chromium --headless --disable-gpu --print-to-pdf='/app/test.pdf' 'https://pfcalc.yuriivasylchuk.org.ua' --no-pdf-header-footer
         try {
             process.waitFor(conf.reports.renderTimeout.getSeconds(), TimeUnit.SECONDS);
         } catch (InterruptedException e) {

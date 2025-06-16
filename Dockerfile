@@ -1,8 +1,15 @@
 FROM eclipse-temurin:17-jre-focal
-RUN apt-get update && \
-    apt-get install -y chromium-browser fonts-liberation && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+
+ARG SB_API_KEY=yurii-vasylchuk-ieggp1y3
+ARG APT_PIN_DATE=2025-06-15T10:40:01Z
+
+COPY ./docker/sb-apt.sh /opt/sb-apt.sh
+RUN bash /opt/sb-apt.sh load-apt-sources ubuntu chromium
+
+RUN apt update && apt install -y chromium
+
+RUN useradd -m pfcalc
+USER pfcalc
 
 WORKDIR /app
 
