@@ -15,12 +15,12 @@ management:
         include: '*'
   otlp:
     tracing:
-      endpoint: http://otel-collector.infrastructure.svc:4318/v1/traces
+      endpoint: http://otel-opentelemetry-collector.infrastructure.svc:4318/v1/traces
     metrics:
       export:
         enabled: true
         step: 30s
-        url: http://otel-collector.infrastructure.svc:4318/v1/metrics
+        url: http://otel-opentelemetry-collector.infrastructure.svc:4318/v1/metrics
   tracing:
     sampling:
       probability: 1.0
@@ -30,7 +30,7 @@ management:
 otel:
   exporter:
     otlp:
-      endpoint: 'http://otel-collector.infrastructure.svc:4317'
+      endpoint: 'http://otel-opentelemetry-collector.infrastructure.svc:4317'
       protocol: grpc
 
 pfcc:
