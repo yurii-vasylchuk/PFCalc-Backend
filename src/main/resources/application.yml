@@ -8,31 +8,25 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: off
-
 management:
-  metrics:
-    export:
-      otlp:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  otlp:
+    tracing:
+      endpoint: http://otel-collector.infrastructure.svc:4318/v1/traces
+    metrics:
+      export:
         enabled: true
         step: 30s
         url: http://otel-collector.infrastructure.svc:4318/v1/metrics
-    tracing:
-      sampling:
-        probability: 1.0
-    otlp:
-      tracing:
-        endpoint: http://otel-collector.infrastructure.svc:4318/v1/traces
-    endpoints:
-      web:
-        exposure:
-          include: "*"
-    endpoint:
-      health:
-        show-details: always
-    observations:
-      key-values:
-        application: ${spring.application.name}
-
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoint:
+    health:
+      show-details: always
 pfcc:
   jobs:
     drop-outdated-security-tokens:
