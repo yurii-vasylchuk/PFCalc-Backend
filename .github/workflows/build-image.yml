@@ -52,6 +52,8 @@ jobs:
           context: .
           platforms: linux/arm64,linux/amd64
           push: true
+          cache-from: type=registry,ref=ghcr.io/yurii-vasylchuk/pfcalc-backend:buildcache
+          cache-to: type=registry,ref=ghcr.io/yurii-vasylchuk/pfcalc-backend:buildcache,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
             BUILDKIT_PROGRESS=plain
