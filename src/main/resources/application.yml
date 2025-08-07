@@ -1,10 +1,37 @@
 spring:
+  application:
+    name: pfcalc-backend
+
   datasource:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
     open-in-view: off
+
+management:
+  metrics:
+    export:
+      otlp:
+        enabled: true
+        step: 30s
+        url: http://otel-collector.infrastructure.svc:4318/v1/metrics
+    tracing:
+      sampling:
+        probability: 1.0
+    otlp:
+      tracing:
+        endpoint: http://otel-collector.infrastructure.svc:4318/v1/traces
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+    endpoint:
+      health:
+        show-details: always
+    observations:
+      key-values:
+        application: ${spring.application.name}
 
 pfcc:
   jobs:
