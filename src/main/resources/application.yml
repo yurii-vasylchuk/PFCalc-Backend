@@ -27,6 +27,12 @@ management:
   endpoint:
     health:
       show-details: always
+otel:
+  exporter:
+    otlp:
+      endpoint: 'http://otel-collector.infrastructure.svc:4317'
+      protocol: grpc
+
 pfcc:
   jobs:
     drop-outdated-security-tokens:
