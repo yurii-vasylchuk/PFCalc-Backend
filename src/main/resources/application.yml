@@ -13,25 +13,32 @@ management:
     web:
       exposure:
         include: '*'
-  otlp:
-    tracing:
-      endpoint: http://otel-opentelemetry-collector.infrastructure.svc:4318/v1/traces
-    metrics:
-      export:
-        enabled: true
-        step: 30s
-        url: http://otel-opentelemetry-collector.infrastructure.svc:4318/v1/metrics
-  tracing:
-    sampling:
-      probability: 1.0
   endpoint:
     health:
       show-details: always
+      probes:
+        enabled: true
+  defaults:
+    metrics:
+      export:
+        enabled: false
+  otlp:
+    metrics:
+      export:
+        enabled: false
 otel:
   exporter:
     otlp:
       endpoint: 'http://otel-opentelemetry-collector.infrastructure.svc:4317'
       protocol: grpc
+  service:
+    name: ${spring.application.name}
+  instrumentation:
+    micrometer:
+      enabled: true
+  resource:
+    attributes:
+      environment: local
 
 pfcc:
   jobs:

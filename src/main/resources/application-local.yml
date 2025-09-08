@@ -3,6 +3,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/pfcc
     username: root
     password: root
+otel:
+  sdk:
+    disabled: true
 
 pfcc:
   cors:
