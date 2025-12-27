@@ -25,11 +25,12 @@ public class PfccJwtHandler extends JwtHandlerAdapter<PfccAuthToken> implements 
                 body.get(PfccAuthToken.ID_CLAIM_NAME, Long.class),
                 body.getSubject(),
                 body.get(PfccAuthToken.ROLES_CLAIM_NAME, List.class)
-                    .stream()
-                    .map(o -> UserRole.valueOf((String) o))
-                    .toList(),
+                        .stream()
+                        .map(o -> UserRole.valueOf((String) o))
+                        .toList(),
                 LocalDateTime.ofInstant(body.getExpiration().toInstant(), ZoneId.systemDefault()),
                 LocalDateTime.ofInstant(body.getNotBefore().toInstant(), ZoneId.systemDefault()),
-                body.getIssuer());
+                body.getIssuer()
+        );
     }
 }

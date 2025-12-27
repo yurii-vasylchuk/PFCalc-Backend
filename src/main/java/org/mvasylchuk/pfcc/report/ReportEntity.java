@@ -1,11 +1,7 @@
 package org.mvasylchuk.pfcc.report;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.mvasylchuk.pfcc.report.dto.ReportStatus;
 import org.mvasylchuk.pfcc.report.dto.ReportType;
 import org.mvasylchuk.pfcc.user.UserEntity;
@@ -62,19 +58,19 @@ public class ReportEntity {
         );
     }
 
-    public void setPath(Path path) {
-        if (path != null) {
-            this.filePath = path.toAbsolutePath().toString();
-        } else {
-            this.filePath = null;
-        }
-    }
-
     public Path getPath() {
         if (this.filePath == null) {
             return null;
         }
 
         return Paths.get(this.filePath);
+    }
+
+    public void setPath(Path path) {
+        if (path != null) {
+            this.filePath = path.toAbsolutePath().toString();
+        } else {
+            this.filePath = null;
+        }
     }
 }

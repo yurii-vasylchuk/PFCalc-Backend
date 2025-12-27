@@ -17,6 +17,8 @@ import java.util.stream.StreamSupport;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pfcc {
+    public static final Pfcc ZERO = new Pfcc(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
     @Column(name = "protein")
     private BigDecimal protein;
     @Column(name = "fat")
@@ -28,28 +30,40 @@ public class Pfcc {
 
     public static Pfcc combine(Iterable<Pfcc> inputs) {
         return StreamSupport.stream(inputs.spliterator(), true)
-                            .reduce(new Pfcc(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
-                                    (pfcc, pfcc2) -> new Pfcc(
-                                            pfcc.protein.add(pfcc2.protein),
-                                            pfcc.fat.add(pfcc2.fat),
-                                            pfcc.carbohydrates.add(pfcc2.carbohydrates),
-                                            pfcc.calories.add(pfcc2.calories)
-                                    ));
+                .reduce(new Pfcc(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                        (pfcc, pfcc2) -> new Pfcc(
+                                pfcc.protein.add(pfcc2.protein),
+                                pfcc.fat.add(pfcc2.fat),
+                                pfcc.carbohydrates.add(pfcc2.carbohydrates),
+                                pfcc.calories.add(pfcc2.calories)
+                        )
+                );
 
     }
 
     public Pfcc multiply(BigDecimal multiplier) {
         return new Pfcc(this.protein.multiply(multiplier),
-                this.fat.multiply(multiplier),
-                this.carbohydrates.multiply(multiplier),
-                this.calories.multiply(multiplier));
+                        this.fat.multiply(multiplier),
+                        this.carbohydrates.multiply(multiplier),
+                        this.calories.multiply(multiplier)
+        );
     }
 
     public Pfcc divide(BigDecimal divisor) {
 
         return new Pfcc(this.protein.divide(divisor, 4, RoundingMode.HALF_UP),
-                this.fat.divide(divisor, 4, RoundingMode.HALF_UP),
-                this.carbohydrates.divide(divisor, 4, RoundingMode.HALF_UP),
-                this.calories.divide(divisor, 4, RoundingMode.HALF_UP));
+                        this.fat.divide(divisor, 4, RoundingMode.HALF_UP),
+                        this.carbohydrates.divide(divisor, 4, RoundingMode.HALF_UP),
+                        this.calories.divide(divisor, 4, RoundingMode.HALF_UP)
+        );
+    }
+
+    public Pfcc add(Pfcc another) {
+        return new Pfcc(
+                this.protein.add(another.protein),
+                this.fat.add(another.fat),
+                this.carbohydrates.add(another.carbohydrates),
+                this.calories.add(another.calories)
+        );
     }
 }

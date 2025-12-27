@@ -20,16 +20,21 @@ public class UserJooqRepository {
                           USERS.CARBOHYDRATES_AIM,
                           USERS.FAT_AIM,
                           USERS.PROTEIN_AIM,
-                          USERS.PREFERRED_LANGUAGE)
-                  .from(USERS)
-                  .where(USERS.EMAIL.eq(email))
-                  .fetchOne((dbUser) -> {
-                      ProfileDto result = new ProfileDto();
-                      result.setAims(new PfccDto(dbUser.get(USERS.PROTEIN_AIM), dbUser.get(USERS.FAT_AIM), dbUser.get(USERS.CARBOHYDRATES_AIM), dbUser.get(USERS.CALORIES_AIM)));
-                      result.setPreferredLanguage(Language.valueOf(dbUser.get(USERS.PREFERRED_LANGUAGE)));
-                      result.setEmail(dbUser.get(USERS.EMAIL));
-                      result.setName(dbUser.get(USERS.NAME));
-                      return result;
-                  });
+                          USERS.PREFERRED_LANGUAGE
+                )
+                .from(USERS)
+                .where(USERS.EMAIL.eq(email))
+                .fetchOne((dbUser) -> {
+                    ProfileDto result = new ProfileDto();
+                    result.setAims(new PfccDto(dbUser.get(USERS.PROTEIN_AIM),
+                                               dbUser.get(USERS.FAT_AIM),
+                                               dbUser.get(USERS.CARBOHYDRATES_AIM),
+                                               dbUser.get(USERS.CALORIES_AIM)
+                    ));
+                    result.setPreferredLanguage(Language.valueOf(dbUser.get(USERS.PREFERRED_LANGUAGE)));
+                    result.setEmail(dbUser.get(USERS.EMAIL));
+                    result.setName(dbUser.get(USERS.NAME));
+                    return result;
+                });
     }
 }

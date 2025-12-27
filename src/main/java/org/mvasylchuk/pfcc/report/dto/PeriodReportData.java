@@ -1,21 +1,13 @@
 package org.mvasylchuk.pfcc.report.dto;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Singular;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
 import org.mvasylchuk.pfcc.user.Language;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -58,6 +50,45 @@ public class PeriodReportData {
         this.percentOfAim = dailyAverage.multiply(100).divide(dailyAim);
     }
 
+    private void adjustMinAndMaxPfcc(PfccDto daily) {
+        maxDailyPfcc.setProtein(max(maxDailyPfcc.getProtein(), daily.getProtein()));
+        maxDailyPfcc.setFat(max(maxDailyPfcc.getFat(), daily.getFat()));
+        maxDailyPfcc.setCarbohydrates(max(maxDailyPfcc.getCarbohydrates(), daily.getCarbohydrates()));
+        maxDailyPfcc.setCalories(max(maxDailyPfcc.getCalories(), daily.getCalories()));
+
+        if (minDailyPfcc.getProtein().equals(BigDecimal.ZERO)) {
+            minDailyPfcc.setProtein(daily.getProtein());
+        } else {
+            minDailyPfcc.setProtein(min(minDailyPfcc.getProtein(), daily.getProtein()));
+        }
+
+        if (minDailyPfcc.getFat().equals(BigDecimal.ZERO)) {
+            minDailyPfcc.setFat(daily.getFat());
+        } else {
+            minDailyPfcc.setFat(min(minDailyPfcc.getFat(), daily.getFat()));
+        }
+
+        if (minDailyPfcc.getCarbohydrates().equals(BigDecimal.ZERO)) {
+            minDailyPfcc.setCarbohydrates(daily.getCarbohydrates());
+        } else {
+            minDailyPfcc.setCarbohydrates(min(minDailyPfcc.getCarbohydrates(), daily.getCarbohydrates()));
+        }
+
+        if (minDailyPfcc.getCalories().equals(BigDecimal.ZERO)) {
+            minDailyPfcc.setCalories(daily.getCalories());
+        } else {
+            minDailyPfcc.setCalories(min(minDailyPfcc.getCalories(), daily.getCalories()));
+        }
+    }
+
+    private BigDecimal max(BigDecimal first, BigDecimal second) {
+        return first.compareTo(second) > 0 ? first : second;
+    }
+
+    private BigDecimal min(BigDecimal first, BigDecimal second) {
+        return first.compareTo(second) > 0 ? second : first;
+    }
+
     @Getter
     @ToString
     @EqualsAndHashCode
@@ -97,44 +128,5 @@ public class PeriodReportData {
 
     @Builder
     public record MealForDailyReport(String name, PfccDto pfcc, LocalDate date, BigDecimal weight) {
-    }
-
-    private void adjustMinAndMaxPfcc(PfccDto daily) {
-        maxDailyPfcc.setProtein(max(maxDailyPfcc.getProtein(), daily.getProtein()));
-        maxDailyPfcc.setFat(max(maxDailyPfcc.getFat(), daily.getFat()));
-        maxDailyPfcc.setCarbohydrates(max(maxDailyPfcc.getCarbohydrates(), daily.getCarbohydrates()));
-        maxDailyPfcc.setCalories(max(maxDailyPfcc.getCalories(), daily.getCalories()));
-
-        if (minDailyPfcc.getProtein().equals(BigDecimal.ZERO)) {
-            minDailyPfcc.setProtein(daily.getProtein());
-        } else {
-            minDailyPfcc.setProtein(min(minDailyPfcc.getProtein(), daily.getProtein()));
-        }
-
-        if (minDailyPfcc.getFat().equals(BigDecimal.ZERO)) {
-            minDailyPfcc.setFat(daily.getFat());
-        } else {
-            minDailyPfcc.setFat(min(minDailyPfcc.getFat(), daily.getFat()));
-        }
-
-        if (minDailyPfcc.getCarbohydrates().equals(BigDecimal.ZERO)) {
-            minDailyPfcc.setCarbohydrates(daily.getCarbohydrates());
-        } else {
-            minDailyPfcc.setCarbohydrates(min(minDailyPfcc.getCarbohydrates(), daily.getCarbohydrates()));
-        }
-
-        if (minDailyPfcc.getCalories().equals(BigDecimal.ZERO)) {
-            minDailyPfcc.setCalories(daily.getCalories());
-        } else {
-            minDailyPfcc.setCalories(min(minDailyPfcc.getCalories(), daily.getCalories()));
-        }
-    }
-
-    private BigDecimal max(BigDecimal first, BigDecimal second) {
-        return first.compareTo(second) > 0 ? first : second;
-    }
-
-    private BigDecimal min(BigDecimal first, BigDecimal second) {
-        return first.compareTo(second) > 0 ? second : first;
     }
 }

@@ -37,7 +37,9 @@ public class SecurityTokenService {
 
     public UserEntity validate(String code, SecurityTokenType type) {
         SecurityTokenEntity token = repository.findValid(code, type)
-                                              .orElseThrow(() -> new PfccException("Invalid security token code: token doesn't exists", ApiErrorCode.SECURITY));
+                .orElseThrow(() -> new PfccException("Invalid security token code: token doesn't exists",
+                                                     ApiErrorCode.SECURITY
+                ));
 
         token.setIsActive(false);
         repository.save(token);

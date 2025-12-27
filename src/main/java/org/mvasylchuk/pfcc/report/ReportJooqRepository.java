@@ -44,10 +44,19 @@ import static org.mvasylchuk.pfcc.jooq.tables.Users.USERS;
 @Component
 @RequiredArgsConstructor
 public class ReportJooqRepository {
-    private static final int DEFAULT_SCALE = 0;
     public static final Language DEFAULT_LANGUAGE = Language.EN;
-
+    private static final int DEFAULT_SCALE = 0;
     private final DSLContext ctx;
+
+    private static ReportDto recordToDto(ReportsRecord r) {
+        return new ReportDto(r.getId(),
+                             r.getName(),
+                             ReportStatus.valueOf(r.getStatus()),
+                             ReportType.valueOf(r.getType()),
+                             r.getUserId(),
+                             r.getFilePath()
+        );
+    }
 
     public PeriodReportData getPeriodReport(Long userId, LocalDate from, LocalDate to) {
         PeriodReportData.PeriodReportDataBuilder builder = PeriodReportData.builder()
@@ -68,12 +77,17 @@ public class ReportJooqRepository {
                 usersRecord.getCarbohydratesAim(),
                 usersRecord.getCaloriesAim()
         );
-        Language language = usersRecord.getPreferredLanguage() == null ? DEFAULT_LANGUAGE : Language.valueOf(usersRecord.getPreferredLanguage());
+        Language language = usersRecord.getPreferredLanguage() == null ?
+                            DEFAULT_LANGUAGE :
+                            Language.valueOf(usersRecord.getPreferredLanguage());
         builder.userName(usersRecord.getName())
                 .userLanguage(language)
                 .dailyAim(userAim.scale(DEFAULT_SCALE));
 
-        Map<LocalDate, DailyReportData.DailyReportDataBuilder> days = Stream.iterate(from, date -> !date.isAfter(to), prevDate -> prevDate.plusDays(1))
+        Map<LocalDate, DailyReportData.DailyReportDataBuilder> days = Stream.iterate(from,
+                                                                                     date -> !date.isAfter(to),
+                                                                                     prevDate -> prevDate.plusDays(1)
+                )
                 .collect(Collectors.toMap(Function.identity(), ignored -> DailyReportData.builder()));
         List<MealDeconstructTask> tasksForDeconstruction = new ArrayList<>();
 
@@ -84,30 +98,33 @@ public class ReportJooqRepository {
                 MEAL.FAT,
                 MEAL.CARBOHYDRATES,
                 MEAL.CALORIES,
-                MEAL.WEIGHT,
+                MEAL.WEIGHT_IN_GRAM,
+                MEAL.MEASUREMENT_ID,
+                MEAL.MEASUREMENT_WEIGHT,
+                MEAL.MEASUREMENT_NAME,
                 MEAL.FOOD_ID
         ).from(MEAL
-                .leftJoin(FOOD).on(MEAL.FOOD_ID.eq(FOOD.ID))
+                       .leftJoin(FOOD).on(MEAL.FOOD_ID.eq(FOOD.ID))
         ).where(MEAL.EATEN_ON.between(from.atTime(LocalTime.MIN), to.atTime(LocalTime.MAX))
-                .and(MEAL.OWNER_ID.eq(userId))
+                        .and(MEAL.OWNER_ID.eq(userId))
         ).forEach(rec -> {
             LocalDate date = rec.get(MEAL.EATEN_ON).toLocalDate();
 
             days.get(date)
                     .meal(MealForDailyReport.builder()
-                            .date(date)
-                            .name(rec.get(FOOD.NAME))
-                            .pfcc(new PfccDto(
-                                    rec.get(MEAL.PROTEIN),
-                                    rec.get(MEAL.FAT),
-                                    rec.get(MEAL.CARBOHYDRATES),
-                                    rec.get(MEAL.CALORIES)
-                            ).scale(DEFAULT_SCALE))
-                            .weight(rec.get(MEAL.WEIGHT).setScale(DEFAULT_SCALE, RoundingMode.HALF_UP))
-                            .build());
+                                  .date(date)
+                                  .name(rec.get(FOOD.NAME))
+                                  .pfcc(new PfccDto(
+                                          rec.get(MEAL.PROTEIN),
+                                          rec.get(MEAL.FAT),
+                                          rec.get(MEAL.CARBOHYDRATES),
+                                          rec.get(MEAL.CALORIES)
+                                  ).scale(DEFAULT_SCALE))
+                                  .weight(rec.get(MEAL.WEIGHT_IN_GRAM).setScale(DEFAULT_SCALE, RoundingMode.HALF_UP))
+                                  .build());
 
             tasksForDeconstruction.add(new MealDeconstructTask(
-                    rec.get(MEAL.WEIGHT),
+                    rec.get(MEAL.WEIGHT_IN_GRAM),
                     rec.get(MEAL.FOOD_ID),
                     rec.get(MEAL.EATEN_ON).toLocalDate()
             ));
@@ -116,7 +133,8 @@ public class ReportJooqRepository {
         tasksForDeconstruction.stream()
                 .map(this::deconstructMeal)
                 .flatMap(List::stream)
-                .forEach(deconstructed -> days.get(deconstructed.getFirst()).deconstructedMeal(deconstructed.getSecond()));
+                .forEach(deconstructed -> days.get(deconstructed.getFirst())
+                        .deconstructedMeal(deconstructed.getSecond()));
 
         builder.days(days.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
@@ -145,8 +163,8 @@ public class ReportJooqRepository {
                         FOOD.CALORIES.multiply(task.weight).divide(100)
                                 .as(calories),
                         FOOD_INGREDIENTS.INGREDIENT_ID,
-                        FOOD_INGREDIENTS.INGREDIENT_WEIGHT.multiply(task.weight)
-                                .divide(sum(FOOD_INGREDIENTS.INGREDIENT_WEIGHT).over().partitionBy(FOOD_INGREDIENTS.RECIPE_ID))
+                        FOOD_INGREDIENTS.WEIGHT_IN_GRAM.multiply(task.weight)
+                                .divide(sum(FOOD_INGREDIENTS.WEIGHT_IN_GRAM).over().partitionBy(FOOD_INGREDIENTS.RECIPE_ID))
                                 .as(weight)
                 )
                 .from(FOOD.leftJoin(FOOD_INGREDIENTS).on(FOOD_INGREDIENTS.RECIPE_ID.eq(FOOD.ID)))
@@ -169,7 +187,8 @@ public class ReportJooqRepository {
                     new MealDeconstructTask(
                             ing.weight,
                             ing.id,
-                            task.eatenOn)).stream()).toList();
+                            task.eatenOn
+                    )).stream()).toList();
         }
 
         Pair<LocalDate, MealForDailyReport> result = Pair.of(
@@ -179,12 +198,9 @@ public class ReportJooqRepository {
                         .pfcc(res.get(0).pfcc)
                         .date(task.eatenOn)
                         .weight(task.weight.setScale(DEFAULT_SCALE, RoundingMode.HALF_UP))
-                        .build());
+                        .build()
+        );
         return List.of(result);
-    }
-
-    private static ReportDto recordToDto(ReportsRecord r) {
-        return new ReportDto(r.getId(), r.getName(), ReportStatus.valueOf(r.getStatus()), ReportType.valueOf(r.getType()), r.getUserId(), r.getFilePath());
     }
 
     public List<Long> getAllUsersIdsForPeriodReportGeneration() {

@@ -6,27 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.mvasylchuk.pfcc.common.dto.BaseResponse;
 import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
-import org.mvasylchuk.pfcc.user.dto.AuthTokenResponseDto;
-import org.mvasylchuk.pfcc.user.dto.AuthTokensDto;
-import org.mvasylchuk.pfcc.user.dto.LoginRequestDto;
-import org.mvasylchuk.pfcc.user.dto.ProfileDto;
-import org.mvasylchuk.pfcc.user.dto.RefreshAuthTokenRequestDto;
-import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
-import org.mvasylchuk.pfcc.user.dto.SaveProfileRequestDto;
-import org.mvasylchuk.pfcc.user.dto.VerifyAccountRequestDto;
+import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties.PfccAuthConfiguration;
+import org.mvasylchuk.pfcc.user.dto.*;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
-import java.util.TimeZone;
 
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
@@ -74,17 +62,26 @@ public class UserController {
     @NotNull
     private ResponseEntity<BaseResponse<AuthTokenResponseDto>> buildAuthTokenResponse(AuthTokensDto token) throws URISyntaxException {
         URI uri = new URI(conf.auth.issuer);
-        ResponseCookie accessToken = ResponseCookie.from("access-token", token.getAccessToken())
-                                                   .httpOnly(true)
-                                                   .secure(uri.getScheme().equals("https"))
-                                                   .path("/api")
-                                                   .maxAge(conf.auth.authTokenExpiration)
-                                                   .domain(uri.getHost())
-                                                   .sameSite(conf.auth.sameSite.attributeValue())
-                                                   .build();
+        String host = uri.getHost();
+        ResponseCookie.ResponseCookieBuilder cookieBuilder = ResponseCookie.from("access-token", token.getAccessToken())
+                .httpOnly(true)
+                .path("/api")
+                .maxAge(conf.auth.authTokenExpiration);
+
+        if (!host.equals("localhost")) {
+            cookieBuilder.domain(host)
+                    .secure(uri.getScheme().equals("https"))
+                    .sameSite(conf.auth.sameSite.attributeValue());
+        } else {
+            cookieBuilder.secure(true)
+                    .sameSite(PfccAuthConfiguration.SAME_SITE_NONE);
+        }
+
+        ResponseCookie accessToken = cookieBuilder
+                .build();
 
         return ResponseEntity.ok()
-                             .header(SET_COOKIE, accessToken + "; Partitioned;")
-                             .body(BaseResponse.success(new AuthTokenResponseDto(token.getRefreshToken())));
+                .header(SET_COOKIE, accessToken + "; Partitioned;")
+                .body(BaseResponse.success(new AuthTokenResponseDto(token.getRefreshToken())));
     }
 }

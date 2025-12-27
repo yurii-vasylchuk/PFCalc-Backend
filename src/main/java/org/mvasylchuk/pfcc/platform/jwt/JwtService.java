@@ -37,7 +37,8 @@ public class JwtService {
                                 .toInstant()))
                 .addClaims(Map.of(
                         PfccAuthToken.ID_CLAIM_NAME, user.getId(),
-                        PfccAuthToken.ROLES_CLAIM_NAME, user.getRoles()))
+                        PfccAuthToken.ROLES_CLAIM_NAME, user.getRoles()
+                ))
                 .signWith(rsaKey.getPrivate())
                 .compact();
     }

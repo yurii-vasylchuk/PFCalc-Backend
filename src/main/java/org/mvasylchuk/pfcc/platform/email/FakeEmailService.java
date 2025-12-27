@@ -14,17 +14,19 @@ public class FakeEmailService implements EmailService {
     @Override
     public void sendEmailVerificationMail(String address, String name, String token, Language preferredLanguage) {
         log.info("""
-                sending email verification to {}<{}>
-                token: {}
-                preferred language: {}
-                """, address, name, token, preferredLanguage.name());
+                 sending email verification to {}<{}>
+                 token: {}
+                 preferred language: {}
+                 """, address, name, token, preferredLanguage.name()
+        );
     }
 
     @Override
     public void sendEmailVerifiedConfirmation(String email, String name, Language preferredLanguage) {
         log.info("""
-                sending email verification confirmation to {}<{}>
-                preferred language: {}
-                """, email, name, preferredLanguage);
+                 sending email verification confirmation to {}<{}>
+                 preferred language: {}
+                 """, email, name, preferredLanguage
+        );
     }
 }

@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
+import org.mvasylchuk.pfcc.common.jpa.Weight;
 
 @Getter
 @Setter
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
 @Table(name = "food_ingredients")
 public class FoodIngredientEntity {
     @EmbeddedId
-    private IngredientPrimaryKey id = new IngredientPrimaryKey();
+    private FoodIngredientPrimaryKey id = new FoodIngredientPrimaryKey();
 
     @ManyToOne
     @MapsId("recipeId")
@@ -28,9 +27,12 @@ public class FoodIngredientEntity {
     @JoinColumn(name = "ingredient_id")
     private FoodEntity ingredient;
 
-    @Column(name = "ingredient_weight")
-    private BigDecimal ingredientWeight;
-    @Column(name="ingredient_index")
+    @Embedded
+    private Weight ingredientWeight;
+
+    @Column(name = "ingredient_index")
     private Long ingredientIndex;
 
+    @Column(name = "is_default")
+    private Boolean isDefault;
 }

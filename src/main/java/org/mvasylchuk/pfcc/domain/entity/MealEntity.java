@@ -6,10 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mvasylchuk.pfcc.common.jpa.Pfcc;
+import org.mvasylchuk.pfcc.common.jpa.Weight;
 import org.mvasylchuk.pfcc.user.UserEntity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,8 +24,8 @@ public class MealEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "weight")
-    private BigDecimal weight;
+    @Embedded
+    private Weight weight;
 
     @Embedded
     @AttributeOverrides({
@@ -45,4 +46,7 @@ public class MealEntity {
 
     @Column(name = "eaten_on")
     private LocalDateTime eatenOn;
+
+    @OneToMany(mappedBy = "meal", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MealIngredientEntity> ingredients;
 }

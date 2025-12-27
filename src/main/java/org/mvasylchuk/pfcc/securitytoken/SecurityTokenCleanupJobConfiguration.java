@@ -41,9 +41,10 @@ public class SecurityTokenCleanupJobConfiguration {
     @Scheduled(cron = "${pfcc.jobs.drop-outdated-security-tokens.cron}")
     protected void runDropOutdatedSecurityTokensJob() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         Job job = dropOutdatedSecurityTokensJob(tokenRepository,
-                jobRepository,
-                ptm,
-                conf.jobs.dropOutdatedSecurityTokens);
+                                                jobRepository,
+                                                ptm,
+                                                conf.jobs.dropOutdatedSecurityTokens
+        );
 
         JobParameters parameters = new JobParametersBuilder()
                 // Adding a parameter, which will have different value on each run
@@ -59,7 +60,8 @@ public class SecurityTokenCleanupJobConfiguration {
                                                   DropOutdatedSecurityTokensConfiguration conf) {
         DropOutdatedSecurityTokensTasklet tasklet = new DropOutdatedSecurityTokensTasklet(
                 conf,
-                tokenRepository);
+                tokenRepository
+        );
 
         return new StepBuilder(DROP_OUTDATED_SECURITY_TOKENS_STEP_NAME, jobRepository)
                 .tasklet(tasklet, ptm)

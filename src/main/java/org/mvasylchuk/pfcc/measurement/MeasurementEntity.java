@@ -25,8 +25,8 @@ public class MeasurementEntity {
     private FoodEntity food;
     @Column(name = "name")
     private String name;
-    @Column(name="to_gram_multiplier")
+    @Column(name = "to_gram_multiplier")
     private BigDecimal toGramMultiplier;
-    @Column(name="default_value")
+    @Column(name = "default_value")
     private BigDecimal defaultValue;
 }

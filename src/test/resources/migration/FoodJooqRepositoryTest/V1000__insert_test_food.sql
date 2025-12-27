@@ -33,7 +33,7 @@ VALUES (1, 'food1', 'INGREDIENT', 30, 50, 90, 200, FALSE, 1, 'description', FALS
        (6, 'food6', 'RECIPE', 66, 57, 97, 270, FALSE, 1, 'description', TRUE);
 
 INSERT INTO meal
-(id, weight, protein, fat, carbohydrates, calories, food_id, eaten_on, owner_id)
+(id, weight_in_gram, protein, fat, carbohydrates, calories, food_id, eaten_on, owner_id)
 VALUES (1, 51, 21, 31, 41, 150, 1, now() + (1 - extract(dow from now())) * interval '1 day', 1),
        (2, 52, 22, 32, 42, 150, 2, '2023-08-11', 2),
        (3, 53, 23, 33, 43, 150, 1, '2023-08-09', 1),

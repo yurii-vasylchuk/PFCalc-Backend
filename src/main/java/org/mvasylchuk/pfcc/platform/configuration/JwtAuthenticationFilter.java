@@ -33,9 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             Cookie authCookie = Arrays.stream(request.getCookies())
-                                      .filter(c -> c.getName().equals("access-token"))
-                                      .findFirst()
-                                      .orElse(null);
+                    .filter(c -> c.getName().equals("access-token"))
+                    .findFirst()
+                    .orElse(null);
 
             if (authCookie == null) {
                 log.debug("Can't found Authentication cookie");

@@ -12,9 +12,9 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class IngredientPrimaryKey implements Serializable {
-    @Column(name = "recipe_id")
-    private Long recipeId;
+public class MealIngredientPrimaryKey implements Serializable {
+    @Column(name = "meal_id")
+    private Long mealId;
 
     @Column(name = "ingredient_id")
     private Long ingredientId;

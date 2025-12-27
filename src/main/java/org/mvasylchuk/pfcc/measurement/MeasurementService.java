@@ -2,7 +2,6 @@ package org.mvasylchuk.pfcc.measurement;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.mvasylchuk.pfcc.domain.service.FoodMappingService;
 import org.mvasylchuk.pfcc.domain.service.FoodService;
 import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
 import org.mvasylchuk.pfcc.platform.error.PfccException;
@@ -19,9 +18,9 @@ public class MeasurementService {
     private final MeasurementRepository measurementRepository;
     private final MeasurementMappingService measurementMappingService;
     private final FoodService foodService;
-    private final FoodMappingService foodMappingService;
 
     @Transactional(rollbackOn = Exception.class)
+    //TODO: Invalidate caches
     public MeasurementDto saveMeasurement(MeasurementDto request) {
         MeasurementEntity measurementEntity = measurementMappingService.toEntity(request);
 
@@ -34,6 +33,7 @@ public class MeasurementService {
 
     }
 
+    //TODO: Invalidate caches
     public void remove(Long id) {
         measurementRepository.deleteById(id);
     }

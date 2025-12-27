@@ -53,4 +53,8 @@ public class FoodEntity {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     List<FoodIngredientEntity> ingredients;
+
+    public FoodEntity(Long id) {
+        this.id = id;
+    }
 }

@@ -4,10 +4,13 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.domain.dto.FoodDto;
+import org.mvasylchuk.pfcc.domain.dto.FoodIngredientDto;
 import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
 import org.mvasylchuk.pfcc.domain.entity.FoodType;
 import org.mvasylchuk.pfcc.domain.repository.FoodJooqRepository;
 import org.mvasylchuk.pfcc.domain.repository.FoodRepository;
+import org.mvasylchuk.pfcc.domain.service.mapping.FoodMappingService;
+import org.mvasylchuk.pfcc.measurement.MeasurementInternalController;
 import org.mvasylchuk.pfcc.platform.error.ApiErrorCode;
 import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.user.UserService;
@@ -22,6 +25,7 @@ public class FoodService {
     private final FoodRepository foodRepository;
     private final FoodJooqRepository foodJooqRepository;
     private final FoodMappingService foodMappingService;
+    private final MeasurementInternalController measurementInternalController;
 
 
     @Transactional(rollbackOn = Exception.class)
@@ -38,7 +42,8 @@ public class FoodService {
 
     @Transactional(rollbackOn = Exception.class)
     public void remove(Long id) {
-        FoodEntity food = foodRepository.findById(id).orElseThrow(() -> new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
+        FoodEntity food = foodRepository.findById(id)
+                .orElseThrow(() -> new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
 
         Long foodOwner = food.getOwner().getId();
         Long currentUserId = userService.currentUser().getId();
@@ -59,6 +64,18 @@ public class FoodService {
     @Transactional(rollbackOn = Exception.class)
     public FoodDto getFoodById(Long id) {
         Long userId = userService.currentUser().getId();
-        return foodJooqRepository.getFoodById(id, userId);
+        FoodDto result = foodJooqRepository.getFoodById(id, userId);
+
+        result.setMeasurements(measurementInternalController.byFoodId(result.getId()));
+
+        if (result.getType() == FoodType.RECIPE) {
+            for (FoodIngredientDto ingredient : result.getIngredients()) {
+                ingredient.setMeasurements(
+                        measurementInternalController.byFoodId(ingredient.getId())
+                );
+            }
+        }
+
+        return result;
     }
 }

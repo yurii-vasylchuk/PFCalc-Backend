@@ -4,12 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mvasylchuk.pfcc.platform.configuration.model.PfccAppConfigurationProperties;
 import org.mvasylchuk.pfcc.report.dto.ReportStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
-import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.ListableJobLocator;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -79,7 +74,8 @@ public class DeleteOutdatedReportsJob {
 
         @Override
         public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-            Collection<ReportEntity> outdatedReports = reportRepository.findOlderThan(LocalDateTime.now().minus(conf.jobs.dropOutdatedReports.ttl));
+            Collection<ReportEntity> outdatedReports = reportRepository.findOlderThan(LocalDateTime.now()
+                                                                                              .minus(conf.jobs.dropOutdatedReports.ttl));
 
             List<ReportEntity> toSave = new ArrayList<>();
             List<ReportEntity> toDelete = new ArrayList<>();

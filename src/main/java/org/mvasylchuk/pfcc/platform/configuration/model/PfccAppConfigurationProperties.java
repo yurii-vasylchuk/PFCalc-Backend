@@ -29,6 +29,8 @@ public class PfccAppConfigurationProperties {
 
     @RequiredArgsConstructor
     public static class PfccAuthConfiguration {
+        public static final String SAME_SITE_NONE = "None";
+
         public final String publicKey;
         public final String privateKey;
         public final String keyAlgorithm;

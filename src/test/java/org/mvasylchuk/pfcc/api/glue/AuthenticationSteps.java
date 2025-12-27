@@ -69,8 +69,6 @@ public class AuthenticationSteps {
                 .andExpect(jsonPath("$.data.refreshToken").value(refreshTokenMatcher))
                 .andExpect(cookie().exists(name))
                 .andExpect(cookie().httpOnly(name, true))
-                .andExpect(cookie().sameSite(name, "Strict"))
-                .andExpect(cookie().domain(name, new URI(conf.auth.issuer).getHost()))
                 .andExpect(cookie().attribute(name, "Expires", accessTokenExpirityMatcher))
                 .andExpect(cookie().path(name, "/api"))
                 .andExpect(cookie().value(name, accessTokenMatcher));

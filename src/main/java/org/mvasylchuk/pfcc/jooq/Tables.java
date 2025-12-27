@@ -7,6 +7,7 @@ package org.mvasylchuk.pfcc.jooq;
 import org.mvasylchuk.pfcc.jooq.tables.Food;
 import org.mvasylchuk.pfcc.jooq.tables.FoodIngredients;
 import org.mvasylchuk.pfcc.jooq.tables.Meal;
+import org.mvasylchuk.pfcc.jooq.tables.MealIngredients;
 import org.mvasylchuk.pfcc.jooq.tables.Measurement;
 import org.mvasylchuk.pfcc.jooq.tables.Reports;
 import org.mvasylchuk.pfcc.jooq.tables.SecurityTokens;
@@ -16,7 +17,7 @@ import org.mvasylchuk.pfcc.jooq.tables.Users;
 /**
  * Convenience access to all tables in public.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
 
     /**
@@ -33,6 +34,11 @@ public class Tables {
      * The table <code>public.meal</code>.
      */
     public static final Meal MEAL = Meal.MEAL;
+
+    /**
+     * The table <code>public.meal_ingredients</code>.
+     */
+    public static final MealIngredients MEAL_INGREDIENTS = MealIngredients.MEAL_INGREDIENTS;
 
     /**
      * The table <code>public.measurement</code>.

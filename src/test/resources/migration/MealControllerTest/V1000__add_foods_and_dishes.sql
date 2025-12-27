@@ -13,8 +13,8 @@ VALUES (1, 'Food1', 'INGREDIENT', 23.0, 3.8, 14.5, 285, 1, TRUE, FALSE),-- owned
        (7, 'Food7', 'INGREDIENT', 1, 2, 3, 4, 2, FALSE, TRUE),-- not owned, deleted
        (8, 'Food8', 'RECIPE', 1, 2, 3, 4, 2, FALSE, FALSE);-- not owned RECIPE
 
-INSERT INTO food_ingredients (recipe_id, ingredient_id, ingredient_weight, ingredient_index)
-VALUES (3, 1, 100,1),
-       (3, 2, 200,2),
-       (8, 6, 120,3),
-       (8, 7, 55,4);
+INSERT INTO food_ingredients (recipe_id, ingredient_id, weight_in_gram, ingredient_index, is_default)
+VALUES (3, 1, 100,1, true),
+       (3, 2, 200,2, true),
+       (8, 6, 120,3, true),
+       (8, 7, 55,4, true);

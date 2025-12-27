@@ -34,3 +34,4 @@ pfcc:
 logging:
   level:
     org.jooq: DEBUG
+    org.mvasylchuk.pfcc: DEBUG

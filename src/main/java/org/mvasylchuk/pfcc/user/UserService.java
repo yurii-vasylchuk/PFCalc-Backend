@@ -10,13 +10,7 @@ import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.platform.jwt.JwtService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenService;
 import org.mvasylchuk.pfcc.securitytoken.SecurityTokenType;
-import org.mvasylchuk.pfcc.user.dto.AuthTokensDto;
-import org.mvasylchuk.pfcc.user.dto.LoginRequestDto;
-import org.mvasylchuk.pfcc.user.dto.ProfileDto;
-import org.mvasylchuk.pfcc.user.dto.RefreshAuthTokenRequestDto;
-import org.mvasylchuk.pfcc.user.dto.RegisterRequestDto;
-import org.mvasylchuk.pfcc.user.dto.SaveProfileRequestDto;
-import org.mvasylchuk.pfcc.user.dto.VerifyAccountRequestDto;
+import org.mvasylchuk.pfcc.user.dto.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,16 +39,19 @@ public class UserService {
                                          request.getPreferredLanguage(),
                                          null,
                                          false,
-                                         List.of(UserRole.USER));
+                                         List.of(UserRole.USER)
+        );
 
         userRepository.save(user);
 
         String emailVerificationToken = securityTokenService.generateSecurityToken(user,
-                                                                                   SecurityTokenType.EMAIL_VERIFICATION);
+                                                                                   SecurityTokenType.EMAIL_VERIFICATION
+        );
         emailService.sendEmailVerificationMail(request.getEmail(),
                                                request.getName(),
                                                emailVerificationToken,
-                                               request.getPreferredLanguage());
+                                               request.getPreferredLanguage()
+        );
 
         return generateAuthTokens(user);
     }
@@ -66,7 +63,8 @@ public class UserService {
             Pfcc aims = new Pfcc(request.getAims().getProtein(),
                                  request.getAims().getFat(),
                                  request.getAims().getCarbohydrates(),
-                                 request.getAims().getCalories());
+                                 request.getAims().getCalories()
+            );
             user.setAims(aims);
         }
 
@@ -100,7 +98,8 @@ public class UserService {
 
     public AuthTokensDto verifyAccount(VerifyAccountRequestDto verificationRequest) {
         UserEntity user = securityTokenService.validate(verificationRequest.token(),
-                                                        SecurityTokenType.EMAIL_VERIFICATION);
+                                                        SecurityTokenType.EMAIL_VERIFICATION
+        );
         user.setEmailConfirmed(true);
         userRepository.save(user);
 
@@ -120,7 +119,7 @@ public class UserService {
 
     public AuthTokensDto login(LoginRequestDto request) {
         UserEntity user = userRepository.findByEmail(request.getEmail())
-                                        .orElseThrow(() -> new PfccException(ApiErrorCode.SECURITY));
+                .orElseThrow(() -> new PfccException(ApiErrorCode.SECURITY));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new PfccException("Password doesn't match", ApiErrorCode.SECURITY);
@@ -148,7 +147,8 @@ public class UserService {
         String refreshToken = securityTokenService.generateSecurityToken(user,
                                                                          SecurityTokenType.REFRESH_TOKEN,
                                                                          LocalDateTime.now()
-                                                                                      .plus(conf.auth.refreshTokenExpiration));
+                                                                                 .plus(conf.auth.refreshTokenExpiration)
+        );
         String token = jwtService.generateToken(user);
         return new AuthTokensDto(token, refreshToken);
     }

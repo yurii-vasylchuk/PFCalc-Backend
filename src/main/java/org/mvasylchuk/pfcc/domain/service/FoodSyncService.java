@@ -24,16 +24,15 @@ public class FoodSyncService {
 
     private final CsvMapper mapper = new CsvMapper();
     private final CsvSchema schema = mapper.typedSchemaFor(FoodSyncDto.class)
-                                           .withUseHeader(true)
-                                           .withColumnReordering(true);
+            .withUseHeader(true)
+            .withColumnReordering(true);
+    private final FoodRepository foodRepository;
+    private final UserService userService;
 
     public FoodSyncService(FoodRepository foodRepository, UserService userService) {
         this.foodRepository = foodRepository;
         this.userService = userService;
     }
-
-    private final FoodRepository foodRepository;
-    private final UserService userService;
 
     public void sync(byte[] data) {
         try (MappingIterator<FoodSyncDto> iter = mapper.readerFor(FoodSyncDto.class).with(schema).readValues(data)) {

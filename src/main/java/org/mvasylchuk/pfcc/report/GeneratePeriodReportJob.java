@@ -7,11 +7,7 @@ import org.mvasylchuk.pfcc.platform.error.PfccException;
 import org.mvasylchuk.pfcc.report.dto.ReportStatus;
 import org.mvasylchuk.pfcc.user.UserEntity;
 import org.mvasylchuk.pfcc.user.UserRepository;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.StepExecutionListener;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -113,7 +109,9 @@ public class GeneratePeriodReportJob {
                                     report.setStatus(ReportStatus.GENERATED);
                                     repository.save(report);
                                 },
-                                () -> log.error("Unable to save report generation results: report #{} is not found", res.reportId)
+                                () -> log.error("Unable to save report generation results: report #{} is not found",
+                                                res.reportId
+                                )
                         );
             }
         }
@@ -170,7 +168,8 @@ public class GeneratePeriodReportJob {
 
             PeriodReportGenerationTask task = tasks.next();
 
-            UserEntity user = userRepository.findById(task.userId).orElseThrow(() -> new PfccException("Can't find user", ApiErrorCode.USER_IS_NOT_FOUND));
+            UserEntity user = userRepository.findById(task.userId)
+                    .orElseThrow(() -> new PfccException("Can't find user", ApiErrorCode.USER_IS_NOT_FOUND));
             ReportEntity report = commandRepository.save(ReportEntity.periodReport(user, task.from, task.to));
 
             return task.withReportId(report.getId());

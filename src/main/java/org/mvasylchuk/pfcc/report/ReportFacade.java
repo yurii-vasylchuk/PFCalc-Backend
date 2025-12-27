@@ -107,7 +107,8 @@ public class ReportFacade {
                         entry("days", reportData.getDays()),
                         entry("percent", reportData.getPercentOfAim()),
                         entry("util", new ThymeleafPfcalcUtil())
-                ));
+                )
+        );
     }
 
     public Page<ReportDto> getUserReports(Long userId, Integer page, Integer pageSize) {
@@ -122,7 +123,8 @@ public class ReportFacade {
         if (!Objects.equals(currentUserId, report.userId())) {
             throw new PfccException(
                     "Requested report #%d does not belong to authenticated user #%d".formatted(reportId, currentUserId),
-                    ApiErrorCode.SECURITY);
+                    ApiErrorCode.SECURITY
+            );
         }
 
         return report;
@@ -136,7 +138,9 @@ public class ReportFacade {
         UserEntity reportOwner = report.getUser();
 
         if (!Objects.equals(reportOwner.getId(), loggedInUser.getId())) {
-            throw new PfccException("Can't authorize report deletion: User is not owner of report", ApiErrorCode.SECURITY);
+            throw new PfccException("Can't authorize report deletion: User is not owner of report",
+                                    ApiErrorCode.SECURITY
+            );
         }
 
         try {

@@ -1,4 +1,4 @@
-package org.mvasylchuk.pfcc.domain.service;
+package org.mvasylchuk.pfcc.domain.service.mapping;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -12,16 +12,18 @@ public class PfccMappingService {
     @Transactional(rollbackOn = Exception.class)
     public Pfcc toPfcc(PfccDto pfccDto) {
         return new Pfcc(pfccDto.getProtein(),
-                pfccDto.getFat(),
-                pfccDto.getCarbohydrates(),
-                pfccDto.getCalories());
+                        pfccDto.getFat(),
+                        pfccDto.getCarbohydrates(),
+                        pfccDto.getCalories()
+        );
     }
 
     @Transactional(rollbackOn = Exception.class)
     public PfccDto toPfccDto(Pfcc pfcc) {
         return new PfccDto(pfcc.getProtein(),
-                pfcc.getFat(),
-                pfcc.getCarbohydrates(),
-                pfcc.getCalories());
+                           pfcc.getFat(),
+                           pfcc.getCarbohydrates(),
+                           pfcc.getCalories()
+        );
     }
 }

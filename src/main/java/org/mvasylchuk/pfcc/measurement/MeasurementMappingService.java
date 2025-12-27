@@ -2,22 +2,18 @@ package org.mvasylchuk.pfcc.measurement;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.mvasylchuk.pfcc.domain.service.FoodMappingService;
-import org.mvasylchuk.pfcc.domain.service.FoodService;
+import org.mvasylchuk.pfcc.domain.entity.FoodEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class MeasurementMappingService {
-    private final FoodService foodService;
-    private final FoodMappingService foodMappingService;
-
     @Transactional(rollbackOn = Exception.class)
     public MeasurementEntity toEntity(MeasurementDto measurementDto) {
         MeasurementEntity result = new MeasurementEntity();
         result.setId(measurementDto.getId());
-        result.setFood(foodMappingService.toEntity(foodService.getFoodById(measurementDto.getFoodId())));
-        result.setName(measurementDto.getName());
+        result.setFood(new FoodEntity(measurementDto.getFoodId()));
+        result.setName(measurementDto.getName().trim());
         result.setToGramMultiplier(measurementDto.getToGramMultiplier());
         result.setDefaultValue(measurementDto.getDefaultValue());
 

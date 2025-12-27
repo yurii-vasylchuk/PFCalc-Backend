@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre-focal
+FROM eclipse-temurin:21-jre-noble
 
 ARG SB_API_KEY=yurii-vasylchuk-ieggp1y3
 ARG APT_PIN_DATE=2025-06-15T10:40:01Z

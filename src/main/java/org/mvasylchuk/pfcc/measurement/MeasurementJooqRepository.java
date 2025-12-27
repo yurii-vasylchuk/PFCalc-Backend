@@ -5,6 +5,7 @@ import org.jooq.DSLContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mvasylchuk.pfcc.jooq.tables.Measurement.MEASUREMENT;
 
@@ -13,17 +14,36 @@ import static org.mvasylchuk.pfcc.jooq.tables.Measurement.MEASUREMENT;
 public class MeasurementJooqRepository {
     private final DSLContext ctx;
 
+    //TODO: Cacheable
     public List<MeasurementDto> getMeasurementList(Long foodId) {
         return ctx.selectFrom(MEASUREMENT)
-                  .where(MEASUREMENT.FOOD_ID.equal(foodId))
-                  .fetch(dbMeasurement -> {
-                      MeasurementDto measurement = new MeasurementDto();
-                      measurement.setId(dbMeasurement.get(MEASUREMENT.ID));
-                      measurement.setFoodId(dbMeasurement.get(MEASUREMENT.FOOD_ID));
-                      measurement.setToGramMultiplier(dbMeasurement.get(MEASUREMENT.TO_GRAM_MULTIPLIER));
-                      measurement.setName(dbMeasurement.get(MEASUREMENT.NAME));
-                      measurement.setDefaultValue(dbMeasurement.get(MEASUREMENT.DEFAULT_VALUE));
-                      return measurement;
-                  });
+                .where(MEASUREMENT.FOOD_ID.equal(foodId))
+                .fetch(dbMeasurement -> {
+                    MeasurementDto measurement = new MeasurementDto();
+                    measurement.setId(dbMeasurement.get(MEASUREMENT.ID));
+                    measurement.setFoodId(dbMeasurement.get(MEASUREMENT.FOOD_ID));
+                    measurement.setToGramMultiplier(dbMeasurement.get(MEASUREMENT.TO_GRAM_MULTIPLIER));
+                    measurement.setName(dbMeasurement.get(MEASUREMENT.NAME));
+                    measurement.setDefaultValue(dbMeasurement.get(MEASUREMENT.DEFAULT_VALUE));
+                    return measurement;
+                });
+    }
+
+    //TODO: Cacheable
+    public Optional<MeasurementDto> findById(Long foodId, Long measurementId) {
+        return ctx.selectFrom(MEASUREMENT)
+                .where(
+                        MEASUREMENT.ID.eq(measurementId)
+                                .and(MEASUREMENT.FOOD_ID.eq(foodId))
+                ).fetchOptional(dbMeasurement -> {
+                    MeasurementDto measurement = new MeasurementDto();
+                    measurement.setId(dbMeasurement.get(MEASUREMENT.ID));
+                    measurement.setFoodId(dbMeasurement.get(MEASUREMENT.FOOD_ID));
+                    measurement.setToGramMultiplier(dbMeasurement.get(MEASUREMENT.TO_GRAM_MULTIPLIER));
+                    measurement.setName(dbMeasurement.get(MEASUREMENT.NAME));
+                    measurement.setDefaultValue(dbMeasurement.get(MEASUREMENT.DEFAULT_VALUE));
+                    return measurement;
+                });
+
     }
 }

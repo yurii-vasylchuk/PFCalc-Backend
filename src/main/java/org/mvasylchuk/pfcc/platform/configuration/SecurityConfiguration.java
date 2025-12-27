@@ -41,11 +41,11 @@ public class SecurityConfiguration {
                                                          AuthenticationManager authenticationManager,
                                                          CorsConfigurationSource corsConfigurationSource) throws Exception {
         http.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(cors -> cors.configurationSource(corsConfigurationSource))
-            .authorizeHttpRequests(customizer -> customizer.anyRequest().permitAll())
-            .authenticationProvider(jwtAuthenticationProvider)
-            .addFilterAfter(new JwtAuthenticationFilter(authenticationManager), BasicAuthenticationFilter.class);
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                .authorizeHttpRequests(customizer -> customizer.anyRequest().permitAll())
+                .authenticationProvider(jwtAuthenticationProvider)
+                .addFilterAfter(new JwtAuthenticationFilter(authenticationManager), BasicAuthenticationFilter.class);
 
         return http.build();
     }

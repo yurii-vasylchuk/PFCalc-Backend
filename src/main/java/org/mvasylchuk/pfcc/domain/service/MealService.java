@@ -4,11 +4,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.domain.dto.CommandMealDto;
+import org.mvasylchuk.pfcc.domain.dto.MealDto;
 import org.mvasylchuk.pfcc.domain.dto.MealOptionDto;
-import org.mvasylchuk.pfcc.domain.dto.QueryMealDto;
 import org.mvasylchuk.pfcc.domain.entity.MealEntity;
 import org.mvasylchuk.pfcc.domain.repository.MealJooqRepository;
 import org.mvasylchuk.pfcc.domain.repository.MealRepository;
+import org.mvasylchuk.pfcc.domain.service.mapping.MealMappingService;
 import org.mvasylchuk.pfcc.user.UserService;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class MealService {
     private final MealMappingService mealMappingService;
 
     @Transactional(rollbackOn = Exception.class)
-    public QueryMealDto save(CommandMealDto request) {
+    public MealDto save(CommandMealDto request) {
         MealEntity mealEntity = mealMappingService.toEntity(request);
 
         mealRepository.save(mealEntity);
@@ -37,12 +38,13 @@ public class MealService {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public QueryMealDto getById(Long id) {
-        return mealJooqRepository.getById(id);
+    public MealDto getById(Long id) {
+        Long userId = userService.currentUser().getId();
+        return mealJooqRepository.getById(id, userId);
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public Page<QueryMealDto> getMealList(Integer page, Integer pageSize, LocalDateTime from, LocalDateTime to) {
+    public Page<MealDto> getMealList(Integer page, Integer pageSize, LocalDateTime from, LocalDateTime to) {
         Long userId = userService.currentUser().getId();
 
         return mealJooqRepository.getMealList(page, pageSize, from, to, userId);
