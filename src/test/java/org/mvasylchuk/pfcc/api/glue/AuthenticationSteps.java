@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;

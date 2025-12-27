@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MeasurementService {
-    private final UserService userService;
     private final MeasurementJooqRepository measurementJooqRepository;
     private final MeasurementRepository measurementRepository;
     private final MeasurementMappingService measurementMappingService;

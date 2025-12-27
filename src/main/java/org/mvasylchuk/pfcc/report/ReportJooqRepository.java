@@ -182,7 +182,7 @@ public class ReportJooqRepository {
                         rec.get(weight)
                 ));
 
-        if (res.get(0).type == FoodType.RECIPE) {
+        if (res.getFirst().type == FoodType.RECIPE) {
             return res.stream().flatMap(ing -> this.deconstructMeal(
                     new MealDeconstructTask(
                             ing.weight,
@@ -194,8 +194,8 @@ public class ReportJooqRepository {
         Pair<LocalDate, MealForDailyReport> result = Pair.of(
                 task.eatenOn,
                 MealForDailyReport.builder()
-                        .name(res.get(0).name)
-                        .pfcc(res.get(0).pfcc)
+                        .name(res.getFirst().name)
+                        .pfcc(res.getFirst().pfcc)
                         .date(task.eatenOn)
                         .weight(task.weight.setScale(DEFAULT_SCALE, RoundingMode.HALF_UP))
                         .build()

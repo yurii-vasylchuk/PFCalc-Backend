@@ -10,7 +10,6 @@ import org.jooq.impl.DSL;
 import org.mvasylchuk.pfcc.common.dto.Page;
 import org.mvasylchuk.pfcc.common.dto.PfccDto;
 import org.mvasylchuk.pfcc.common.dto.WeightDto;
-import org.mvasylchuk.pfcc.domain.dto.FoodDto;
 import org.mvasylchuk.pfcc.domain.dto.MealDto;
 import org.mvasylchuk.pfcc.domain.dto.MealIngredientDto;
 import org.mvasylchuk.pfcc.domain.dto.MealOptionDto;

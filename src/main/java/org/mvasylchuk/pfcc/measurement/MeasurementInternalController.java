@@ -10,7 +10,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MeasurementInternalController {
     private final MeasurementJooqRepository repository;
-    private final MeasurementMappingService mappingService;
 
     public Optional<MeasurementDto> findById(Long foodId, Long measurementId) {
         return this.repository.findById(foodId, measurementId);
