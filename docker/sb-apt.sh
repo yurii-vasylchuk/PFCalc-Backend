@@ -47,6 +47,7 @@ if [ "$1" == "load-apt-sources" ]; then
     LOAD_DEBIAN=0
     LOAD_DEBIAN_SRC=0
     LOAD_ROS_ONE=0
+    LOAD_QCOM_IOT=0
 
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -123,6 +124,14 @@ if [ "$1" == "load-apt-sources" ]; then
                     exit 1
                 fi
                 LOAD_ROS_ONE=1
+                shift # past argument
+                ;;
+            qcom-iot)
+                if [[ $IS_UBUNTU -eq 0 ]]; then
+                    echo "'qcom-iot' is only supported on Ubuntu"
+                    exit 1
+                fi
+                LOAD_QCOM_IOT=1
                 shift # past argument
                 ;;
             debian)
@@ -376,6 +385,18 @@ CEXRgHY3Utq/I3CLJ+KcJCUCH5D16Z7aOoazG9DKbewA+da8Drw=
 
         printf "\
 deb $SB_BASE_URL/$APT_PIN_DATE/packages.ros.org/ros/ubuntu/ $DIST_NAME main \n\
+" >> /etc/apt/sources.list
+    fi
+
+    if [[ $LOAD_QCOM_IOT == 1 ]]; then
+        DIST_NAME=$(cat /etc/lsb-release | grep CODENAME | cut -d'=' -f2)
+
+        apt update
+        apt install -y gnupg
+        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 1C70EB0C444248D7
+
+        printf "\
+deb $SB_BASE_URL/$APT_PIN_DATE/ppa.launchpadcontent.net/ubuntu-qcom-iot/qcom-ppa/ubuntu $DIST_NAME main \n\
 " >> /etc/apt/sources.list
     fi
 
