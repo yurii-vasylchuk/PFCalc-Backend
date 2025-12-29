@@ -29,7 +29,7 @@ management:
   metrics:
     tags:
       environment: local
-      application: pfcalc-backend
+      application: ${spring.application.name}
 otel:
   exporter:
     otlp:
@@ -43,7 +43,7 @@ otel:
   resource:
     attributes:
       environment: local
-      application: pfcalc-backend
+      application: ${spring.application.name}
 
 pfcc:
   jobs:
