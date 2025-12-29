@@ -26,6 +26,10 @@ management:
     metrics:
       export:
         enabled: false
+  metrics:
+    tags:
+      environment: local
+      application: pfcalc-backend
 otel:
   exporter:
     otlp:
@@ -39,6 +43,7 @@ otel:
   resource:
     attributes:
       environment: local
+      application: pfcalc-backend
 
 pfcc:
   jobs:

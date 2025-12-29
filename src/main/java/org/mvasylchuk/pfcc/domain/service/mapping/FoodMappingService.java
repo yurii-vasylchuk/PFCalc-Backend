@@ -35,24 +35,25 @@ public class FoodMappingService {
 
     @Transactional(rollbackOn = Exception.class)
     public FoodEntity toEntity(FoodDto foodDto) {
-        FoodEntity dbFood = null;
+        FoodEntity result;
         if (foodDto.getId() != null) {
-            dbFood = foodRepository.findById(foodDto.getId())
+            result = foodRepository.findById(foodDto.getId())
                     .orElseThrow(() -> new PfccException(ApiErrorCode.FOOD_IS_NOT_FOUND));
 
-            if (dbFood.getIsDeleted()) {
+            if (result.getIsDeleted()) {
                 throw new PfccException(ApiErrorCode.FOOD_IS_DELETED);
             }
+        } else {
+            result = new FoodEntity();
         }
-        FoodEntity result = new FoodEntity();
+
         List<FoodIngredientEntity> ingredientList;
         Pfcc pfcc;
-        result.setId(foodDto.getId());
         result.setName(foodDto.getName().trim());
         result.setType(foodDto.getType());
         result.setIsHidden(foodDto.isHidden());
         if (foodDto.getId() != null) {
-            result.setOwner(dbFood.getOwner());
+            result.setOwner(result.getOwner());
         } else {
             result.setOwner(userService.currentUser());
         }
@@ -61,7 +62,10 @@ public class FoodMappingService {
         result.setIsDeleted(false);
 
         if (foodDto.getType() == FoodType.RECIPE) {
-            ingredientList = new ArrayList<>();
+            ingredientList = result.getIngredients();
+            if (ingredientList == null) {
+                ingredientList = new ArrayList<>();
+            }
 
             List<FoodIngredientDto> ingredients = foodDto.getIngredients();
 
