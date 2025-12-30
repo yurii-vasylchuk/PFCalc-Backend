@@ -18,9 +18,9 @@ jobs:
           curl "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendMessage" \
             --header "Content-Type: application/json" \
             --request POST \
-            --parse_mode 'MarkdownV2'
             --data '{
               "chat_id": "${{ secrets.TG_CHAT_ID }}",
+              "parse_mode": "MarkdownV2",
               "text": "Build PFCalc Backend for ${{ github.ref_name }}: ${{ needs.build.result }}"
             }'
   build:
