@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Log outputs
-        run: echo ${{ jobs.build.outputs }}
+        run: echo ${{ needs.build.outputs }}
       - name: Send TG notification
         shell: bash
         run: |
@@ -21,7 +21,7 @@ jobs:
             --parse_mode 'MarkdownV2'
             --data '{
               "chat_id": "${{ secrets.TG_CHAT_ID }}",
-              "text": "Build PFCalc Backend for ${{ github.ref_name }}: ${{ jobs.build.result }}"
+              "text": "Build PFCalc Backend for ${{ github.ref_name }}: ${{ needs.build.result }}"
             }'
   build:
     continue-on-error: true # Send notifications even if build fails
