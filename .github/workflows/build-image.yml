@@ -14,11 +14,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Send TG notification
-        run: bash ./build/send-tg-notification.sh \
-          '${{ secrets.TG_BOT_TOKEN }}' \
-          '${{ secrets.TG_CHAT_ID }}' \
-          '${{ needs.build.result }}' \
-          'PFCalc Backend'
+        run: |
+          bash ./build/send-tg-notification.sh \
+            '${{ secrets.TG_BOT_TOKEN }}' \
+            '${{ secrets.TG_CHAT_ID }}' \
+            '${{ needs.build.result }}' \
+            'PFCalc Backend'
 
   build:
     continue-on-error: true # Send notifications even if build fails
