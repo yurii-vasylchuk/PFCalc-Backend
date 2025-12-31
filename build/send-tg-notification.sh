@@ -9,8 +9,6 @@ URL=""
 NL="\n"
 
 while getopts ":t:u:" opt; do
-  echo $opt
-  echo "$OPTARG"
   case "$opt" in
     t)  TAG="$OPTARG" ;;
     u)  URL="$OPTARG" ;;
