@@ -16,7 +16,7 @@ jobs:
       - name: Send TG notification
         run: |
           bash ./build/send-tg-notification.sh \
-            -t '${{ needs.build.output.tags }}'
+            -t '${{ needs.build.outputs.tags }}'
             '${{ secrets.TG_BOT_TOKEN }}' \
             '${{ secrets.TG_CHAT_ID }}' \
             '${{ needs.build.result }}' \

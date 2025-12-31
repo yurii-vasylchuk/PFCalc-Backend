@@ -10,8 +10,8 @@ NL="\n"
 
 while getopts ":t:u:" opt; do
   case "$opt" in
-    t)  TAG="$OPTARG" ;;
-    u)  URL="$OPTARG" ;;
+    t)  TAG="${OPTARG:-}" ;;
+    u)  URL="${OPTARG:-}" ;;
     \?) echo "Error: unknown option -$OPTARG"; exit 1 ;;
     :)  echo "Error: option requires value -$OPTARG"; exit 1 ;;
   esac
