@@ -13,11 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Make script executable (if permissions not set in repo)
-        run: chmod +x ./scripts/my_script.sh
-
       - name: Send TG notification
-        run: build/send-tg-notification.sh \
+        run: bash ./build/send-tg-notification.sh \
           '${{ secrets.TG_BOT_TOKEN }}' \
           '${{ secrets.TG_CHAT_ID }}' \
           '${{ needs.build.result }}' \
