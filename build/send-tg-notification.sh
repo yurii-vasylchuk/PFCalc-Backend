@@ -50,5 +50,3 @@ curl -X POST --location "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
           \"parse_mode\": \"MarkdownV2\",
           \"text\": \"${TEXT}\"
         }"
-
-echo "Telegram notification sent: ${STATUS}"
